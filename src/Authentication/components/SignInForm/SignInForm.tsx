@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { observer, inject } from 'mobx-react'
 
 import { InputField } from '../../../Common/components/InputField'
 import { Button } from '../../../Common/components/Button'
@@ -12,10 +11,8 @@ import {
    SignInFormContainer
 } from './styledComponents'
 
-import stringConstants from '../../constants/stringConstants/index.json'
+import stringConstants from '../../constants/stringConstants/stringConstants.json'
 
-@inject('authStore')
-@observer
 class SignInForm extends Component<any, any> {
    render() {
       const {
@@ -26,7 +23,8 @@ class SignInForm extends Component<any, any> {
          onUserSubmit,
          apiStatus,
          errorMessage
-      } = this.props.authStore
+      } = this.props
+
       return (
          <SignInFormContainer>
             <FormContainer>
@@ -46,6 +44,7 @@ class SignInForm extends Component<any, any> {
                      placeholder='username'
                      errorMessage={errorMessage}
                      labelText='username'
+                     isValidInput={!errorMessage.includes('username')}
                   />
                   <InputField
                      className='p-3'
@@ -55,6 +54,7 @@ class SignInForm extends Component<any, any> {
                      placeholder='password'
                      errorMessage={errorMessage}
                      labelText='password'
+                     isValidInput={!errorMessage.includes('password')}
                   />
                   <Button
                      type='submit'

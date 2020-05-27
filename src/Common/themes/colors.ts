@@ -5,5 +5,7 @@ export const colors = {
    'bright-blue': '#0b69ff',
    'ice-blue': '#f1f7ff',
    'dark-blue-grey': '#171f46',
-   'neon-red-5': 'rgba(255, 11, 55, 0.05)'
+   'neon-red-5': 'rgba(255, 11, 55, 0.05)',
+   whiteTwo: '#fbfbfb',
+   lightBlueGrey: '#d7dfe9'
 }

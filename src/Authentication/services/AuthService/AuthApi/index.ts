@@ -21,4 +21,4 @@ class AuthApi {
    }
 }
 
-export default AuthApi
+export { AuthApi }

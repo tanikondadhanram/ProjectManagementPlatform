@@ -5,7 +5,8 @@ import {
    InputFeildTag,
    LabelForInputFeild,
    ErrorMessage,
-   InputAndErrorMessageContainer
+   InputAndErrorMessageContainer,
+   ErrorIcon
 } from './styledComponents'
 import { colors } from '../../themes/colors'
 
@@ -23,11 +24,13 @@ class InputField extends Component<any, any> {
             <InputAndErrorMessageContainer>
                <InputFeildTag {...this.props} isValidInput={this.isError} />
                {!this.isError ? (
-                  <MdErrorOutline
-                     size='20px'
-                     color={colors['neon-red']}
-                     className='self-center'
-                  />
+                  <ErrorIcon>
+                     <MdErrorOutline
+                        size='20px'
+                        color={colors['neon-red']}
+                        className='self-center'
+                     />
+                  </ErrorIcon>
                ) : null}
             </InputAndErrorMessageContainer>
             {!this.isError ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}

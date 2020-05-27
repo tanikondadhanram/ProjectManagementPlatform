@@ -2,14 +2,12 @@ import React from 'react'
 import { Provider } from 'mobx-react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
-// import HomePage from './components/HomePage'
-// import Page1 from './components/Page1'
-
 import './App.css'
 import { authStore } from './Authentication/stores/index'
 import { authRoutes } from './Authentication/routes'
+import { projectManagementRoutes } from './ProjectManagementPlatform/routes'
 
-const routes = [...authRoutes]
+const routes = [projectManagementRoutes, authRoutes]
 const stores = {
    authStore: authStore
 }

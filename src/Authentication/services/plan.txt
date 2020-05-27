@@ -1,0 +1,6 @@
+noUserFound     -       404
+response        -       UserDoesNotExist
+
+passwordInCorrect       -       401
+response        -       passwordinCorrect
+

@@ -1,13 +1,10 @@
 import { observable, action } from 'mobx'
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 import { clearUserSession, setAccessToken } from '../../../utils/StorageUtils'
 
-import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
-
 class AuthStore {
-   @observable username!: string
-   @observable password!: string
    @observable apiStatus!: number
    @observable apiError!: string | null
    @observable apiResponse: any
@@ -16,38 +13,17 @@ class AuthStore {
    constructor(authAPI: any) {
       this.authService = authAPI
       this.init()
+   }
+
+   @action.bound
+   init() {
       this.apiStatus = API_INITIAL
       this.apiError = null
    }
 
    @action.bound
-   init() {
-      this.username = ''
-      this.password = ''
-   }
-
-   @action.bound
    clearStore() {
       this.init()
-   }
-
-   @action.bound
-   onChangeUsername(event: { target: { value: string } }) {
-      this.username = event.target.value
-   }
-
-   @action.bound
-   onChangePassword(event: { target: { value: string } }) {
-      this.password = event.target.value
-   }
-
-   @action.bound
-   onUserSubmit(event: { preventDefault: () => void }) {
-      event.preventDefault()
-      this.onUserSignIn({
-         username: this.username,
-         password: this.password
-      })
    }
 
    @action.bound
@@ -67,14 +43,16 @@ class AuthStore {
    }
 
    @action.bound
-   onUserSignIn(userDetails) {
+   userSignIn(userDetails, onSignInSuccess, onSignInFailure) {
       const userSignInAPIPromise = this.authService.signInAPI(userDetails)
       return bindPromiseWithOnSuccess(userSignInAPIPromise)
          .to(this.setUserSignInAPIStatus, response => {
             this.setUserSignInAPIResponse(response)
+            onSignInSuccess()
          })
          .catch(error => {
             this.setUserSignInAPIError(error)
+            onSignInFailure()
          })
    }
 

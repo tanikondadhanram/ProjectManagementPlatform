@@ -1,6 +1,7 @@
-[
-        {
+{
+        "accessToken": {
                 "username": "ramakrishna",
-                "password": "RAMAKRISHNA"
+                "password": "RAMAKRISHNA",
+                "projects": []
         }
-]
+}

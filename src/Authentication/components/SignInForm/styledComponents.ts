@@ -22,7 +22,7 @@ export const IbHubsLogo = styled.img`
 `
 
 export const SignInFormHeading = styled.h1`
-   ${tw`text-xl`};
+   ${tw`text-3xl`};
    color: ${colors['dark-blue-grey']};
 `
 

@@ -1,0 +1,10 @@
+components
+        -       Header
+                -       ProfileDropdown
+        -       Body
+                -       ProjectNameAndAddProject
+                -       ListOfProjects
+                -       ProjectDetails
+                
+        -       Footer
+                -       Pagination

@@ -6,10 +6,10 @@ import {
    API_INITIAL
 } from '@ib/api-constants'
 
-import AuthApi from '../../services/AuthService/AuthApi'
-import usersData from '../../fixtures/usersData.json'
+import { AuthApi } from '../../services/AuthService/AuthApi'
+import { AuthStore } from '.'
 
-import AuthStore from './AuthStore'
+import usersData from '../../fixtures/usersData.json'
 
 let mockSetCookie = jest.fn()
 let mockRemoveCookie = jest.fn()
@@ -27,42 +27,55 @@ describe('AuthStore Tests', () => {
    })
 
    it('should test initialising auth store', () => {
-      expect(authStore.apiStatus).toBe(API_INITIAL)
+      expect(authStore.getUserSignInAPIStatus).toBe(API_INITIAL)
 
-      expect(authStore.apiError).toBe(null)
+      expect(authStore.getUserSignInAPIError).toBe(null)
    })
 
    it('should test userSignInAPI data fetching state', () => {
+      const onSuccess = jest.fn()
+      const onFailure = jest.fn()
+
       const requestObject = {
          username: 'ramakrishna',
          password: 'RAMAKRISHNA'
       }
 
-      authStore.onUserSignIn(requestObject)
-      expect(authStore.apiStatus).toBe(API_FETCHING)
+      const mockLoadingPromise = new Promise(function(resolve, reject) {})
+      const mockSignInAPI = jest.fn()
+      mockSignInAPI.mockReturnValue(mockLoadingPromise)
+      authAPI.signInAPI = mockSignInAPI
+
+      authStore.userSignIn(requestObject, onSuccess, onFailure)
+      expect(authStore.getUserSignInAPIStatus).toBe(API_FETCHING)
    })
 
    it('should test userSignInAPI success state', async () => {
+      const onSuccess = jest.fn()
+      const onFailure = jest.fn()
+
       const requestObject = {
-         username: 'ramakrishna',
-         password: 'RAMAKRISHNA'
+         username: 'test-user',
+         password: 'test-password'
       }
 
       const mockSuccessPromise = Promise.resolve(usersData)
+      const mockSignInAPI = jest.fn()
+      mockSignInAPI.mockReturnValue(mockSuccessPromise)
+      authAPI.signInAPI = mockSignInAPI
 
-      jest
-         .spyOn(authAPI, 'signInAPI')
-         .mockImplementation(() => mockSuccessPromise)
-
-      await authStore.onUserSignIn(requestObject)
-      expect(authStore.apiStatus).toBe(API_SUCCESS)
+      await authStore.userSignIn(requestObject, onSuccess, onFailure)
+      expect(authStore.getUserSignInAPIStatus).toBe(API_SUCCESS)
       expect(mockSetCookie).toBeCalled()
+      expect(onSuccess).toBeCalled()
    })
 
    it('should test userSignInAPI failure state', async () => {
+      const onSuccess = jest.fn()
+      const onFailure = jest.fn()
       const requestObject = {
-         username: 'ramakrishna',
-         password: 'RAMAKRISHNA'
+         username: 'test-user',
+         password: 'test-password'
       }
 
       jest
@@ -70,42 +83,15 @@ describe('AuthStore Tests', () => {
          .mockImplementation(() => Promise.reject())
 
       authStore = new AuthStore(authAPI)
-      await authStore.onUserSignIn(requestObject)
-      expect(authStore.apiStatus).toBe(API_FAILED)
+      await authStore.userSignIn(requestObject, onSuccess, onFailure)
+      expect(authStore.getUserSignInAPIStatus).toBe(API_FAILED)
+      expect(onFailure).toBeCalled()
    })
 
    it('should test user sign-out', () => {
-      authStore.onUserSignOut()
+      authStore.userSignOut()
       expect(mockRemoveCookie).toBeCalled()
-      expect(authStore.apiStatus).toBe(API_INITIAL)
-      expect(authStore.apiError).toBe(null)
-   })
-
-   it('Should Test Username Should Update While Typing', () => {
-      const event = {
-         target: {
-            value: 'rk'
-         }
-      }
-      authStore.onChangeUsername(event)
-      expect(authStore.username).toBe('rk')
-   })
-
-   it('Should Test password Should Update While Typing', () => {
-      const event = {
-         target: {
-            value: 'rk'
-         }
-      }
-      authStore.onChangePassword(event)
-      expect(authStore.password).toBe('rk')
-   })
-   it('Should Test OnUserSubmit', () => {
-      authStore.username = 'ramakrishna'
-      authStore.password = 'RAMAKRISHNA'
-      const event = { preventDefault: () => null }
-
-      authStore.onUserSubmit(event)
-      expect(authStore.onUserSignIn()).toStrictEqual(new Promise(() => null))
+      expect(authStore.getUserSignInAPIStatus).toBe(API_INITIAL)
+      expect(authStore.getUserSignInAPIError).toBe(null)
    })
 })
