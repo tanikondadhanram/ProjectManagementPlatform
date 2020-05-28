@@ -16,7 +16,7 @@ class AuthApi {
 
    @action.bound
    signInAPI(requestObject) {
-      return new Promise(resolve => resolve(usersData))
+      return new Promise(resolve => setTimeout(() => resolve(usersData), 3000))
       //       return networkCallWithApisauce(this.api, '', requestObject, apiMethods.post)
    }
 }

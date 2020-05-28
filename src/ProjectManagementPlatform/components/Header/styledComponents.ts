@@ -3,7 +3,7 @@ import tw from 'tailwind.macro'
 import { colors } from '../../../Common/themes/colors'
 
 export const HeaderContainer = styled.div`
-   ${tw`flex justify-between items-center w-screen px-8 py-2`};
+   ${tw`flex justify-between items-center w-screen`};
    border-bottom: 1px solid ${colors['lightBlueGrey']};
    background-color: ${colors['white']};
 `
@@ -33,4 +33,8 @@ export const UsernameText = styled.h1`
 
 export const ProfileDropdown = styled.img`
    ${tw`h-16 w-16 border rounded-full`}
+`
+
+export const SignOutButton = styled.button`
+   ${tw`text-2xl border focus:outline-none`}
 `

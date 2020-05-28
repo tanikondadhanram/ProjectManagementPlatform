@@ -8,7 +8,8 @@ import {
    IbHubsLogo,
    FormTag,
    FormContainer,
-   SignInFormContainer
+   SignInFormContainer,
+   NetworkErrorMessage
 } from './styledComponents'
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
@@ -22,7 +23,9 @@ class SignInForm extends Component<any, any> {
          onChangePassword,
          onUserSubmit,
          apiStatus,
-         errorMessage
+         apiError,
+         usernameEmptyMessage,
+         passwordEmptyMessage
       } = this.props
 
       return (
@@ -37,32 +40,58 @@ class SignInForm extends Component<any, any> {
                </SignInFormHeading>
                <FormTag>
                   <InputField
-                     className='p-3'
                      type='text'
                      onChange={onChangeUsername}
                      value={username}
                      placeholder='username'
-                     errorMessage={errorMessage}
+                     errorMessage={
+                        apiError
+                           ? apiError
+                           : usernameEmptyMessage
+                           ? usernameEmptyMessage
+                           : null
+                     }
                      labelText='username'
-                     isValidInput={!errorMessage.includes('username')}
+                     isValidInput={
+                        apiError
+                           ? !apiError.includes('username')
+                           : usernameEmptyMessage
+                           ? false
+                           : true
+                     }
                   />
                   <InputField
-                     className='p-3'
                      type='password'
                      onChange={onChangePassword}
                      value={password}
                      placeholder='password'
-                     errorMessage={errorMessage}
+                     errorMessage={
+                        apiError
+                           ? apiError
+                           : passwordEmptyMessage
+                           ? passwordEmptyMessage
+                           : null
+                     }
                      labelText='password'
-                     isValidInput={!errorMessage.includes('password')}
+                     isValidInput={
+                        apiError
+                           ? !apiError.includes('password')
+                           : passwordEmptyMessage
+                           ? false
+                           : true
+                     }
                   />
                   <Button
+                     className='mt-2'
                      type='submit'
                      value='Sign In'
                      onClick={onUserSubmit}
                      apiStatus={apiStatus}
                   />
                </FormTag>
+               <NetworkErrorMessage>
+                  {apiError ? apiError.includes('network') : null}
+               </NetworkErrorMessage>
             </FormContainer>
          </SignInFormContainer>
       )

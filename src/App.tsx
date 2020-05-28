@@ -6,10 +6,12 @@ import './App.css'
 import { authStore } from './Authentication/stores/index'
 import { authRoutes } from './Authentication/routes'
 import { projectManagementRoutes } from './ProjectManagementPlatform/routes'
+import { projectManagementPlatformStore } from './ProjectManagementPlatform/stores'
 
 const routes = [projectManagementRoutes, authRoutes]
 const stores = {
-   authStore: authStore
+   authStore,
+   projectManagementPlatformStore
 }
 
 const App = () => {

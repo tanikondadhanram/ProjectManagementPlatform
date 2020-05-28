@@ -3,6 +3,7 @@ import { observable } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { withRouter } from 'react-router-dom'
 
+import stringConstants from '../../constants/stringConstants/stringConstants.json'
 import { SignInForm } from '../../components/SignInForm'
 import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
 
@@ -11,13 +12,15 @@ import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../../ProjectManagementPlat
 class SignInRoute extends Component<any, any> {
    @observable username: string
    @observable password: string
-   @observable errorMessage: string
+   @observable usernameEmptyMessage: string | null
+   @observable passwordEmptyMessage: string | null
 
    constructor(props) {
       super(props)
       this.username = ''
       this.password = ''
-      this.errorMessage = ''
+      this.usernameEmptyMessage = null
+      this.passwordEmptyMessage = null
    }
 
    setUser() {
@@ -41,24 +44,25 @@ class SignInRoute extends Component<any, any> {
 
    onChangeUsername = (event: { target: { value: string } }) => {
       this.username = event.target.value
-      this.errorMessage = ''
+      this.usernameEmptyMessage = null
    }
 
    onChangePassword = (event: { target: { value: string } }) => {
       this.password = event.target.value
-      this.errorMessage = ''
+      this.passwordEmptyMessage = null
    }
 
    onUserSubmit = (event: { preventDefault: () => void }) => {
       event.preventDefault()
-      if (this.username === '' || this.password === '') {
-         if (this.username === '') {
-            this.errorMessage = 'please enter username'
-         } else {
-            this.errorMessage = 'please enter password'
-         }
-      } else {
+      if (this.username !== '' && this.password !== '') {
          this.setUser()
+      } else {
+         if (this.username === '') {
+            this.usernameEmptyMessage = stringConstants['enterUsername']
+         }
+         if (this.password === '') {
+            this.passwordEmptyMessage = stringConstants['enterPassword']
+         }
       }
    }
 
@@ -69,8 +73,10 @@ class SignInRoute extends Component<any, any> {
          onChangeUsername: this.onChangeUsername,
          onChangePassword: this.onChangePassword,
          onUserSubmit: this.onUserSubmit,
-         errorMessage: this.errorMessage,
-         apiStatus: this.props.authStore.apiStatus
+         apiStatus: this.props.authStore.apiStatus,
+         apiError: this.props.authStore.apiError,
+         usernameEmptyMessage: this.usernameEmptyMessage,
+         passwordEmptyMessage: this.passwordEmptyMessage
       }
 
       return <SignInForm {...signInFormProps} />

@@ -3,25 +3,19 @@ import tw from 'tailwind.macro'
 import { colors } from '../../themes/colors'
 
 export const InputFieldContainer = styled.div`
-   ${tw`flex flex-col mb-3`};
+   ${tw`flex flex-col mb-2 h-24 w-full `}
 `
 
 export const InputFeildTag = styled.input`
-   ${tw`my-3 outline-none mt-3`};
-   width: 320px;
-   height: 40px;
+   ${tw`outline-none my-2 p-3 w-full h-12 border-2 text-base`};
    border-radius: 2px;
    border: solid 1px
       ${(props: any) =>
          props.isValidInput ? `${colors['steel']}` : `${colors['neon-red']}`};
    background-color: ${(props: any) =>
       props.isValidInput ? `${colors['white']}` : `${colors['neon-red-5']}`};
-   color: ${(props: any) =>
-      props.isValidInput
-         ? `${colors['dark-blue-grey']}`
-         : `${colors['neon-red']}`};
+   color: ${colors['dark-blue-grey']};
    font-family: HKGrotesk;
-   font-size: 14px;
    font-weight: normal;
    font-stretch: normal;
    font-style: normal;
@@ -30,11 +24,10 @@ export const InputFeildTag = styled.input`
 `
 
 export const LabelForInputFeild = styled.label`
-   ${tw` `};
+   ${tw` w-full text-sm`};
    width: 63px;
    height: 16px;
    font-family: HKGrotesk;
-   font-size: 12px;
    font-weight: 600;
    font-stretch: normal;
    font-style: normal;
@@ -43,9 +36,7 @@ export const LabelForInputFeild = styled.label`
 `
 
 export const ErrorMessage = styled.p`
-   ${tw``};
-   width: 124px;
-   height: 16px;
+   ${tw`w-full text-base`};
    font-family: HKGrotesk;
    font-size: 12px;
    font-weight: normal;
@@ -56,11 +47,9 @@ export const ErrorMessage = styled.p`
    color: ${colors['neon-red']};
 `
 export const InputAndErrorMessageContainer = styled.div`
-   ${tw`flex relative z-40`}
+   ${tw`w-full flex`}
 `
 
-export const ErrorIcon = styled.span`
-   ${tw`relative`};
-   right: 30px;
-   top: 20px;
+export const ErrorIcon = styled.div`
+   ${tw`-ml-8 mt-6`};
 `

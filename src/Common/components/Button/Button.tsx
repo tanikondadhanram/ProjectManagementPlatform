@@ -8,7 +8,7 @@ class Button extends Component<any, any> {
       const { apiStatus } = this.props
       return (
          <CommonButton {...this.props}>
-            {apiStatus === 200 ? (
+            {apiStatus === 100 ? (
                <span data-testid='loader'>
                   <Loader type='Oval' color='#ffffff' height={25} width={25} />
                </span>

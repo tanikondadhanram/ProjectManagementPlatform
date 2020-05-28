@@ -27,7 +27,12 @@ export const SignInFormHeading = styled.h1`
 `
 
 export const FormTag = styled.form`
-   ${tw`flex flex-col justify-center items-center`};
+   ${tw`flex flex-col justify-center items-center `};
    height: 80%;
-   width: 35%;
+   width: 70%;
+`
+
+export const NetworkErrorMessage = styled.p`
+   ${tw`text-xl `};
+   color: ${colors['neon-red']};
 `

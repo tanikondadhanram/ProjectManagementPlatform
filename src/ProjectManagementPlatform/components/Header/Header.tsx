@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 
 import { IB_HUBS_LOGO_PATH } from '../../constants/logosPaths'
 
@@ -9,12 +10,21 @@ import {
    LogoAndHeadingContainer,
    UsernameAndProfileIconContainer,
    UsernameText,
-   ProfileDropdown
+   ProfileDropdown,
+   SignOutButton
 } from './styledComponents'
 
 import stringConstants from '../../strings/stringConstants.json'
+import { clearUserSession } from '../../../utils/StorageUtils'
+import { PROJECT_SIGN_IN_PATH } from '../../../Authentication/constants/routeConstants'
 
-class Header extends Component {
+class Header extends Component<any, any> {
+   onSignOut = () => {
+      clearUserSession()
+      const { history } = this.props
+      history.replace(PROJECT_SIGN_IN_PATH)
+   }
+
    render() {
       return (
          <HeaderContainer>
@@ -30,10 +40,11 @@ class Header extends Component {
             <UsernameAndProfileIconContainer>
                <UsernameText>Satya</UsernameText>
                <ProfileDropdown src={IB_HUBS_LOGO_PATH} />
+               <SignOutButton onClick={this.onSignOut}>Sign Out</SignOutButton>
             </UsernameAndProfileIconContainer>
          </HeaderContainer>
       )
    }
 }
 
-export default Header
+export default withRouter(Header)

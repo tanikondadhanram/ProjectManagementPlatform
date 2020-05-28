@@ -1,4 +1,11 @@
 {
         "ibLogoAltText": "IbHubs-Logo",
-        "ProjectTitle": "Project Management Platform"
+        "ProjectTitle": "Project Management Platform",
+        "title": "Title",
+        "created_by": "Created By",
+        "created_at": "Created At",
+        "project_type": "Project Type",
+        "description": "Description",
+        "workflow_type": "Workflow Type",
+        "developers": "Developers"
 }
