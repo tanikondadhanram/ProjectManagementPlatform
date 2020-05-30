@@ -7,13 +7,17 @@ import './App.css'
 import { authStore } from './Authentication/stores/index'
 import { authRoutes } from './Authentication/routes'
 import { projectManagementRoutes } from './ProjectManagementPlatform/routes'
-import { projectManagementPlatformStore } from './ProjectManagementPlatform/stores'
+import {
+   projectManagementPlatformStore,
+   workFlowStore
+} from './ProjectManagementPlatform/stores'
 
 const routes = [projectManagementRoutes, authRoutes]
 
 const stores = {
    authStore,
-   projectManagementPlatformStore
+   projectManagementPlatformStore,
+   workFlowStore
 }
 
 const config = {

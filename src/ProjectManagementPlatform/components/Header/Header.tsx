@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { IB_HUBS_LOGO_PATH } from '../../constants/logosPaths'
+import { IB_HUBS_LOGO_PATH } from '../../constants/ImagesPaths'
 
 import {
    HeaderContainer,

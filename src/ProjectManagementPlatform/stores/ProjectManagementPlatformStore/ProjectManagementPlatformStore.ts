@@ -1,4 +1,4 @@
-import { observable, action, computed, reaction, trace } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import ProjectModel from '../models/ProjectModel'
@@ -25,7 +25,6 @@ class ProjectManagementPlatformStore {
       this.paginationOffset = 0
       this.paginationLimit = 10
       this.pageNumber = 1
-      this.paginationReaction()
    }
 
    @action.bound
@@ -37,21 +36,19 @@ class ProjectManagementPlatformStore {
    incerementPaginationValues() {
       this.paginationOffset += 10
       this.pageNumber++
-      this.getProjects()
    }
 
    @action.bound
    decerementPaginationValues() {
       this.paginationOffset -= 10
       this.pageNumber--
-      this.getProjects()
    }
 
    @action.bound
-   navigateToClickedPage(pageNumber) {
+   navigateToClickedPage(event) {
+      const pageNumber = Number(event.target.value)
       this.paginationOffset = (pageNumber - 1) * 10
       this.pageNumber = pageNumber
-      this.getProjects()
    }
 
    @action.bound
@@ -73,10 +70,8 @@ class ProjectManagementPlatformStore {
       }
    }
 
-   // @computed
    @action.bound
    getProjects() {
-      // trace()
       const requestObject = {
          limit: this.paginationLimit,
          offset: this.paginationOffset
@@ -106,14 +101,8 @@ class ProjectManagementPlatformStore {
 
    @computed
    get maxPages() {
-      // return this.listOfProjects.length / this.paginationLimit
-      return 5
+      return 50 / this.paginationLimit
    }
-
-   paginationReaction = reaction(
-      () => this.pageNumber,
-      pageNumber => alert(pageNumber)
-   )
 }
 
 export default ProjectManagementPlatformStore

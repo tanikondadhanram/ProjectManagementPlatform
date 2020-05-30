@@ -22,6 +22,28 @@ export const Label = styled.label`
    ${tw`font-bold text-base font-sans`}
 `
 
-export const Option = styled.option`
+export const Div = styled.div`
+   ${tw` flex flex-col`}
+`
+
+export const OptionTag = styled.option`
    ${tw``}
+`
+
+export const WorkFLowTypes = styled.select`
+   ${tw`h-12`}
+`
+
+export const ProjectFLowTypes = styled.select`
+   ${tw`h-12`}
+`
+
+export const ErrorMessage = styled.p`
+   ${tw``};
+   color: ${(props: any) =>
+      props.visible ? colors['neon-red'] : colors['ice-blue']};
+`
+
+export const InputTag = styled.input`
+   ${tw`w-full h-12 outline-none`}
 `

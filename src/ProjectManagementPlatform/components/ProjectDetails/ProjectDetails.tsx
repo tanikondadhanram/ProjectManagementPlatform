@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TableBody, TableData, IbHubsLogo } from './styledComponents'
-import { IB_HUBS_LOGO_PATH } from '../../constants/logosPaths'
+import { IB_HUBS_LOGO_PATH } from '../../constants/ImagesPaths'
 import stringConstants from '../../strings/stringConstants.json'
 
 class ProjectDetails extends Component<any, any> {

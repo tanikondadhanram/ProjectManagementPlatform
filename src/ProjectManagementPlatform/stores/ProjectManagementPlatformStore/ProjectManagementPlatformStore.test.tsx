@@ -1,4 +1,9 @@
-import { API_INITIAL, API_FETCHING, API_SUCCESS } from '@ib/api-constants'
+import {
+   API_INITIAL,
+   API_FETCHING,
+   API_SUCCESS,
+   API_FAILED
+} from '@ib/api-constants'
 
 import ProjectsFixturesAPI from '../../services/ProjectsService/Projects.fixtures'
 
@@ -25,13 +30,23 @@ describe('ProjectManagementPlatformStore tests', () => {
       expect(projectsStore.apiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store Successfully Fetched Data ', async () => {
+   it('Should Test Store apiStatus Is Success', async () => {
+      const mockSuccessPromise = Promise.resolve(listOfProjects)
+      const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
+
+      projectsApi.getProjectsAPI = mockSignInAPI
+
       await projectsStore.getProjects()
       expect(projectsStore.apiStatus).toBe(API_SUCCESS)
    })
 
-   // it('Should Test Store Is Failed to Fetched Data ', async () => {
-   //    await projectsStore.getProjects()
-   //    expect(projectsStore.apiStatus).toBe(API_SUCCESS)
-   // })
+   it('Should Test Store apiStatus Is Failed', async () => {
+      const mockSuccessPromise = Promise.reject('error')
+      const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
+
+      projectsApi.getProjectsAPI = mockSignInAPI
+
+      await projectsStore.getProjects()
+      expect(projectsStore.apiStatus).toBe(API_FAILED)
+   })
 })

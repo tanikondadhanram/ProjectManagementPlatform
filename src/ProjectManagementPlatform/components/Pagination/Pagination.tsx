@@ -1,16 +1,51 @@
 import React, { Component } from 'react'
+import { reaction } from 'mobx'
 import { inject, observer } from 'mobx-react'
 
-import { PaginationContainer, PaginationButton } from './styledComponents'
+import { PaginationButton } from '../PaginationButton'
+
+import { PaginationContainer } from './styledComponents'
 
 @inject('projectManagementPlatformStore')
 @observer
 class Pagination extends Component<any, any> {
-   onPageNumberClick = event => {
-      this.props.projectManagementPlatformStore.navigateToClickedPage(
-         Number(event.target.value)
-      )
+   componentWillUnmount() {
+      this.paginationReaction()
    }
+
+   paginationReaction = reaction(
+      () => {
+         const { projectManagementPlatformStore } = this.props
+         const { paginationOffset } = projectManagementPlatformStore
+         return paginationOffset
+      },
+      number => {
+         const { projectManagementPlatformStore } = this.props
+         const { getProjects } = projectManagementPlatformStore
+         getProjects()
+      }
+   )
+
+   renderPaginationButtons = () => {
+      const {
+         navigateToClickedPage,
+         maxPages
+      } = this.props.projectManagementPlatformStore
+
+      const paginationsButtons: any = []
+      for (let index = 1; index <= maxPages; index++) {
+         paginationsButtons.push(
+            <PaginationButton
+               key={index.toString()}
+               value={index}
+               onClick={navigateToClickedPage}
+            />
+         )
+      }
+
+      return paginationsButtons
+   }
+
    render() {
       const {
          incerementPaginationValues,
@@ -24,10 +59,23 @@ class Pagination extends Component<any, any> {
             <PaginationButton
                onClick={decerementPaginationValues}
                disabled={pageNumber === 1 ? true : false}
-            >
-               &lt;
-            </PaginationButton>
-            <PaginationButton onClick={this.onPageNumberClick} value='1'>
+               value='&lt;'
+            />
+
+            {this.renderPaginationButtons()}
+            <PaginationButton
+               onClick={incerementPaginationValues}
+               disabled={pageNumber === maxPages ? true : false}
+               value='&gt;'
+            />
+         </PaginationContainer>
+      )
+   }
+}
+
+export default Pagination
+{
+   /* <PaginationButton onClick={this.onPageNumberClick} value='1'>
                1
             </PaginationButton>
             <PaginationButton onClick={this.onPageNumberClick} value='2'>
@@ -41,16 +89,5 @@ class Pagination extends Component<any, any> {
             </PaginationButton>
             <PaginationButton onClick={this.onPageNumberClick} value='5'>
                5
-            </PaginationButton>
-            <PaginationButton
-               onClick={incerementPaginationValues}
-               disabled={pageNumber === 5 ? true : false}
-            >
-               &gt;
-            </PaginationButton>
-         </PaginationContainer>
-      )
-   }
+            </PaginationButton> */
 }
-
-export default Pagination

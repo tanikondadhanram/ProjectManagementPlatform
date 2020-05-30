@@ -11,5 +11,6 @@
         "addNewProject": "+ Add New",
         "sign out": "Sign out",
         "enter username": "Please enter username",
-        "enter password": "Please enter password"
+        "enter password": "Please enter password",
+        "feild_required": "*this feild required"
 }
