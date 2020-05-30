@@ -7,8 +7,6 @@ import { PaginationContainer, PaginationButton } from './styledComponents'
 @observer
 class Pagination extends Component<any, any> {
    onPageNumberClick = event => {
-      console.log(event.target.value)
-
       this.props.projectManagementPlatformStore.navigateToClickedPage(
          Number(event.target.value)
       )

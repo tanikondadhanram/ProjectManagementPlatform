@@ -1,4 +1,4 @@
-import { observable, action, computed, reaction } from 'mobx'
+import { observable, action, computed, reaction, trace } from 'mobx'
 import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import ProjectModel from '../models/ProjectModel'
@@ -37,17 +37,21 @@ class ProjectManagementPlatformStore {
    incerementPaginationValues() {
       this.paginationOffset += 10
       this.pageNumber++
+      this.getProjects()
    }
 
    @action.bound
    decerementPaginationValues() {
       this.paginationOffset -= 10
       this.pageNumber--
+      this.getProjects()
    }
 
    @action.bound
    navigateToClickedPage(pageNumber) {
       this.paginationOffset = (pageNumber - 1) * 10
+      this.pageNumber = pageNumber
+      this.getProjects()
    }
 
    @action.bound
@@ -62,17 +66,22 @@ class ProjectManagementPlatformStore {
 
    @action.bound
    setGetProjectsAPIResponse(response: any) {
-      this.listOfProjects = response.map(
-         projectDetails => new ProjectModel(projectDetails)
-      )
+      if (Array.isArray(response)) {
+         this.listOfProjects = response.map(
+            projectDetails => new ProjectModel(projectDetails)
+         )
+      }
    }
 
+   // @computed
    @action.bound
    getProjects() {
+      // trace()
       const requestObject = {
          limit: this.paginationLimit,
          offset: this.paginationOffset
       }
+
       const projectsPromise = this.projectsService.getProjectsAPI(requestObject)
       return bindPromiseWithOnSuccess(projectsPromise)
          .to(this.setGetProjectsAPIStatus, response => {
@@ -82,6 +91,19 @@ class ProjectManagementPlatformStore {
             this.setGetProjectsAPIError(error)
          })
    }
+
+   @action.bound
+   postProject(requestObject) {
+      const projectPromise = this.projectsService.postProjectAPI(requestObject)
+      return bindPromiseWithOnSuccess(projectPromise)
+         .to(this.setGetProjectsAPIStatus, response => {
+            this.setGetProjectsAPIResponse(response)
+         })
+         .catch(error => {
+            this.setGetProjectsAPIError(error)
+         })
+   }
+
    @computed
    get maxPages() {
       // return this.listOfProjects.length / this.paginationLimit

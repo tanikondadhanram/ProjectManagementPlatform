@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { TableBody, TableRow, TableData } from './styledComponents'
+import { TableBody, TableData, IbHubsLogo } from './styledComponents'
+import { IB_HUBS_LOGO_PATH } from '../../constants/logosPaths'
+import stringConstants from '../../strings/stringConstants.json'
 
 class ProjectDetails extends Component<any, any> {
    render() {
@@ -11,17 +13,26 @@ class ProjectDetails extends Component<any, any> {
       const description = projectDetails.description
       const workflowType = projectDetails.workflow_type
       const developers = projectDetails.developers
+
       return (
-         <TableBody>
-            <TableRow>
-               <TableData>{title}</TableData>
-               <TableData>{createdBy}</TableData>
-               <TableData>{createdAt}</TableData>
-               <TableData>{projectType}</TableData>
-               <TableData>{description}</TableData>
-               <TableData>{workflowType}</TableData>
-               <TableData>{developers}</TableData>
-            </TableRow>
+         <TableBody id={projectDetails.id}>
+            <TableData>{title}</TableData>
+            <TableData>{createdBy}</TableData>
+            <TableData>{createdAt}</TableData>
+            <TableData>{projectType}</TableData>
+            <TableData>{description}</TableData>
+            <TableData>{workflowType}</TableData>
+            <TableData className='flex'>
+               <IbHubsLogo
+                  src={IB_HUBS_LOGO_PATH}
+                  alt={stringConstants['ibLogoAltText']}
+               />
+               <p>
+                  {Math.random()
+                     .toString()
+                     .substr(0, 9)}
+               </p>
+            </TableData>
          </TableBody>
       )
    }

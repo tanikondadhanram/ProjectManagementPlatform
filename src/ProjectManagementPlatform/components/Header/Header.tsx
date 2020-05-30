@@ -40,7 +40,9 @@ class Header extends Component<any, any> {
             <UsernameAndProfileIconContainer>
                <UsernameText>Satya</UsernameText>
                <ProfileDropdown src={IB_HUBS_LOGO_PATH} />
-               <SignOutButton onClick={this.onSignOut}>Sign Out</SignOutButton>
+               <SignOutButton onClick={this.onSignOut}>
+                  {stringConstants['sign out']}
+               </SignOutButton>
             </UsernameAndProfileIconContainer>
          </HeaderContainer>
       )

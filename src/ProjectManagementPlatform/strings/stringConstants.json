@@ -7,5 +7,9 @@
         "project_type": "Project Type",
         "description": "Description",
         "workflow_type": "Workflow Type",
-        "developers": "Developers"
+        "developers": "Developers",
+        "addNewProject": "+ Add New",
+        "sign out": "Sign out",
+        "enter username": "Please enter username",
+        "enter password": "Please enter password"
 }

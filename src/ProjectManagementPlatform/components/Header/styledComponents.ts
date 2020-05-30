@@ -3,7 +3,7 @@ import tw from 'tailwind.macro'
 import { colors } from '../../../Common/themes/colors'
 
 export const HeaderContainer = styled.div`
-   ${tw`flex justify-between items-center w-screen`};
+   ${tw`flex justify-between items-center w-full px-4`};
    border-bottom: 1px solid ${colors['lightBlueGrey']};
    background-color: ${colors['white']};
 `
@@ -13,14 +13,14 @@ export const LogoAndHeadingContainer = styled.div`
 `
 
 export const IbHubsLogo = styled.img`
-   ${tw`mx-2`};
+   ${tw``};
    width: 90px;
    height: 90px;
    object-fit: contain;
 `
 
 export const ProjectHeading = styled.h1`
-   ${tw`text-3xl`}
+   ${tw`text-2xl`}
 `
 
 export const UsernameAndProfileIconContainer = styled.div`

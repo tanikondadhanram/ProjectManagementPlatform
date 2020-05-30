@@ -8,11 +8,11 @@ class ProjectsAPI {
       this.api = create({ baseURL: '' })
    }
 
-   getProjects = requestObject => {
+   getProjectsAPI = requestObject => {
       return networkCallWithApisauce(this.api, 'endPoint', {}, apiMethods.get)
    }
 
-   postProject = requestObect => {
+   postProjectAPI = requestObect => {
       return networkCallWithApisauce(
          this.api,
          'endPoint',

@@ -6,10 +6,10 @@ import stringConstants from '../../strings/stringConstants.json'
 import { ProjectDetails } from '../ProjectDetails'
 
 import {
+   ListOfProjectsContainer,
    ListOfProjectsTable,
    TableHeader,
-   TableHeaderData,
-   TableRow
+   TableHeaderData
 } from './styledComponents'
 import LoadingWrapperWithFailure from '../../../components/common/LoadingWrapperWithFailure'
 
@@ -22,6 +22,7 @@ class ListOfProjects extends Component<any, any> {
 
    doNetworkCalls = () => {
       const { projectManagementPlatformStore } = this.props
+
       projectManagementPlatformStore.getProjects()
    }
 
@@ -29,21 +30,10 @@ class ListOfProjects extends Component<any, any> {
       const { projectManagementPlatformStore } = this.props
       const { listOfProjects } = projectManagementPlatformStore
 
-      if (Boolean(listOfProjects)) {
-         return listOfProjects.map(projectDetails => (
-            <ProjectDetails
-               key={projectDetails.id}
-               projectDetails={projectDetails}
-            />
-         ))
-      }
-   }
-
-   render() {
       return (
-         <ListOfProjectsTable>
-            <TableHeader>
-               <TableRow>
+         <ListOfProjectsContainer>
+            <ListOfProjectsTable>
+               <TableHeader>
                   <TableHeaderData>{stringConstants['title']}</TableHeaderData>
                   <TableHeaderData>
                      {stringConstants['created_by']}
@@ -63,20 +53,36 @@ class ListOfProjects extends Component<any, any> {
                   <TableHeaderData>
                      {stringConstants['developers']}
                   </TableHeaderData>
-               </TableRow>
-            </TableHeader>
-            {this.renderListOfProjects()}
-         </ListOfProjectsTable>
+               </TableHeader>
+               {Boolean(listOfProjects)
+                  ? listOfProjects.map(projectDetails => (
+                       <ProjectDetails
+                          key={projectDetails.id}
+                          projectDetails={projectDetails}
+                       />
+                    ))
+                  : null}
+            </ListOfProjectsTable>
+         </ListOfProjectsContainer>
       )
+   }
+
+   render() {
+      const { projectManagementPlatformStore } = this.props
+      const {
+         apiStatus,
+         apiError,
+         getProjects
+      } = projectManagementPlatformStore
+      const props = {
+         apiStatus,
+         apiError,
+         onRetryClick: getProjects,
+         renderSuccessUI: this.renderListOfProjects
+      }
+
+      return <LoadingWrapperWithFailure {...props} />
    }
 }
 
 export default ListOfProjects
-
-//<LoadingWrapperWithFailure {...loadingWrapperWithFailureProps} />
-// const loadingWrapperWithFailureProps = {
-//    apiStatus: this.props.projectManagementPlatformStore.apiStatus,
-//    apiError: this.props.projectManagementPlatformStore.apiError,
-//    onRetryClick: this.doNetworkCalls,
-//    renderSuccessUI: this.renderListOfProjects
-// }
