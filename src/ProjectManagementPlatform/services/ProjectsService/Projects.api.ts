@@ -1,6 +1,6 @@
-import { networkCallWithApisauce } from '../../../utils/APIUtils'
+import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { create } from 'apisauce'
-import { apiMethods } from '../../../constants/APIConstants'
+import { apiMethods } from '../../../Common/constants/APIConstants'
 
 class ProjectsAPI {
    api: any

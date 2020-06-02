@@ -11,7 +11,8 @@ import {
    TableHeader,
    TableHeaderData
 } from './styledComponents'
-import LoadingWrapperWithFailure from '../../../components/common/LoadingWrapperWithFailure'
+import LoadingWrapperWithFailure from '../../../Common/components/LoadingWrapperWithFailure'
+import NoDataView from '../../../Common/components/NoDataView'
 
 @inject('projectManagementPlatformStore')
 @observer
@@ -31,57 +32,65 @@ class ListOfProjects extends Component<any, any> {
       const { listOfProjects } = projectManagementPlatformStore
 
       return (
-         <ListOfProjectsContainer>
-            <ListOfProjectsTable>
-               <TableHeader>
-                  <TableHeaderData>{stringConstants['title']}</TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['created_by']}
-                  </TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['created_at']}
-                  </TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['project_type']}
-                  </TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['description']}
-                  </TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['workflow_type']}
-                  </TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['developers']}
-                  </TableHeaderData>
-               </TableHeader>
-               {Boolean(listOfProjects)
-                  ? listOfProjects.map(projectDetails => (
-                       <ProjectDetails
-                          key={projectDetails.id}
-                          projectDetails={projectDetails}
-                       />
-                    ))
-                  : null}
-            </ListOfProjectsTable>
-         </ListOfProjectsContainer>
+         <ListOfProjectsTable>
+            <TableHeader>
+               <TableHeaderData>{stringConstants['title']}</TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['created_by']}
+               </TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['created_at']}
+               </TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['project_type']}
+               </TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['description']}
+               </TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['workflow_type']}
+               </TableHeaderData>
+               <TableHeaderData>
+                  {stringConstants['developers']}
+               </TableHeaderData>
+            </TableHeader>
+            {Boolean(listOfProjects)
+               ? listOfProjects.map(projectDetails => (
+                    <ProjectDetails
+                       key={projectDetails.id}
+                       projectDetails={projectDetails}
+                    />
+                 ))
+               : null}
+         </ListOfProjectsTable>
       )
    }
 
    render() {
       const { projectManagementPlatformStore } = this.props
+
       const {
          apiStatus,
          apiError,
-         getProjects
+         getProjects,
+         listOfProjects
       } = projectManagementPlatformStore
+
+      const renderSuccessUI =
+         listOfProjects.length === 0 ? NoDataView : this.renderListOfProjects
+
       const props = {
          apiStatus,
          apiError,
          onRetryClick: getProjects,
-         renderSuccessUI: this.renderListOfProjects
+         renderSuccessUI
       }
 
-      return <LoadingWrapperWithFailure {...props} />
+      return (
+         <ListOfProjectsContainer>
+            <LoadingWrapperWithFailure {...props} />
+         </ListOfProjectsContainer>
+      )
    }
 }
 

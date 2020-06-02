@@ -2,7 +2,7 @@ import { observable, action } from 'mobx'
 import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
-import { setAccessToken } from '../../../utils/StorageUtils'
+import { setAccessToken } from '../../../Common/utils/StorageUtils'
 
 class AuthStore {
    @observable apiStatus!: number
@@ -40,6 +40,11 @@ class AuthStore {
    setUserSignInAPIResponse(response: any) {
       setAccessToken(response['access_token'])
       this.apiResponse = response
+
+      window.localStorage.setItem(
+         'userDetails',
+         JSON.stringify(JSON.stringify(response))
+      )
    }
 
    @action.bound

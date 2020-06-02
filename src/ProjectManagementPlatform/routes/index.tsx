@@ -2,7 +2,7 @@ import React from 'react'
 
 import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../constants/routeConstants'
 import { ProjectManagementApp } from '../components/ProjectManagementApp'
-import { ProtectedRoute } from '../../utils/ProtectedRoute'
+import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
 
 export const projectManagementRoutes = [
    <ProtectedRoute

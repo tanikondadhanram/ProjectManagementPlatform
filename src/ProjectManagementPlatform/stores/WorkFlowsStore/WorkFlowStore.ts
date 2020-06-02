@@ -5,7 +5,7 @@ import { API_INITIAL } from '@ib/api-constants'
 class WorkFlowStore {
    @observable apiStatus!: number
    @observable apiError!: null | string
-   @observable workFlowTypes!: object
+   @observable workFlowTypes!: any
    workFlowService
 
    constructor(service) {

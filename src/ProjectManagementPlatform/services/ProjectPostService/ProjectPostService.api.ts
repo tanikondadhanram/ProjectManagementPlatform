@@ -1,19 +1,24 @@
-import { action } from 'mobx'
 import { create } from 'apisauce'
+import { action } from 'mobx'
 
 import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { apiMethods } from '../../../Common/constants/APIConstants'
 
-class WorkFlowService {
+class ProjectPostService {
    api: any
    constructor() {
       this.api = create({ baseURL: '' })
    }
 
    @action.bound
-   getWorkFlowAPI(requestObject) {
-      return networkCallWithApisauce(this.api, 'endPoint', {}, apiMethods.get)
+   postProjectAPI(requestObect) {
+      return networkCallWithApisauce(
+         this.api,
+         'endPoint',
+         requestObect,
+         apiMethods.post
+      )
    }
 }
 
-export default WorkFlowService
+export default ProjectPostService

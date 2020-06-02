@@ -1,7 +1,7 @@
 import React from 'react'
 import { getAccessToken } from './StorageUtils'
 import { Route, Redirect } from 'react-router-dom'
-import { PROJECT_SIGN_IN_PATH } from '../Authentication/constants/routeConstants'
+import { PROJECT_SIGN_IN_PATH } from '../../Authentication/constants/routeConstants'
 
 export const ProtectedRoute = (props: any) => {
    const isUserLoggedIn = Boolean(getAccessToken())

@@ -9,7 +9,6 @@ class ProjectManagementPlatformStore {
    @observable listOfProjects!: any
    @observable paginationOffset!: number
    @observable paginationLimit!: number
-   @observable pageNumber!: number
    projectsService: any
 
    constructor(service: any) {
@@ -24,7 +23,6 @@ class ProjectManagementPlatformStore {
       this.listOfProjects = []
       this.paginationOffset = 0
       this.paginationLimit = 10
-      this.pageNumber = 1
    }
 
    @action.bound
@@ -33,22 +31,9 @@ class ProjectManagementPlatformStore {
    }
 
    @action.bound
-   incerementPaginationValues() {
-      this.paginationOffset += 10
-      this.pageNumber++
-   }
-
-   @action.bound
-   decerementPaginationValues() {
-      this.paginationOffset -= 10
-      this.pageNumber--
-   }
-
-   @action.bound
-   navigateToClickedPage(event) {
-      const pageNumber = Number(event.target.value)
-      this.paginationOffset = (pageNumber - 1) * 10
-      this.pageNumber = pageNumber
+   navigateToClickedPage(paginationObject) {
+      const pageNumber = paginationObject.selected
+      this.paginationOffset = pageNumber * 10
    }
 
    @action.bound
@@ -87,21 +72,9 @@ class ProjectManagementPlatformStore {
          })
    }
 
-   @action.bound
-   postProject(requestObject) {
-      const projectPromise = this.projectsService.postProjectAPI(requestObject)
-      return bindPromiseWithOnSuccess(projectPromise)
-         .to(this.setGetProjectsAPIStatus, response => {
-            this.setGetProjectsAPIResponse(response)
-         })
-         .catch(error => {
-            this.setGetProjectsAPIError(error)
-         })
-   }
-
    @computed
    get maxPages() {
-      return 50 / this.paginationLimit
+      return this.listOfProjects.length
    }
 }
 

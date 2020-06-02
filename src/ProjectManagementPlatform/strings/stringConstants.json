@@ -12,5 +12,11 @@
         "sign out": "Sign out",
         "enter username": "Please enter username",
         "enter password": "Please enter password",
-        "feild_required": "*this feild required"
+        "feild_required": "*this feild required",
+        "closeMark": "&times;",
+        "createProjectTitle": "title",
+        "createProjectDescription": "description",
+        "createProjectWorkFlowType": "workFlowType",
+        "createProjectProjectType": "projectType",
+        "create": "create"
 }

@@ -4,20 +4,22 @@ import { enableLogging } from 'mobx-logger'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import './App.css'
-import { authStore } from './Authentication/stores/index'
-import { authRoutes } from './Authentication/routes'
-import { projectManagementRoutes } from './ProjectManagementPlatform/routes'
+import { authStore } from '../Authentication/stores/index'
+import { authRoutes } from '../Authentication/routes'
+import { projectManagementRoutes } from '../ProjectManagementPlatform/routes'
 import {
    projectManagementPlatformStore,
-   workFlowStore
-} from './ProjectManagementPlatform/stores'
+   workFlowStore,
+   projectPostStore
+} from '../ProjectManagementPlatform/stores'
 
 const routes = [projectManagementRoutes, authRoutes]
 
 const stores = {
    authStore,
    projectManagementPlatformStore,
-   workFlowStore
+   workFlowStore,
+   projectPostStore
 }
 
 const config = {

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import { InputField } from '../../../Common/components/InputField'
 import { Button } from '../../../Common/components/Button'
@@ -8,13 +10,25 @@ import {
    IbHubsLogo,
    FormTag,
    FormContainer,
-   SignInFormContainer,
-   NetworkErrorMessage
+   SignInFormContainer
 } from './styledComponents'
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
 
 class SignInForm extends Component<any, any> {
+   notifyNetworkError = () => {
+      toast.error(stringConstants['networkError'], {
+         position: 'bottom-center',
+         autoClose: 3000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined
+      })
+      return null
+   }
+
    render() {
       const {
          username,
@@ -25,8 +39,22 @@ class SignInForm extends Component<any, any> {
          apiStatus,
          apiError,
          usernameEmptyMessage,
-         passwordEmptyMessage
+         passwordEmptyMessage,
+         networkErrorMessage
       } = this.props
+
+      // alert(networkErrorMessage)
+      const isValidUsername = apiError
+         ? apiError
+         : usernameEmptyMessage
+         ? usernameEmptyMessage
+         : null
+
+      const isValidPassword = apiError
+         ? apiError
+         : passwordEmptyMessage
+         ? passwordEmptyMessage
+         : null
 
       return (
          <SignInFormContainer>
@@ -44,13 +72,7 @@ class SignInForm extends Component<any, any> {
                      onChange={onChangeUsername}
                      value={username}
                      placeholder='username'
-                     errorMessage={
-                        apiError
-                           ? apiError
-                           : usernameEmptyMessage
-                           ? usernameEmptyMessage
-                           : null
-                     }
+                     errorMessage={isValidUsername}
                      labelText='username'
                      isValidInput={
                         apiError
@@ -65,13 +87,7 @@ class SignInForm extends Component<any, any> {
                      onChange={onChangePassword}
                      value={password}
                      placeholder='password'
-                     errorMessage={
-                        apiError
-                           ? apiError
-                           : passwordEmptyMessage
-                           ? passwordEmptyMessage
-                           : null
-                     }
+                     errorMessage={isValidPassword}
                      labelText='password'
                      isValidInput={
                         apiError
@@ -87,11 +103,21 @@ class SignInForm extends Component<any, any> {
                      value='Sign In'
                      onClick={onUserSubmit}
                      apiStatus={apiStatus}
+                     disabled={networkErrorMessage ? true : false}
                   />
                </FormTag>
-               <NetworkErrorMessage>
-                  {apiError ? apiError.includes('network') : null}
-               </NetworkErrorMessage>
+               {networkErrorMessage ? this.notifyNetworkError() : null}
+               <ToastContainer
+                  position='bottom-center'
+                  autoClose={3000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+               />
             </FormContainer>
          </SignInFormContainer>
       )

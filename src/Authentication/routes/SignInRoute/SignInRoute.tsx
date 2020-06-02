@@ -10,17 +10,19 @@ import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../../ProjectManagementPlat
 @inject('authStore')
 @observer
 class SignInRoute extends Component<any, any> {
-   @observable username: string
-   @observable password: string
+   @observable username: string | null
+   @observable password: string | null
    @observable usernameEmptyMessage: string | null
    @observable passwordEmptyMessage: string | null
+   @observable networkErrorMessage: string | null
 
    constructor(props) {
       super(props)
-      this.username = ''
-      this.password = ''
+      this.username = null
+      this.password = null
       this.usernameEmptyMessage = null
       this.passwordEmptyMessage = null
+      this.networkErrorMessage = null
    }
 
    setUser() {
@@ -40,7 +42,12 @@ class SignInRoute extends Component<any, any> {
       history.replace(PROJECT_MANAGEMANT_PLATFORM_PATH)
    }
 
-   onSignInFailure = () => {}
+   onSignInFailure = () => {
+      const { apiError } = this.props
+      if (!Boolean(apiError)) {
+         this.networkErrorMessage = stringConstants['networkError']
+      }
+   }
 
    onChangeUsername = (event: { target: { value: string } }) => {
       this.username = event.target.value
@@ -54,13 +61,13 @@ class SignInRoute extends Component<any, any> {
 
    onUserSubmit = (event: { preventDefault: () => void }) => {
       event.preventDefault()
-      if (this.username !== '' && this.password !== '') {
+      if (this.username && this.password) {
          this.setUser()
       } else {
-         if (this.username === '') {
+         if (!Boolean(this.username)) {
             this.usernameEmptyMessage = stringConstants['enterUsername']
          }
-         if (this.password === '') {
+         if (!Boolean(this.password)) {
             this.passwordEmptyMessage = stringConstants['enterPassword']
          }
       }
@@ -76,7 +83,8 @@ class SignInRoute extends Component<any, any> {
          apiStatus: this.props.authStore.apiStatus,
          apiError: this.props.authStore.apiError,
          usernameEmptyMessage: this.usernameEmptyMessage,
-         passwordEmptyMessage: this.passwordEmptyMessage
+         passwordEmptyMessage: this.passwordEmptyMessage,
+         networkErrorMessage: this.networkErrorMessage
       }
 
       return <SignInForm {...signInFormProps} />

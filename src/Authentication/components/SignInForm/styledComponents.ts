@@ -31,8 +31,3 @@ export const FormTag = styled.form`
    height: 80%;
    width: 70%;
 `
-
-export const NetworkErrorMessage = styled.p`
-   ${tw`text-xl `};
-   color: ${colors['neon-red']};
-`

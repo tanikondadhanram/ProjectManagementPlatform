@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { reaction } from 'mobx'
 import { inject, observer } from 'mobx-react'
-
-import { PaginationButton } from '../PaginationButton'
+import ReactPaginate from 'react-paginate'
 
 import { PaginationContainer } from './styledComponents'
 
@@ -26,68 +25,42 @@ class Pagination extends Component<any, any> {
       }
    )
 
-   renderPaginationButtons = () => {
-      const {
-         navigateToClickedPage,
-         maxPages
-      } = this.props.projectManagementPlatformStore
-
-      const paginationsButtons: any = []
-      for (let index = 1; index <= maxPages; index++) {
-         paginationsButtons.push(
-            <PaginationButton
-               key={index.toString()}
-               value={index}
-               onClick={navigateToClickedPage}
-            />
-         )
-      }
-
-      return paginationsButtons
-   }
-
    render() {
       const {
-         incerementPaginationValues,
-         decerementPaginationValues,
-         pageNumber,
-         maxPages
+         maxPages,
+         navigateToClickedPage,
+         listOfProjects
       } = this.props.projectManagementPlatformStore
+
+      if (maxPages === 0 || listOfProjects.length === 0) {
+         return null
+      }
 
       return (
          <PaginationContainer>
-            <PaginationButton
-               onClick={decerementPaginationValues}
-               disabled={pageNumber === 1 ? true : false}
-               value='&lt;'
-            />
-
-            {this.renderPaginationButtons()}
-            <PaginationButton
-               onClick={incerementPaginationValues}
-               disabled={pageNumber === maxPages ? true : false}
-               value='&gt;'
+            <ReactPaginate
+               pageCount={maxPages}
+               pageRangeDisplayed={1}
+               marginPagesDisplayed={2}
+               previousLabel={previousLabel}
+               nextLabel={nextLabel}
+               containerClassName='flex'
+               previousClassName='border text-2xl h-8 w-8 m-1 flex justify-center items-center'
+               nextClassName='border text-2xl h-8 w-8 m-1 flex justify-center items-center'
+               pageClassName='border text-2xl h-8 w-8 m-1 flex justify-center items-center'
+               breakClassName=' text-xl h-8 w-8 flex justify-center items-center outline-none'
+               previousLinkClassName='focus:outline-none'
+               nextLinkClassName='focus:outline-none'
+               pageLinkClassName='focus:outline-none'
+               activeLinkClassName='bg-blue-500 h-full w-full text-white flex justify-center items-center'
+               onPageChange={navigateToClickedPage}
             />
          </PaginationContainer>
       )
    }
 }
 
+const previousLabel = <span>&lt;</span>
+const nextLabel = <span>&gt;</span>
+
 export default Pagination
-{
-   /* <PaginationButton onClick={this.onPageNumberClick} value='1'>
-               1
-            </PaginationButton>
-            <PaginationButton onClick={this.onPageNumberClick} value='2'>
-               2
-            </PaginationButton>
-            <PaginationButton onClick={this.onPageNumberClick} value='3'>
-               3
-            </PaginationButton>
-            <PaginationButton onClick={this.onPageNumberClick} value='4'>
-               4
-            </PaginationButton>
-            <PaginationButton onClick={this.onPageNumberClick} value='5'>
-               5
-            </PaginationButton> */
-}

@@ -15,7 +15,7 @@ import {
 } from './styledComponents'
 
 import stringConstants from '../../strings/stringConstants.json'
-import { clearUserSession } from '../../../utils/StorageUtils'
+import { clearUserSession } from '../../../Common/utils/StorageUtils'
 import { PROJECT_SIGN_IN_PATH } from '../../../Authentication/constants/routeConstants'
 
 class Header extends Component<any, any> {
@@ -26,6 +26,10 @@ class Header extends Component<any, any> {
    }
 
    render() {
+      let userDetails: any = window.localStorage.getItem('userDetails')
+
+      userDetails = JSON.parse(userDetails)
+
       return (
          <HeaderContainer>
             <LogoAndHeadingContainer>
@@ -38,7 +42,7 @@ class Header extends Component<any, any> {
                </ProjectHeading>
             </LogoAndHeadingContainer>
             <UsernameAndProfileIconContainer>
-               <UsernameText>Satya</UsernameText>
+               <UsernameText>{userDetails.name}</UsernameText>
                <ProfileDropdown src={IB_HUBS_LOGO_PATH} />
                <SignOutButton onClick={this.onSignOut}>
                   {stringConstants['sign out']}
