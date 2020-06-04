@@ -6,10 +6,10 @@ class ProjectPostStore {
    @observable apiStatus!: number
    @observable apiError!: null | string
    @observable apiResponse!: any
-   @observable projectTitle: string | null = null
-   @observable projectDescription: string | null = null
-   @observable projectWorkFlow: string | null = null
-   @observable projectType: string | null = null
+   @observable projectTitle!: string | null
+   @observable projectDescription!: string | null
+   @observable projectWorkFlow!: string | null
+   @observable projectType!: string | null
    projectPostService
 
    constructor(service) {
@@ -20,6 +20,10 @@ class ProjectPostStore {
    init() {
       this.apiStatus = API_INITIAL
       this.apiError = null
+      this.projectTitle = null
+      this.projectDescription = null
+      this.projectWorkFlow = null
+      this.projectType = null
    }
 
    @action.bound
@@ -34,6 +38,8 @@ class ProjectPostStore {
 
    @action.bound
    setGetWorkFlowAPIError(error: string) {
+      console.log(error)
+
       this.apiError = error
    }
 
@@ -43,7 +49,7 @@ class ProjectPostStore {
    }
 
    @action.bound
-   ProjectPostCall() {
+   ProjectPostCall(onPostSuccess, onPostFailure) {
       const requsetObject = {
          projectTitle: this.projectTitle,
          projectDescription: this.projectDescription,
@@ -54,8 +60,16 @@ class ProjectPostStore {
          requsetObject
       )
       return bindPromiseWithOnSuccess(projectPostPromise)
-         .to(this.setGetWorkFlowAPIStatus, this.setGetWorkFlowAPIResponse)
-         .catch(this.setGetWorkFlowAPIError)
+         .to(this.setGetWorkFlowAPIStatus, response => {
+            this.setGetWorkFlowAPIResponse(response)
+            onPostSuccess()
+            this.clearStore()
+         })
+         .catch(error => {
+            this.setGetWorkFlowAPIError(error)
+            onPostFailure()
+            this.clearStore()
+         })
    }
 
    @action.bound
@@ -79,14 +93,14 @@ class ProjectPostStore {
    }
 
    @action.bound
-   onCreateButtonClick() {
+   onCreateButtonClick(onPostSuccess, onPostFailure) {
       if (
          this.projectTitle &&
          this.projectDescription &&
          this.projectWorkFlow &&
          this.projectType
       ) {
-         this.ProjectPostCall()
+         this.ProjectPostCall(onPostSuccess, onPostFailure)
       } else {
          this.projectTitle = this.projectTitle ? this.projectTitle : ''
          this.projectDescription = this.projectDescription

@@ -13,7 +13,7 @@ import { colors } from '../../themes/colors'
 class InputField extends Component<any, any> {
    isError: boolean = false
    render() {
-      let { isValidInput, labelText, errorMessage } = this.props
+      let { isValidInput, labelText, errorMessage, value } = this.props
 
       this.isError = isValidInput || isValidInput === undefined ? true : false
       return (
@@ -22,7 +22,11 @@ class InputField extends Component<any, any> {
                <LabelForInputFeild>{labelText}</LabelForInputFeild>
             ) : null}
             <InputAndErrorMessageContainer>
-               <InputFeildTag {...this.props} isValidInput={this.isError} />
+               <InputFeildTag
+                  {...this.props}
+                  value={value ? value : ''}
+                  isValidInput={this.isError}
+               />
                {!this.isError ? (
                   <ErrorIcon>
                      <MdErrorOutline

@@ -39,8 +39,8 @@ class WorkFlowStore {
       this.workFlowTypes = response
    }
 
-   //    @action.bound
-   getWorkFlowTypes = () => {
+   @action.bound
+   getWorkFlowTypes() {
       const workFlowPromise = this.workFlowService.getWorkFlowAPI()
       return bindPromiseWithOnSuccess(workFlowPromise)
          .to(this.setGetWorkFlowAPIStatus, response => {

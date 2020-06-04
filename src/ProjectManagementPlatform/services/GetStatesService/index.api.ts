@@ -1,18 +1,16 @@
-import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { create } from 'apisauce'
+import { action } from 'mobx'
+
+import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { apiMethods } from '../../../Common/constants/APIConstants'
 
-class ProjectsAPI {
+class StatesService {
    api: any
    constructor() {
       this.api = create({ baseURL: '' })
    }
 
-   getProjectsAPI = requestObject => {
-      return networkCallWithApisauce(this.api, 'endPoint', {}, apiMethods.get)
-   }
-
-   postProjectAPI = requestObect => {
+   getStaesAPI = requestObect => {
       return networkCallWithApisauce(
          this.api,
          'endPoint',
@@ -22,4 +20,4 @@ class ProjectsAPI {
    }
 }
 
-export default ProjectsAPI
+export default StatesService

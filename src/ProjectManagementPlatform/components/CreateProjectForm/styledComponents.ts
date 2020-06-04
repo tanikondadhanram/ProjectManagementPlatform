@@ -3,7 +3,7 @@ import tw from 'tailwind.macro'
 import { colors } from '../../../Common/themes/colors'
 
 export const CreateProjectContainer = styled.div`
-   ${tw`mx-20 my-10 flex justify-between items-center`}
+   ${tw`m-6 flex flex-col`}
 `
 
 export const ProjectTitle = styled.h1`
@@ -22,10 +22,10 @@ export const CloseProjectModal = styled.button`
 `
 
 export const Label = styled.label`
-   ${tw`my-2`}
+   ${tw``}
 `
 export const InputField = styled.input`
-   ${tw`my-2 w-full h-10 p-2 outline-none`};
+   ${tw` w-full h-10 p-2 outline-none`};
    border: 1px solid
       ${(props: any) => (props.isError ? colors['neon-red'] : colors['steel'])};
    background-color: ${(props: any) =>
@@ -46,9 +46,6 @@ export const TextArea = styled.textarea`
       props.isError ? colors['neon-red-5'] : colors['white']};
 `
 
-export const OptionTag = styled.option`
-   ${tw``};
-`
 export const ConfirmProjectButton = styled.button`
    ${tw`h-10 w-32 m-auto text-white  rounded focus:outline-none`};
    background-color: ${colors['bright-blue']};

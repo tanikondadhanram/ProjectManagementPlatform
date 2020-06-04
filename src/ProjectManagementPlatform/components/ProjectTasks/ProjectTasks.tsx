@@ -1,0 +1,85 @@
+import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
+import { ToastContainer } from 'react-toastify'
+
+import stringConstants from '../../strings/stringConstants.json'
+
+import { Header } from '../Header'
+import { TitleAndModalSection } from '../TitleAndModalSection'
+import { CreateTaskForm } from '../CreateTaskForm'
+import { ListOfTasks } from '../ListOfTasks'
+import { Pagination } from '../Pagination'
+
+@inject('tasksStore')
+@observer
+class ProjectTasks extends Component<any, any> {
+   render() {
+      const createTaskProps = {
+         modalContent: CreateTaskForm,
+         title: stringConstants['listOfTasks'],
+         buttonText: stringConstants['addTask'],
+         customStyles: {
+            content: {
+               top: '50%',
+               left: '50%',
+               right: 'auto',
+               bottom: 'auto',
+               marginRight: '-50%',
+               transform: 'translate(-50%, -50%)',
+               width: '40%',
+               height: '90%'
+            }
+         }
+      }
+
+      const { tasksStore } = this.props
+
+      const {
+         listOfTasks,
+         maxPages,
+         offset,
+         navigateToClickedPage,
+         apiStatus,
+         apiError,
+         getListOfTasks
+      } = tasksStore
+
+      const listOfTasksProps = {
+         listOfTasks,
+         getListOfTasks,
+         apiStatus,
+         apiError
+      }
+
+      const paginationProps = {
+         getPage: getListOfTasks,
+         maxPages,
+         offset,
+         navigateToClickedPage
+      }
+
+      const isDataFetched = listOfTasks ? true : false
+
+      return (
+         <>
+            <Header />
+            <TitleAndModalSection {...createTaskProps} />
+            <ListOfTasks {...listOfTasksProps} />
+            {isDataFetched ? <Pagination {...paginationProps} /> : null}
+            <ToastContainer
+               position='bottom-center'
+               autoClose={3000}
+               hideProgressBar={false}
+               newestOnTop
+               closeOnClick
+               rtl={false}
+               pauseOnFocusLoss
+               draggable
+               pauseOnHover
+            />
+         </>
+      )
+   }
+}
+
+export default ProjectTasks

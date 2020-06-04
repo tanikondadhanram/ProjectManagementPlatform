@@ -10,7 +10,10 @@ import { projectManagementRoutes } from '../ProjectManagementPlatform/routes'
 import {
    projectManagementPlatformStore,
    workFlowStore,
-   projectPostStore
+   projectPostStore,
+   tasksStore,
+   createTaskStore,
+   statesStore
 } from '../ProjectManagementPlatform/stores'
 
 const routes = [projectManagementRoutes, authRoutes]
@@ -19,7 +22,10 @@ const stores = {
    authStore,
    projectManagementPlatformStore,
    workFlowStore,
-   projectPostStore
+   projectPostStore,
+   tasksStore,
+   createTaskStore,
+   statesStore
 }
 
 const config = {
@@ -30,7 +36,7 @@ const config = {
    compute: true
 }
 
-enableLogging(config)
+// enableLogging(config)
 
 const App = () => {
    return (

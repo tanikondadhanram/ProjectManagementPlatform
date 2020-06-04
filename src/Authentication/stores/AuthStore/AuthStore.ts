@@ -32,7 +32,7 @@ class AuthStore {
    }
 
    @action.bound
-   setUserSignInAPIError(error: string) {
+   setUserSignInAPIError(error: any) {
       this.apiError = error
    }
 

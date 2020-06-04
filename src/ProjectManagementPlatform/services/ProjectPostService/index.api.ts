@@ -7,14 +7,16 @@ import { apiMethods } from '../../../Common/constants/APIConstants'
 class ProjectPostService {
    api: any
    constructor() {
-      this.api = create({ baseURL: '' })
+      this.api = create({
+         baseURL: 'https://365847a626b0.ngrok.io/api/project_management_portal/'
+      })
    }
 
    @action.bound
    postProjectAPI(requestObect) {
       return networkCallWithApisauce(
          this.api,
-         'endPoint',
+         'projects/v1/',
          requestObect,
          apiMethods.post
       )

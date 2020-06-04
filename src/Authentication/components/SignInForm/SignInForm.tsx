@@ -14,21 +14,9 @@ import {
 } from './styledComponents'
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
+import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 class SignInForm extends Component<any, any> {
-   notifyNetworkError = () => {
-      toast.error(stringConstants['networkError'], {
-         position: 'bottom-center',
-         autoClose: 3000,
-         hideProgressBar: false,
-         closeOnClick: true,
-         pauseOnHover: true,
-         draggable: true,
-         progress: undefined
-      })
-      return null
-   }
-
    render() {
       const {
          username,
@@ -39,22 +27,45 @@ class SignInForm extends Component<any, any> {
          apiStatus,
          apiError,
          usernameEmptyMessage,
-         passwordEmptyMessage,
-         networkErrorMessage
+         passwordEmptyMessage
       } = this.props
 
-      // alert(networkErrorMessage)
-      const isValidUsername = apiError
-         ? apiError
-         : usernameEmptyMessage
-         ? usernameEmptyMessage
-         : null
+      let isValidUser = true
+      let isValidPass = true
 
-      const isValidPassword = apiError
-         ? apiError
-         : passwordEmptyMessage
+      if (Boolean(apiError)) {
+         const error = JSON.parse(apiError)
+         if (error.status === 404) {
+            isValidUser = false
+         }
+         if (error.status === 401) {
+            isValidPass = false
+         }
+      }
+
+      const isValidUsername = usernameEmptyMessage
+         ? false
+         : isValidUser
+         ? true
+         : false
+
+      const usernameErrorMessage = usernameEmptyMessage
+         ? usernameEmptyMessage
+         : apiError
+         ? getUserDisplayableErrorMessage(apiError)
+         : ''
+
+      const isValidPassword = passwordEmptyMessage
+         ? false
+         : isValidPass
+         ? true
+         : false
+
+      const passwordErrorMessage = passwordEmptyMessage
          ? passwordEmptyMessage
-         : null
+         : apiError
+         ? getUserDisplayableErrorMessage(apiError)
+         : ''
 
       return (
          <SignInFormContainer>
@@ -72,30 +83,18 @@ class SignInForm extends Component<any, any> {
                      onChange={onChangeUsername}
                      value={username}
                      placeholder='username'
-                     errorMessage={isValidUsername}
+                     errorMessage={usernameErrorMessage}
                      labelText='username'
-                     isValidInput={
-                        apiError
-                           ? !apiError.includes('username')
-                           : usernameEmptyMessage
-                           ? false
-                           : true
-                     }
+                     isValidInput={isValidUsername}
                   />
                   <InputField
                      type='password'
                      onChange={onChangePassword}
                      value={password}
                      placeholder='password'
-                     errorMessage={isValidPassword}
+                     errorMessage={passwordErrorMessage}
                      labelText='password'
-                     isValidInput={
-                        apiError
-                           ? !apiError.includes('password')
-                           : passwordEmptyMessage
-                           ? false
-                           : true
-                     }
+                     isValidInput={isValidPassword}
                   />
                   <Button
                      className='mt-2'
@@ -103,10 +102,9 @@ class SignInForm extends Component<any, any> {
                      value='Sign In'
                      onClick={onUserSubmit}
                      apiStatus={apiStatus}
-                     disabled={networkErrorMessage ? true : false}
                   />
                </FormTag>
-               {networkErrorMessage ? this.notifyNetworkError() : null}
+
                <ToastContainer
                   position='bottom-center'
                   autoClose={3000}

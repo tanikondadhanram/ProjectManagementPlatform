@@ -1,0 +1,21 @@
+{
+        "total_states": 0,
+        "states": [
+                {
+                        "state_id": 0,
+                        "name": "string"
+                },
+                {
+                        "state_id": 1,
+                        "name": "string"
+                },
+                {
+                        "state_id": 2,
+                        "name": "string"
+                },
+                {
+                        "state_id": 3,
+                        "name": "string"
+                }
+        ]
+}

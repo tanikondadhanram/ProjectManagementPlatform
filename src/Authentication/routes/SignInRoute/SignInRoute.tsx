@@ -6,6 +6,8 @@ import { withRouter } from 'react-router-dom'
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
 import { SignInForm } from '../../components/SignInForm'
 import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
+import { toast } from 'react-toastify'
+import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 @inject('authStore')
 @observer
@@ -14,7 +16,6 @@ class SignInRoute extends Component<any, any> {
    @observable password: string | null
    @observable usernameEmptyMessage: string | null
    @observable passwordEmptyMessage: string | null
-   @observable networkErrorMessage: string | null
 
    constructor(props) {
       super(props)
@@ -22,7 +23,6 @@ class SignInRoute extends Component<any, any> {
       this.password = null
       this.usernameEmptyMessage = null
       this.passwordEmptyMessage = null
-      this.networkErrorMessage = null
    }
 
    setUser() {
@@ -44,9 +44,6 @@ class SignInRoute extends Component<any, any> {
 
    onSignInFailure = () => {
       const { apiError } = this.props
-      if (!Boolean(apiError)) {
-         this.networkErrorMessage = stringConstants['networkError']
-      }
    }
 
    onChangeUsername = (event: { target: { value: string } }) => {
@@ -83,8 +80,7 @@ class SignInRoute extends Component<any, any> {
          apiStatus: this.props.authStore.apiStatus,
          apiError: this.props.authStore.apiError,
          usernameEmptyMessage: this.usernameEmptyMessage,
-         passwordEmptyMessage: this.passwordEmptyMessage,
-         networkErrorMessage: this.networkErrorMessage
+         passwordEmptyMessage: this.passwordEmptyMessage
       }
 
       return <SignInForm {...signInFormProps} />

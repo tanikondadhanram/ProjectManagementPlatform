@@ -5,7 +5,7 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import ProjectsFixturesAPI from '../../services/ProjectsService/Projects.fixtures'
+import ProjectsFixturesAPI from '../../services/ProjectsService/index.fixtures'
 
 import listOfProjects from '../../fixtures/ListOfProjects.json'
 

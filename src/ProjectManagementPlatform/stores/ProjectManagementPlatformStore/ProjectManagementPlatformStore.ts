@@ -7,8 +7,9 @@ class ProjectManagementPlatformStore {
    @observable apiStatus!: number
    @observable apiError!: string | null
    @observable listOfProjects!: any
-   @observable paginationOffset!: number
-   @observable paginationLimit!: number
+   @observable offset!: number
+   @observable limit!: number
+   totalProjectsLength!: number
    projectsService: any
 
    constructor(service: any) {
@@ -21,8 +22,9 @@ class ProjectManagementPlatformStore {
       this.apiStatus = API_INITIAL
       this.apiError = null
       this.listOfProjects = []
-      this.paginationOffset = 0
-      this.paginationLimit = 10
+      this.offset = 0
+      this.limit = 10
+      this.totalProjectsLength = 0
    }
 
    @action.bound
@@ -33,7 +35,7 @@ class ProjectManagementPlatformStore {
    @action.bound
    navigateToClickedPage(paginationObject) {
       const pageNumber = paginationObject.selected
-      this.paginationOffset = pageNumber * 10
+      this.offset = pageNumber * 10
    }
 
    @action.bound
@@ -48,18 +50,18 @@ class ProjectManagementPlatformStore {
 
    @action.bound
    setGetProjectsAPIResponse(response: any) {
-      if (Array.isArray(response)) {
-         this.listOfProjects = response.map(
-            projectDetails => new ProjectModel(projectDetails)
-         )
-      }
+      this.totalProjectsLength = response.total_projects
+      alert(response.total_projects)
+      this.listOfProjects = response.projects.map(
+         projectDetails => new ProjectModel(projectDetails)
+      )
    }
 
    @action.bound
    getProjects() {
       const requestObject = {
-         limit: this.paginationLimit,
-         offset: this.paginationOffset
+         limit: this.limit,
+         offset: this.offset
       }
 
       const projectsPromise = this.projectsService.getProjectsAPI(requestObject)
@@ -74,7 +76,9 @@ class ProjectManagementPlatformStore {
 
    @computed
    get maxPages() {
-      return this.listOfProjects.length
+      const number = this.totalProjectsLength / this.limit
+      // alert(this.totalProjectsLength)
+      return Math.round(number)
    }
 }
 

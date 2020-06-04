@@ -8,7 +8,7 @@
         "description": "Description",
         "workflow_type": "Workflow Type",
         "developers": "Developers",
-        "addNewProject": "+ Add New",
+        "addNewProject": "+ Add Project",
         "sign out": "Sign out",
         "enter username": "Please enter username",
         "enter password": "Please enter password",
@@ -18,5 +18,12 @@
         "createProjectDescription": "description",
         "createProjectWorkFlowType": "workFlowType",
         "createProjectProjectType": "projectType",
-        "create": "create"
+        "create": "create",
+        "listOfTasks": "List Of Tasks",
+        "addTask": "+ Add Task",
+        "issueType": "Issue Type",
+        "assignedTo": "Assigned To",
+        "state": "State",
+        "fieldRequired": "* this field required",
+        "createTask": "create task"
 }

@@ -3,18 +3,23 @@ import tw from 'tailwind.macro'
 import { colors } from '../../../Common/themes/colors'
 
 export const ListOfProjectsContainer = styled.div`
-   ${tw`mx-20 my-10`}
+   ${tw`m-auto`};
+   width: 85%;
 `
 
-export const ListOfProjectsTable = styled.div`
-   ${tw`border-2  w-full `}
+export const ListOfProjectsTable = styled.table`
+   ${tw`w-full `}
 `
 
-export const TableHeader = styled.div`
-   ${tw`w-full flex justify-between items-center border-b font-semibold`};
+export const TableHeader = styled.thead`
+   ${tw`w-full font-semibold`};
    background-color: ${colors['lightBlueGrey']};
 `
 
-export const TableHeaderData = styled.div`
-   ${tw` m-8 `}
+export const TableRow = styled.tr`
+   ${tw`w-full`}
+`
+
+export const TableHeaderData = styled.th`
+   ${tw`h-20 `}
 `

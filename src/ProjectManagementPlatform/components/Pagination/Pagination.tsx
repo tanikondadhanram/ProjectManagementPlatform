@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { reaction } from 'mobx'
-import { inject, observer } from 'mobx-react'
+
+import { observer } from 'mobx-react'
+
 import ReactPaginate from 'react-paginate'
 
 import { PaginationContainer } from './styledComponents'
+import { reaction } from 'mobx'
 
-@inject('projectManagementPlatformStore')
 @observer
 class Pagination extends Component<any, any> {
    componentWillUnmount() {
@@ -14,33 +15,23 @@ class Pagination extends Component<any, any> {
 
    paginationReaction = reaction(
       () => {
-         const { projectManagementPlatformStore } = this.props
-         const { paginationOffset } = projectManagementPlatformStore
-         return paginationOffset
+         const { offset } = this.props
+         return offset
       },
-      number => {
-         const { projectManagementPlatformStore } = this.props
-         const { getProjects } = projectManagementPlatformStore
-         getProjects()
+      offset => {
+         const { getPages } = this.props
+         getPages()
       }
    )
 
    render() {
-      const {
-         maxPages,
-         navigateToClickedPage,
-         listOfProjects
-      } = this.props.projectManagementPlatformStore
-
-      if (maxPages === 0 || listOfProjects.length === 0) {
-         return null
-      }
+      const { maxPages, navigateToClickedPage } = this.props
 
       return (
          <PaginationContainer>
             <ReactPaginate
                pageCount={maxPages}
-               pageRangeDisplayed={1}
+               pageRangeDisplayed={maxPages}
                marginPagesDisplayed={2}
                previousLabel={previousLabel}
                nextLabel={nextLabel}

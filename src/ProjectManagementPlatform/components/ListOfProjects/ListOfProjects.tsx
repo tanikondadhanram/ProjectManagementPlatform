@@ -9,7 +9,8 @@ import {
    ListOfProjectsContainer,
    ListOfProjectsTable,
    TableHeader,
-   TableHeaderData
+   TableHeaderData,
+   TableRow
 } from './styledComponents'
 import LoadingWrapperWithFailure from '../../../Common/components/LoadingWrapperWithFailure'
 import NoDataView from '../../../Common/components/NoDataView'
@@ -34,34 +35,35 @@ class ListOfProjects extends Component<any, any> {
       return (
          <ListOfProjectsTable>
             <TableHeader>
-               <TableHeaderData>{stringConstants['title']}</TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['created_by']}
-               </TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['created_at']}
-               </TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['project_type']}
-               </TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['description']}
-               </TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['workflow_type']}
-               </TableHeaderData>
-               <TableHeaderData>
-                  {stringConstants['developers']}
-               </TableHeaderData>
+               <TableRow>
+                  <TableHeaderData>{stringConstants['title']}</TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['created_by']}
+                  </TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['created_at']}
+                  </TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['project_type']}
+                  </TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['description']}
+                  </TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['workflow_type']}
+                  </TableHeaderData>
+                  <TableHeaderData>
+                     {stringConstants['developers']}
+                  </TableHeaderData>
+               </TableRow>
             </TableHeader>
-            {Boolean(listOfProjects)
-               ? listOfProjects.map(projectDetails => (
-                    <ProjectDetails
-                       key={projectDetails.id}
-                       projectDetails={projectDetails}
-                    />
-                 ))
-               : null}
+
+            {listOfProjects.map(projectDetails => (
+               <ProjectDetails
+                  key={projectDetails.id}
+                  projectDetails={projectDetails}
+               />
+            ))}
          </ListOfProjectsTable>
       )
    }
