@@ -38,12 +38,21 @@ class SignInRoute extends Component<any, any> {
    }
 
    onSignInSucess = () => {
+      this.username = null
+      this.password = null
+      this.usernameEmptyMessage = null
+      this.passwordEmptyMessage = null
       const { history } = this.props
       history.replace(PROJECT_MANAGEMANT_PLATFORM_PATH)
    }
 
    onSignInFailure = () => {
-      const { apiError } = this.props
+      let { apiError } = this.props.authStore
+      apiError = JSON.parse(apiError)
+
+      if (apiError.status === null) {
+         toast.error(getUserDisplayableErrorMessage(apiError))
+      }
    }
 
    onChangeUsername = (event: { target: { value: string } }) => {

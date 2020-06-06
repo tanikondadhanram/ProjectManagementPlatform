@@ -9,7 +9,8 @@ import {
    InputField,
    ErrorMessage,
    TextArea,
-   CloseProjectModal
+   CloseProjectModal,
+   FormHeading
 } from './styledComponents'
 
 import stringConstants from '../../strings/stringConstants.json'
@@ -17,8 +18,9 @@ import { toJS, entries } from 'mobx'
 import { API_FETCHING } from '@ib/api-constants'
 import { Button } from '../../../Common/components/Button'
 import { isNumber } from 'util'
+import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
-@inject('workFlowStore', 'projectPostStore')
+@inject('workFlowStore', 'projectPostStore', 'projectManagementPlatformStore')
 @observer
 class CreateProjectForm extends Component<any, any> {
    onCreateProjectButtonClick = () => {
@@ -27,9 +29,16 @@ class CreateProjectForm extends Component<any, any> {
    }
 
    onPostSuccess = () => {
-      const { toggleModal } = this.props
+      const {
+         toggleModal,
+         projectManagementPlatformStore,
+         projectPostStore
+      } = this.props
+      const { getProjects } = projectManagementPlatformStore
+      const { apiResponse, apiError } = projectPostStore
+      getProjects()
       toggleModal()
-      toast.success('successfully created')
+      toast.success(apiResponse.success_message)
    }
 
    onPostFailure = () => {
@@ -56,6 +65,8 @@ class CreateProjectForm extends Component<any, any> {
          onChangeWorkflowType,
          projectType,
          onChangeProjectType,
+         onChangeAssignedTo,
+         assignedTo,
          apiStatus: projectPostApiStatus
       } = projectPostStore
 
@@ -82,13 +93,20 @@ class CreateProjectForm extends Component<any, any> {
          onChangeProjectType
       }
 
+      const developerProps = {
+         onChangeAssignedTo,
+         assignedTo
+      }
+
       return (
          <CreateProjectContainer>
             <CloseProjectModal onClick={toggleModal}>&times;</CloseProjectModal>
+            <FormHeading>{stringConstants['createProject']}</FormHeading>
             <GetProjectTitleSection {...titleSectionProps} />
             <GetProjectDescriptionSection {...descriptionSectionProps} />
             <GetProjectWorkFlowTypes {...workFlowSectionProps} />
             <GetProjectTypes {...projectTypeSectionProps} />
+            {/* <GetDevelopers {...developerProps} /> */}
             <Button
                className='w-1/2'
                apiStatus={projectPostApiStatus}
@@ -138,18 +156,14 @@ const GetProjectDescriptionSection = props => {
 }
 
 const getWorkFlowOptions = workFlowTypes => {
-   // console.log(workFlowTypes)
-
    const options: any = []
    if (workFlowTypes) {
-      for (const [totalWorkFlows, workFlowType] of Object.entries(
-         toJS(workFlowTypes)
-      )) {
-         // options.push({
-         //    value: workFlowType,
-         //    label: workFlowType
-         // })
-      }
+      workFlowTypes.workflows.map(type =>
+         options.push({
+            value: type.workflow_id,
+            label: type.name
+         })
+      )
    }
    return options
 }
@@ -208,9 +222,9 @@ const GetProjectTypes = props => {
          <Label>{stringConstants['createProjectProjectType']}</Label>
          <Select
             options={[
-               { value: 'financial', label: 'financial' },
-               { value: 'classic software', label: 'classic software' },
-               { value: 'crm', label: 'crm' }
+               { value: 'Financial', label: 'financial' },
+               { value: 'Classic Software', label: 'classic software' },
+               { value: 'CRM', label: 'crm' }
             ]}
             onChange={onChangeProjectType}
             className={
@@ -221,6 +235,26 @@ const GetProjectTypes = props => {
          <ErrorMessage isError={projectType === ''}>
             {stringConstants['feild_required']}
          </ErrorMessage>
+      </div>
+   )
+}
+
+const GetDevelopers = props => {
+   const { onChangeAssignedTo, assignedTo } = props
+
+   return (
+      <div>
+         <Label>developer</Label>
+         <InputField
+            type='text'
+            value={assignedTo ? assignedTo : ''}
+            onChange={onChangeAssignedTo}
+            isError={assignedTo === ''}
+            className='mb-10'
+         />
+         {assignedTo === '' ? (
+            <ErrorMessage>{stringConstants['fieldRequired']}</ErrorMessage>
+         ) : null}
       </div>
    )
 }

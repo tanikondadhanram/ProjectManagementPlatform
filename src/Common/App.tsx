@@ -1,6 +1,5 @@
 import React from 'react'
 import { Provider } from 'mobx-react'
-import { enableLogging } from 'mobx-logger'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
 import './App.css'
@@ -13,10 +12,11 @@ import {
    projectPostStore,
    tasksStore,
    createTaskStore,
-   statesStore
+   statesStore,
+   checkListStore
 } from '../ProjectManagementPlatform/stores'
 
-const routes = [projectManagementRoutes, authRoutes]
+const routes = [authRoutes, projectManagementRoutes]
 
 const stores = {
    authStore,
@@ -25,18 +25,9 @@ const stores = {
    projectPostStore,
    tasksStore,
    createTaskStore,
-   statesStore
+   statesStore,
+   checkListStore
 }
-
-const config = {
-   predicate: () => true,
-   action: true,
-   reaction: true,
-   transaction: true,
-   compute: true
-}
-
-// enableLogging(config)
 
 const App = () => {
    return (

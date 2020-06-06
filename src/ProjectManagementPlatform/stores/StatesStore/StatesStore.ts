@@ -5,7 +5,7 @@ import { API_INITIAL } from '@ib/api-constants'
 class StatesStore {
    @observable apiStatus!: number
    @observable apiError!: null | string
-   @observable states!: any
+   states!: any
    statesService
 
    constructor(service) {
@@ -40,8 +40,8 @@ class StatesStore {
    }
 
    @action.bound
-   getStates() {
-      const statesPromise = this.statesService.getStaesAPI()
+   getStates(requestObject) {
+      const statesPromise = this.statesService.getStatesAPI(requestObject)
       return bindPromiseWithOnSuccess(statesPromise)
          .to(this.setGetStatesAPIStatus, response => {
             this.setGetStatesAPIResponse(response)

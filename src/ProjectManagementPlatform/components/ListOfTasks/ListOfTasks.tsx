@@ -12,9 +12,14 @@ import {
 import { TaskDetails } from '../TaskDetails'
 import LoadingWrapperWithFailure from '../../../Common/components/LoadingWrapperWithFailure'
 import { withRouter } from 'react-router-dom'
+import NoDataView from '../../../Common/components/NoDataView'
 
 class ListOfTasks extends Component<any, any> {
    componentDidMount() {
+      this.doNetworkCalls()
+   }
+
+   doNetworkCalls = () => {
       const { getListOfTasks } = this.props
       const projectId = this.props.match.params.id
       getListOfTasks(projectId)
@@ -54,12 +59,14 @@ class ListOfTasks extends Component<any, any> {
    }
 
    render() {
-      const { apiStatus, apiError, getListOfTasks } = this.props
+      const { apiStatus, apiError, getListOfTasks, listOfTasks } = this.props
+      const renderSuccessUI =
+         listOfTasks.length === 0 ? NoDataView : this.renderSuccessUI
       const loadingWrapperProps = {
          apiStatus,
          apiError,
-         onRetryClick: getListOfTasks,
-         renderSuccessUI: this.renderSuccessUI
+         onRetryClick: this.doNetworkCalls,
+         renderSuccessUI
       }
       return (
          <ListOfTasksContainer>

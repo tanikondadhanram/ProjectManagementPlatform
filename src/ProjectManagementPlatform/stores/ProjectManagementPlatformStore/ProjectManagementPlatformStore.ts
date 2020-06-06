@@ -9,7 +9,7 @@ class ProjectManagementPlatformStore {
    @observable listOfProjects!: any
    @observable offset!: number
    @observable limit!: number
-   totalProjectsLength!: number
+   @observable totalProjectsLength!: number
    projectsService: any
 
    constructor(service: any) {
@@ -35,7 +35,7 @@ class ProjectManagementPlatformStore {
    @action.bound
    navigateToClickedPage(paginationObject) {
       const pageNumber = paginationObject.selected
-      this.offset = pageNumber * 10
+      this.offset = pageNumber * this.limit
    }
 
    @action.bound
@@ -51,7 +51,6 @@ class ProjectManagementPlatformStore {
    @action.bound
    setGetProjectsAPIResponse(response: any) {
       this.totalProjectsLength = response.total_projects
-      alert(response.total_projects)
       this.listOfProjects = response.projects.map(
          projectDetails => new ProjectModel(projectDetails)
       )
@@ -76,9 +75,10 @@ class ProjectManagementPlatformStore {
 
    @computed
    get maxPages() {
-      const number = this.totalProjectsLength / this.limit
-      // alert(this.totalProjectsLength)
-      return Math.round(number)
+      let number = this.totalProjectsLength / this.limit
+      // number = Math.trunc(number)
+      // number = number % 10 === 0 ? number : number + 2
+      return Math.ceil(number)
    }
 }
 

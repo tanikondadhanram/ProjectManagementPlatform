@@ -5,11 +5,13 @@ import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 class ProjectPostStore {
    @observable apiStatus!: number
    @observable apiError!: null | string
-   @observable apiResponse!: any
+   apiResponse!: any
    @observable projectTitle!: string | null
    @observable projectDescription!: string | null
    @observable projectWorkFlow!: string | null
+   @observable workFlowId!: number | null
    @observable projectType!: string | null
+   @observable assignedTo!: any
    projectPostService
 
    constructor(service) {
@@ -24,6 +26,8 @@ class ProjectPostStore {
       this.projectDescription = null
       this.projectWorkFlow = null
       this.projectType = null
+      this.workFlowId = null
+      this.assignedTo = null
    }
 
    @action.bound
@@ -38,8 +42,6 @@ class ProjectPostStore {
 
    @action.bound
    setGetWorkFlowAPIError(error: string) {
-      console.log(error)
-
       this.apiError = error
    }
 
@@ -51,10 +53,11 @@ class ProjectPostStore {
    @action.bound
    ProjectPostCall(onPostSuccess, onPostFailure) {
       const requsetObject = {
-         projectTitle: this.projectTitle,
-         projectDescription: this.projectDescription,
-         projectWorkFlow: this.projectWorkFlow,
-         projectType: this.projectType
+         name: this.projectTitle,
+         description: this.projectDescription,
+         project_type: this.projectType,
+         workflow_id: this.workFlowId,
+         developers: [1, 2]
       }
       const projectPostPromise = this.projectPostService.postProjectAPI(
          requsetObject
@@ -89,7 +92,14 @@ class ProjectPostStore {
 
    @action.bound
    onChangeWorkflowType(props) {
-      this.projectWorkFlow = props.value
+      this.projectWorkFlow = props.label
+      this.workFlowId = props.value
+   }
+
+   @action.bound
+   onChangeAssignedTo(event) {
+      this.assignedTo = event.target.value
+      alert(this.assignedTo)
    }
 
    @action.bound
@@ -108,6 +118,7 @@ class ProjectPostStore {
             : ''
          this.projectWorkFlow = this.projectWorkFlow ? this.projectWorkFlow : ''
          this.projectType = this.projectType ? this.projectType : ''
+         this.assignedTo = this.assignedTo ? this.assignedTo : ''
       }
    }
 }

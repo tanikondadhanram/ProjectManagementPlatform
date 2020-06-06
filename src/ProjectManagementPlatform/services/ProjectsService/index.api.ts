@@ -1,12 +1,13 @@
 import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { create } from 'apisauce'
 import { apiMethods } from '../../../Common/constants/APIConstants'
+import { BASE_URL } from '../../../Common/constants/UrlConstants'
 
 class ProjectsAPI {
    api: any
    constructor() {
       this.api = create({
-         baseURL: 'https://365847a626b0.ngrok.io/api/project_management_portal/'
+         baseURL: BASE_URL
       })
    }
 
@@ -18,15 +19,6 @@ class ProjectsAPI {
          `projects/v1/?limit=${limit}&offset=${offset}`,
          {},
          apiMethods.get
-      )
-   }
-
-   postProjectAPI = requestObect => {
-      return networkCallWithApisauce(
-         this.api,
-         'endPoint',
-         requestObect,
-         apiMethods.post
       )
    }
 }

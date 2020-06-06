@@ -11,6 +11,8 @@ import stringConstants from '../../strings/stringConstants.json'
 import { withRouter } from 'react-router-dom'
 import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../constants/routeConstants'
 
+let ids = 0
+
 class ProjectDetails extends Component<any, any> {
    onProjectClick = () => {
       const { history, projectDetails } = this.props
@@ -19,7 +21,9 @@ class ProjectDetails extends Component<any, any> {
    }
 
    render() {
+      ids++
       const { projectDetails } = this.props
+      const { id } = projectDetails
       const title = projectDetails.title
       const createdBy = projectDetails.createdBy
       const createdAt = projectDetails.createdAt
@@ -28,26 +32,43 @@ class ProjectDetails extends Component<any, any> {
       const workflowType = projectDetails.workflowType
       const developers = projectDetails.developers
 
+      const developerImg =
+         developers.length !== 0 ? developers[0].profile_pic : ''
+
+      let userDetails: any = window.localStorage.getItem('userDetails')
+
+      userDetails = JSON.parse(JSON.parse(userDetails))
+      const isAdmin = userDetails.is_admin
+
       return (
-         <TableBody id={projectDetails.id} onClick={this.onProjectClick}>
+         <TableBody id={ids.toString()} onClick={this.onProjectClick}>
             <TableRow>
                <TableData>{title}</TableData>
-               <TableData>{'createdBy'}</TableData>
+               {isAdmin ? null : (
+                  <TableData>
+                     <div className='flex justify-between'>
+                        <IbHubsLogo src={createdBy.profile_pic} />
+                        <div>
+                           <p>{createdBy.username}</p>
+                           <p>{createdBy.phone_no}</p>
+                        </div>
+                     </div>
+                  </TableData>
+               )}
                <TableData>{createdAt}</TableData>
                <TableData>{projectType}</TableData>
-               <TableData>{description}</TableData>
+               <TableData>{description.slice(0, 20)}...</TableData>
                <TableData>{workflowType}</TableData>
-               <TableData>
+               <TableData className='flex items-center'>
                   <UserDetails>
-                     <IbHubsLogo
-                        src={IB_HUBS_LOGO_PATH}
-                        alt={stringConstants['ibLogoAltText']}
-                     />
-                     <div>
-                        <p>qwertyytrewq</p>
-                        <p>1234567890</p>
-                     </div>
+                     {developerImg ? (
+                        <IbHubsLogo
+                           src={developerImg}
+                           alt={stringConstants['ibLogoAltText']}
+                        />
+                     ) : null}
                   </UserDetails>
+                  ...
                </TableData>
             </TableRow>
          </TableBody>

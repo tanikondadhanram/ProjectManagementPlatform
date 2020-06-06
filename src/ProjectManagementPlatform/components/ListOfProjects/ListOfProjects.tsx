@@ -32,14 +32,21 @@ class ListOfProjects extends Component<any, any> {
       const { projectManagementPlatformStore } = this.props
       const { listOfProjects } = projectManagementPlatformStore
 
+      let userDetails: any = window.localStorage.getItem('userDetails')
+
+      userDetails = JSON.parse(JSON.parse(userDetails))
+      const isAdmin = userDetails.is_admin
+
       return (
          <ListOfProjectsTable>
             <TableHeader>
                <TableRow>
                   <TableHeaderData>{stringConstants['title']}</TableHeaderData>
-                  <TableHeaderData>
-                     {stringConstants['created_by']}
-                  </TableHeaderData>
+                  {isAdmin ? null : (
+                     <TableHeaderData>
+                        {stringConstants['created_by']}
+                     </TableHeaderData>
+                  )}
                   <TableHeaderData>
                      {stringConstants['created_at']}
                   </TableHeaderData>
@@ -53,7 +60,7 @@ class ListOfProjects extends Component<any, any> {
                      {stringConstants['workflow_type']}
                   </TableHeaderData>
                   <TableHeaderData>
-                     {stringConstants['developers']}
+                     {stringConstants['assignedTo']}
                   </TableHeaderData>
                </TableRow>
             </TableHeader>

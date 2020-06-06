@@ -3,12 +3,13 @@ import { action } from 'mobx'
 
 import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { apiMethods } from '../../../Common/constants/APIConstants'
+import { BASE_URL } from '../../../Common/constants/UrlConstants'
 
 class ProjectPostService {
    api: any
    constructor() {
       this.api = create({
-         baseURL: 'https://365847a626b0.ngrok.io/api/project_management_portal/'
+         baseURL: BASE_URL
       })
    }
 

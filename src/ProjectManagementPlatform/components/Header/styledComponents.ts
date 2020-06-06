@@ -3,13 +3,13 @@ import tw from 'tailwind.macro'
 import { colors } from '../../../Common/themes/colors'
 
 export const HeaderContainer = styled.div`
-   ${tw`flex justify-between items-center w-full px-4`};
+   ${tw`flex justify-between  items-center w-full px-4`};
    border-bottom: 1px solid ${colors['lightBlueGrey']};
    background-color: ${colors['white']};
 `
 
 export const LogoAndHeadingContainer = styled.div`
-   ${tw`flex items-center`}
+   ${tw`flex  items-center`}
 `
 
 export const IbHubsLogo = styled.img`
@@ -24,7 +24,7 @@ export const ProjectHeading = styled.h1`
 `
 
 export const UsernameAndProfileIconContainer = styled.div`
-   ${tw`flex items-center`}
+   ${tw` flex  items-center cursor-pointer`}
 `
 
 export const UsernameText = styled.h1`
@@ -36,5 +36,6 @@ export const ProfileDropdown = styled.img`
 `
 
 export const SignOutButton = styled.button`
-   ${tw`text-2xl border focus:outline-none`}
+   ${tw`text-xl text-white h-12 w-32 rounded focus:outline-none`};
+   background-color: ${colors['bright-blue']};
 `

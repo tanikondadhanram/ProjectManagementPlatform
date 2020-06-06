@@ -50,3 +50,7 @@ export const ConfirmProjectButton = styled.button`
    ${tw`h-10 w-32 m-auto text-white  rounded focus:outline-none`};
    background-color: ${colors['bright-blue']};
 `
+
+export const FormHeading = styled.h1`
+   ${tw`text-2xl font-semibold self-center h-12`}
+`

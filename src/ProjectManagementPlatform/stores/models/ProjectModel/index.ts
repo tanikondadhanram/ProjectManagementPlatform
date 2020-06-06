@@ -18,6 +18,7 @@ class ProjectModel {
    createdAt: string
    projectType: string
    developers: any
+   isAdmin
 
    constructor(props: any) {
       this.id = props.project_id
@@ -28,6 +29,7 @@ class ProjectModel {
       this.createdAt = props.created_at
       this.projectType = props.project_type
       this.developers = props.developers
+      this.isAdmin = props.is_admin
    }
 }
 

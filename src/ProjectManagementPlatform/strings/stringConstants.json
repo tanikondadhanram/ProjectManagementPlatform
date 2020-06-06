@@ -25,5 +25,7 @@
         "assignedTo": "Assigned To",
         "state": "State",
         "fieldRequired": "* this field required",
-        "createTask": "create task"
+        "createTask": "create task",
+        "createProject": "Create Project",
+        "assignee": "Assignee"
 }

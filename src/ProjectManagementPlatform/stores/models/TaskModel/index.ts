@@ -1,28 +1,70 @@
 import { observable } from 'mobx'
 import { action } from 'mobx'
+import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
+import StatesService from '../../../services/GetStatesService/index.api'
 
 class TaskModel {
+   @observable apiStatus!: number
+   @observable apiError!: null | string
+   @observable state: string
    taskId: number
    issueType: string
    title: string
    assignedTo: []
    description: string
-   @observable state: string
    totalNumberOfTasks: number
+   states
+   statesService
 
    constructor(props) {
+      this.init()
       this.taskId = props['task_id']
       this.issueType = props['issue_type']
       this.title = props['title']
-      this.assignedTo = props['assigned_to']
+      this.assignedTo = props['assignee']
       this.description = props['description']
       this.state = props['state']
       this.totalNumberOfTasks = props['total_tasks']
    }
 
    @action.bound
-   updateTaskState(state) {
-      this.state = state
+   init() {
+      this.apiStatus = API_INITIAL
+      this.apiError = null
+      this.statesService = new StatesService()
+   }
+
+   @action.bound
+   clearStore() {
+      this.init()
+   }
+
+   @action.bound
+   setGetStatesAPIStatus(status: number) {
+      this.apiStatus = status
+   }
+
+   @action.bound
+   setGetStatesAPIError(error: string) {
+      this.apiError = error
+   }
+
+   @action.bound
+   setGetStatesAPIResponse(response: any) {
+      this.states = response.states
+   }
+
+   @action.bound
+   getStates(requestObject) {
+      const statesPromise = this.statesService.getStatesAPI(requestObject)
+      return bindPromiseWithOnSuccess(statesPromise)
+         .to(this.setGetStatesAPIStatus, response => {
+            this.setGetStatesAPIResponse(response)
+         })
+         .catch(error => {
+            this.setGetStatesAPIError(error)
+         })
    }
 }
 

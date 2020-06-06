@@ -17,5 +17,6 @@ export const projectManagementRoutes = [
       exact
       path={`${PROJECT_MANAGEMANT_PLATFORM_PATH}/:id`}
       component={ProjectTasks}
-   />
+   />,
+   <ProtectedRoute key={'/'} exact path={'/'} component={HomePage} />
 ]

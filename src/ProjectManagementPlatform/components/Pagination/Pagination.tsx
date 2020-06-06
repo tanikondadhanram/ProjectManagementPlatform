@@ -14,27 +14,21 @@ class Pagination extends Component<any, any> {
    }
 
    paginationReaction = reaction(
-      () => {
-         const { offset } = this.props
-         return offset
-      },
-      offset => {
-         const { getPages } = this.props
-         getPages()
-      }
+      () => this.props.offset,
+      offset => this.props.getPages()
    )
 
    render() {
       const { maxPages, navigateToClickedPage } = this.props
-
       return (
          <PaginationContainer>
             <ReactPaginate
                pageCount={maxPages}
-               pageRangeDisplayed={maxPages}
+               pageRangeDisplayed={2}
                marginPagesDisplayed={2}
                previousLabel={previousLabel}
                nextLabel={nextLabel}
+               onPageChange={navigateToClickedPage}
                containerClassName='flex'
                previousClassName='border text-2xl h-8 w-8 m-1 flex justify-center items-center'
                nextClassName='border text-2xl h-8 w-8 m-1 flex justify-center items-center'
@@ -44,7 +38,6 @@ class Pagination extends Component<any, any> {
                nextLinkClassName='focus:outline-none'
                pageLinkClassName='focus:outline-none'
                activeLinkClassName='bg-blue-500 h-full w-full text-white flex justify-center items-center'
-               onPageChange={navigateToClickedPage}
             />
          </PaginationContainer>
       )

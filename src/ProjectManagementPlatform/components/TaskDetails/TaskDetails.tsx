@@ -14,29 +14,32 @@ import {
    UserDetails
 } from './styledComponents'
 
+let ids = 0
+
 class TaskDetails extends Component<any, any> {
    render() {
       const { taskDetails } = this.props
-      const { title, taskId } = taskDetails
-
+      const { title, taskId, description, createdBy, issueType } = taskDetails
+      const { assignedTo } = taskDetails
+      ++ids
       return (
-         <TableBody id={taskId}>
+         <TableBody id={ids.toString()}>
             <TableRow>
                <TableData>{title}</TableData>
-               <TableData>{'createdBy'}</TableData>
-               <TableData>{'createdAt'}</TableData>
+               <TableData>{description}</TableData>
+               <TableData>{issueType}</TableData>
                <TableData>
-                  <StateComponent />
+                  <StateComponent taskDetails={taskDetails} />
                </TableData>
                <TableData>
                   <UserDetails>
                      <IbHubsLogo
-                        src={IB_HUBS_LOGO_PATH}
+                        src={assignedTo.profile_pic}
                         alt={stringConstants['ibLogoAltText']}
                      />
                      <div>
-                        <p>qwertyytrewq</p>
-                        <p>1234567890</p>
+                        <p>{assignedTo.username}</p>
+                        <p>{assignedTo.phone_no}</p>
                      </div>
                   </UserDetails>
                </TableData>

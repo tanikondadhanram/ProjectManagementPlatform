@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 
 import { PROJECT_SIGN_IN_PATH } from '../constants/routeConstants'
 import { SignInRoute } from './SignInRoute'
-// import { ProtectedRoute } from '../../utils/ProtectedRoute'
+// import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
 
 const authRoutes = [
    <Route
@@ -11,8 +11,7 @@ const authRoutes = [
       exact
       path={PROJECT_SIGN_IN_PATH}
       component={SignInRoute}
-   />,
-   <Route key={'/'} exact path={'/'} component={SignInRoute} />
+   />
 ]
 
 export { authRoutes }

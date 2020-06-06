@@ -15,6 +15,7 @@ import { Pagination } from '../Pagination'
 class ProjectTasks extends Component<any, any> {
    render() {
       const createTaskProps = {
+         shouldHaveGoBackButton: true,
          modalContent: CreateTaskForm,
          title: stringConstants['listOfTasks'],
          buttonText: stringConstants['addTask'],
@@ -34,15 +35,7 @@ class ProjectTasks extends Component<any, any> {
 
       const { tasksStore } = this.props
 
-      const {
-         listOfTasks,
-         maxPages,
-         offset,
-         navigateToClickedPage,
-         apiStatus,
-         apiError,
-         getListOfTasks
-      } = tasksStore
+      const { listOfTasks, apiStatus, apiError, getListOfTasks } = tasksStore
 
       const listOfTasksProps = {
          listOfTasks,
@@ -51,21 +44,14 @@ class ProjectTasks extends Component<any, any> {
          apiError
       }
 
-      const paginationProps = {
-         getPage: getListOfTasks,
-         maxPages,
-         offset,
-         navigateToClickedPage
-      }
-
-      const isDataFetched = listOfTasks ? true : false
-
       return (
          <>
             <Header />
+
             <TitleAndModalSection {...createTaskProps} />
+
             <ListOfTasks {...listOfTasksProps} />
-            {isDataFetched ? <Pagination {...paginationProps} /> : null}
+
             <ToastContainer
                position='bottom-center'
                autoClose={3000}

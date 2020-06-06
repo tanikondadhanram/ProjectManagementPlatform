@@ -17,8 +17,9 @@ import {
    FormHeading
 } from './styledComponents'
 import { toast } from 'react-toastify'
+import { withRouter } from 'react-router-dom'
 
-@inject('createTaskStore')
+@inject('createTaskStore', 'tasksStore')
 @observer
 class CreateTaskForm extends Component<any, any> {
    @observable issueType: string | null = null
@@ -41,8 +42,10 @@ class CreateTaskForm extends Component<any, any> {
    }
 
    onTaskCreatedSuccessfully = () => {
-      const { toggleModal } = this.props
+      const { toggleModal, tasksStore } = this.props
       toggleModal()
+      const { getListOfTasks } = tasksStore
+      getListOfTasks(this.props.match.params.id)
       toast.success('task Created Successfully')
    }
    onTaskCreatedFailure = () => {
@@ -58,7 +61,9 @@ class CreateTaskForm extends Component<any, any> {
          const requsetObject = {
             issueType: this.issueType,
             title: this.title,
-            description: this.description
+            description: this.description,
+            stateId: 1,
+            projectId: this.props.match.params.id
          }
          postCreatedTask(
             requsetObject,
@@ -80,8 +85,8 @@ class CreateTaskForm extends Component<any, any> {
       const options = [
          { value: 'Task', lable: 'Task' },
          { value: 'Bug', label: 'Bug' },
-         { value: 'Developer story', label: 'Developer story' },
-         { value: 'User story', label: 'User story' },
+         { value: 'Developer Story', label: 'Developer story' },
+         { value: 'User Story', label: 'User story' },
          { value: 'Enhancement', label: 'Enhancement' }
       ]
 
@@ -146,4 +151,4 @@ class CreateTaskForm extends Component<any, any> {
    }
 }
 
-export default CreateTaskForm
+export default withRouter(CreateTaskForm)

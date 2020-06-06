@@ -3,19 +3,24 @@ import { action } from 'mobx'
 
 import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { apiMethods } from '../../../Common/constants/APIConstants'
+import { BASE_URL } from '../../../Common/constants/UrlConstants'
 
 class StatesService {
    api: any
    constructor() {
-      this.api = create({ baseURL: '' })
+      this.api = create({
+         baseURL: BASE_URL
+      })
    }
 
-   getStaesAPI = requestObect => {
+   getStatesAPI = requestObect => {
+      const { projectId, taskId } = requestObect
+
       return networkCallWithApisauce(
          this.api,
-         'endPoint',
+         `projects/${projectId}/tasks/${taskId}/states/v1`,
          requestObect,
-         apiMethods.post
+         apiMethods.get
       )
    }
 }

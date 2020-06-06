@@ -27,6 +27,7 @@ class HomePage extends Component<any, any> {
       } = projectManagementPlatformStore
 
       const createProjectProps = {
+         shouldHaveGoBackButton: false,
          modalContent: CreateProjectForm,
          title: stringConstants['ProjectTitle'],
          buttonText: stringConstants['addNewProject'],
