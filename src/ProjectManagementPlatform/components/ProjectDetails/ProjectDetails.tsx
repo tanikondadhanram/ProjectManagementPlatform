@@ -1,4 +1,10 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+
+import stringConstants from '../../strings/stringConstants.json'
+
+import { goToSpecificProject } from '../../utils/NavigationUtils'
+
 import {
    TableBody,
    TableRow,
@@ -6,10 +12,6 @@ import {
    IbHubsLogo,
    UserDetails
 } from './styledComponents'
-import { IB_HUBS_LOGO_PATH } from '../../constants/ImagesPaths'
-import stringConstants from '../../strings/stringConstants.json'
-import { withRouter } from 'react-router-dom'
-import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../constants/routeConstants'
 
 let ids = 0
 
@@ -17,7 +19,7 @@ class ProjectDetails extends Component<any, any> {
    onProjectClick = () => {
       const { history, projectDetails } = this.props
       const { id } = projectDetails
-      history.push(`${PROJECT_MANAGEMANT_PLATFORM_PATH}/${id}`)
+      goToSpecificProject(history, id)
    }
 
    render() {

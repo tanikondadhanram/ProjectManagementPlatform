@@ -39,4 +39,6 @@ const App = () => {
    )
 }
 
+const obj: any = { name: 'rk' }
+
 export default App

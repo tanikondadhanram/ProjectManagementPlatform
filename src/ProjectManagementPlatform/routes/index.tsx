@@ -1,22 +1,30 @@
 import React from 'react'
-
-import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../constants/routeConstants'
+import { Redirect } from 'react-router-dom'
+import {
+   PROJECTS_PATH,
+   SPECIFIC_PROJECT_PATH
+} from '../constants/routeConstants'
 import { HomePage } from '../components/HomePage'
 import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
 import { ProjectTasks } from '../components/ProjectTasks'
 
 export const projectManagementRoutes = [
    <ProtectedRoute
-      key={PROJECT_MANAGEMANT_PLATFORM_PATH}
+      key={PROJECTS_PATH}
       exact
-      path={PROJECT_MANAGEMANT_PLATFORM_PATH}
+      path={PROJECTS_PATH}
       component={HomePage}
    />,
    <ProtectedRoute
-      key={PROJECT_MANAGEMANT_PLATFORM_PATH}
+      key={SPECIFIC_PROJECT_PATH}
       exact
-      path={`${PROJECT_MANAGEMANT_PLATFORM_PATH}/:id`}
+      path={SPECIFIC_PROJECT_PATH}
       component={ProjectTasks}
    />,
-   <ProtectedRoute key={'/'} exact path={'/'} component={HomePage} />
+   <ProtectedRoute
+      key={'/'}
+      exact
+      path={'/'}
+      component={() => <Redirect to={{ pathname: PROJECTS_PATH }} />}
+   />
 ]

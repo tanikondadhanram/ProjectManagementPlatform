@@ -6,7 +6,7 @@ import ReactModel from 'react-modal'
 import { getUserDetails } from '../../utils/getUserDetails'
 
 import { Div, ProjectTitle, CreateProjectButton } from './styledComponents'
-import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../constants/routeConstants'
+import { PROJECTS_PATH } from '../../constants/routeConstants'
 
 @observer
 class TitleAndModalSection extends Component<any, any> {
@@ -14,7 +14,7 @@ class TitleAndModalSection extends Component<any, any> {
 
    onGoBack = () => {
       const { history } = this.props
-      history.replace(PROJECT_MANAGEMANT_PLATFORM_PATH)
+      history.replace(PROJECTS_PATH)
    }
 
    @action.bound

@@ -48,7 +48,7 @@ class StateTransitionForm extends Component<any, any> {
       ))
    }
 
-   updateState = event => {
+   updateState = async event => {
       event.preventDefault()
       const {
          toggleModal,
@@ -69,7 +69,7 @@ class StateTransitionForm extends Component<any, any> {
             }
          })
       }
-      postCheckList(requestObject, this.onPostSuccess, this.onPostFailure)
+      await postCheckList(requestObject, this.onPostSuccess, this.onPostFailure)
       window.location.reload()
    }
 

@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import { observable } from 'mobx'
 import { inject, observer } from 'mobx-react'
-import { withRouter } from 'react-router-dom'
+import { toast } from 'react-toastify'
+
+import { SignInForm } from '../../components/SignInForm'
+import { PROJECTS_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
+import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
-import { SignInForm } from '../../components/SignInForm'
-import { PROJECT_MANAGEMANT_PLATFORM_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
-import { toast } from 'react-toastify'
-import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 @inject('authStore')
 @observer
@@ -43,7 +44,7 @@ class SignInRoute extends Component<any, any> {
       this.usernameEmptyMessage = null
       this.passwordEmptyMessage = null
       const { history } = this.props
-      history.replace(PROJECT_MANAGEMANT_PLATFORM_PATH)
+      history.replace(PROJECTS_PATH)
    }
 
    onSignInFailure = () => {
