@@ -4,16 +4,17 @@ import {
    PROJECTS_PATH,
    SPECIFIC_PROJECT_PATH
 } from '../constants/routeConstants'
-import { HomePage } from '../components/HomePage'
+
 import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
 import { ProjectTasks } from '../components/ProjectTasks'
+import { PmpProjectsRoute } from './PmpProjectsRoute'
 
 export const projectManagementRoutes = [
    <ProtectedRoute
       key={PROJECTS_PATH}
       exact
       path={PROJECTS_PATH}
-      component={HomePage}
+      component={PmpProjectsRoute}
    />,
    <ProtectedRoute
       key={SPECIFIC_PROJECT_PATH}

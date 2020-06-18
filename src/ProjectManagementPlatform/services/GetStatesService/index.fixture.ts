@@ -1,6 +1,6 @@
 import states from '../../fixtures/ListOfStates.json'
 class StatesFixtureService {
-   getStaesAPI = () =>
+   getStatesAPI = () =>
       new Promise(resolve => setTimeout(() => resolve(states), 2000))
 }
 

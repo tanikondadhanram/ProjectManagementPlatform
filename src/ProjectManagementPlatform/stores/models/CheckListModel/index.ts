@@ -7,8 +7,6 @@ class CheckListModel {
    name
 
    constructor(props) {
-      console.log(props)
-
       this.name = props.name
       this.isChecked = false
       this.isRequired = props.is_required

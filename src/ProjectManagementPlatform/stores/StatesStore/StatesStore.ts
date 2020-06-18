@@ -30,7 +30,7 @@ class StatesStore {
    }
 
    @action.bound
-   setGetStatesAPIError(error: string) {
+   setGetStatesAPIError(error: any) {
       this.apiError = error
    }
 

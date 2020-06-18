@@ -6,10 +6,11 @@ import {
    API_INITIAL
 } from '@ib/api-constants'
 
-import { AuthApi } from '../../services/AuthService/AuthApi'
 import { AuthStore } from '.'
 
-import usersData from '../../fixtures/usersData.json'
+import usersData from '../../fixtures/userData.json'
+
+import { AuthFixtureService } from '../../services/AuthService/index.fixture'
 
 let mockSetCookie = jest.fn()
 let mockRemoveCookie = jest.fn()
@@ -22,13 +23,12 @@ describe('AuthStore Tests', () => {
    let authStore
 
    beforeEach(() => {
-      authAPI = new AuthApi()
+      authAPI = new AuthFixtureService()
       authStore = new AuthStore(authAPI)
    })
 
    it('should test initialising auth store', () => {
       expect(authStore.apiStatus).toBe(API_INITIAL)
-
       expect(authStore.apiError).toBe(null)
    })
 
@@ -65,21 +65,27 @@ describe('AuthStore Tests', () => {
       expect(onSuccess).toBeCalled()
    })
 
-   // it('should test userSignInAPI failure state', async () => {
-   //    const onSuccess = jest.fn()
-   //    const onFailure = jest.fn()
-   //    const requestObject = {
-   //       username: 'test-user',
-   //       password: 'test-password'
-   //    }
+   it('should test userSignInAPI failure state', async () => {
+      const onSuccess = jest.fn()
+      const onFailure = jest.fn()
+      const requestObject = {
+         username: 'test-user',
+         password: 'test-password'
+      }
 
-   //    jest
-   //       .spyOn(authAPI, 'signInAPI')
-   //       .mockImplementation(() => Promise.reject())
+      jest
+         .spyOn(authAPI, 'signInAPI')
+         .mockImplementation(() => Promise.reject('error'))
 
-   //    authStore = new AuthStore(authAPI)
-   //    await authStore.userSignIn(requestObject, onSuccess, onFailure)
-   //    expect(authStore.getUserSignInAPIStatus).toBe(API_FAILED)
-   //    expect(onFailure).toBeCalled()
-   // })
+      authStore = new AuthStore(authAPI)
+      await authStore.userSignIn(requestObject, onSuccess, onFailure)
+      expect(authStore.apiStatus).toBe(API_FAILED)
+      expect(onFailure).toBeCalled()
+   })
+
+   it('Should Test Store Is Cleared', () => {
+      authStore.clearStore()
+      expect(authStore.apiStatus).toBe(API_INITIAL)
+      expect(authStore.apiError).toBe(null)
+   })
 })

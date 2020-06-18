@@ -31,7 +31,10 @@ describe('ProjectManagementPlatformStore tests', () => {
    })
 
    it('Should Test Store apiStatus Is Success', async () => {
-      const mockSuccessPromise = Promise.resolve(listOfProjects)
+      const mockSuccessPromise = Promise.resolve({
+         total_projects: listOfProjects.length,
+         projects: listOfProjects
+      })
       const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
 
       projectsApi.getProjectsAPI = mockSignInAPI
@@ -48,5 +51,16 @@ describe('ProjectManagementPlatformStore tests', () => {
 
       await projectsStore.getProjects()
       expect(projectsStore.apiStatus).toBe(API_FAILED)
+   })
+
+   it('Should Test NavigateToClickedPage Fn', () => {
+      projectsStore.navigateToClickedPage({ selected: 1 })
+      expect(projectsStore.offset).toBe(10)
+   })
+
+   it('Should Test Store Is Cleared', () => {
+      projectsStore.clearStore()
+      expect(projectsStore.apiStatus).toBe(API_INITIAL)
+      expect(projectsStore.apiError).toBe(null)
    })
 })

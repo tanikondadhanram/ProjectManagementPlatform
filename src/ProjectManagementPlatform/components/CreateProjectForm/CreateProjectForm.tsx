@@ -14,7 +14,7 @@ import {
 } from './styledComponents'
 
 import stringConstants from '../../strings/stringConstants.json'
-import { toJS, entries } from 'mobx'
+import { toJS, entries, observable } from 'mobx'
 import { API_FETCHING } from '@ib/api-constants'
 import { Button } from '../../../Common/components/Button'
 import { isNumber } from 'util'
@@ -23,10 +23,73 @@ import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 @inject('workFlowStore', 'projectPostStore', 'projectManagementPlatformStore')
 @observer
 class CreateProjectForm extends Component<any, any> {
+   // @observable projectTitle!: string | null
+   // @observable projectDescription!: string | null
+   // @observable projectWorkFlow!: string | null
+   // @observable workFlowId!: number | null
+   // @observable projectType!: string | null
+   // @observable assignedTo!: any
+
+   // constructor(props) {
+   //    super(props)
+   //    this.projectTitle = null
+   //    this.projectDescription = null
+   //    this.projectWorkFlow = null
+   //    this.projectType = null
+   //    this.workFlowId = null
+   //    this.assignedTo = null
+   // }
    onCreateProjectButtonClick = () => {
       const { onCreateButtonClick } = this.props.projectPostStore
       onCreateButtonClick(this.onPostSuccess, this.onPostFailure)
    }
+
+   // @action.bound
+   // onChangeProjectTitle(event) {
+   //    this.projectTitle = event.target.value
+   // }
+
+   // @action.bound
+   // onChangeProjectDescription(event) {
+   //    this.projectDescription = event.target.value
+   // }
+
+   // @action.bound
+   // onChangeProjectType(props) {
+   //    this.projectType = props.value
+   // }
+
+   // @action.bound
+   // onChangeWorkflowType(props) {
+   //    this.projectWorkFlow = props.label
+   //    this.workFlowId = props.value
+   // }
+
+   // @action.bound
+   // onChangeAssignedTo(event) {
+   //    this.assignedTo = event.target.value
+   //    alert(this.assignedTo)
+   // }
+
+   // @action.bound
+   // onCreateButtonClick(onPostSuccess, onPostFailure) {
+   //    if (
+   //       this.projectTitle &&
+   //       this.projectDescription &&
+   //       this.projectWorkFlow &&
+   //       this.projectType
+   //    ) {
+   //       this.ProjectPostCall(onPostSuccess, onPostFailure)
+   //    } else {
+   //       this.projectTitle = this.projectTitle ? this.projectTitle : ''
+   //       this.projectDescription = this.projectDescription
+   //          ? this.projectDescription
+   //          : ''
+   //       this.projectWorkFlow = this.projectWorkFlow ? this.projectWorkFlow : ''
+   //       this.projectType = this.projectType ? this.projectType : ''
+   //       this.assignedTo = this.assignedTo ? this.assignedTo : ''
+   //    }
+   // }
 
    onPostSuccess = () => {
       const {

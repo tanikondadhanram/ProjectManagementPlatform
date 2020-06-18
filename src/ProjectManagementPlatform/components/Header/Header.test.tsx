@@ -9,6 +9,12 @@ import { Header } from '.'
 
 describe('Header Tests', () => {
    it('Should Test All Elements Should Appear', () => {
+      window.localStorage.setItem(
+         'userDetails',
+         JSON.stringify(
+            JSON.stringify({ username: 'rk', profile_pic: 'qwerty' })
+         )
+      )
       const { getByText, getByAltText } = render(
          <Router history={createMemoryHistory()}>
             <Header />
@@ -16,9 +22,5 @@ describe('Header Tests', () => {
       )
       getByAltText(stringConstants['ibLogoAltText'])
       getByText(stringConstants['ProjectTitle'])
-
-      const rightClick = { button: 2 }
-
-      fireEvent.click(getByText(stringConstants['sign out']), rightClick)
    })
 })

@@ -1,5 +1,5 @@
 {
-        "list_of_tasks": [
+        "tasks": [
                 {
                         "task_id": 0,
                         "issue_type": "string",

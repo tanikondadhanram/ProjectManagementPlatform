@@ -1,7 +1,7 @@
 import AuthStore from './AuthStore/AuthStore'
-import { AuthApi } from '../services/AuthService/AuthApi'
+import { AuthService } from '../services/AuthService/index.api'
 
-const authAPi = new AuthApi()
+const authAPi = new AuthService()
 const authStore = new AuthStore(authAPi)
 
 export { authStore }

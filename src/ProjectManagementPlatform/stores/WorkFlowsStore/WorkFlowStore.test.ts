@@ -46,4 +46,10 @@ describe('WorkFlowStore Tests', () => {
 
       expect(workFlowStore.apiStatus).toBe(API_FAILED)
    })
+
+   it('Should Test Store Is Cleared', () => {
+      workFlowStore.clearStore()
+      expect(workFlowStore.apiStatus).toBe(API_INITIAL)
+      expect(workFlowStore.apiError).toBe(null)
+   })
 })

@@ -2,7 +2,6 @@ import { observable } from 'mobx'
 import { action } from 'mobx'
 import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
-import StatesService from '../../../services/GetStatesService/index.api'
 
 class TaskModel {
    @observable apiStatus!: number
@@ -17,7 +16,7 @@ class TaskModel {
    states
    statesService
 
-   constructor(props) {
+   constructor(props, service) {
       this.init()
       this.taskId = props['task_id']
       this.issueType = props['issue_type']
@@ -26,13 +25,13 @@ class TaskModel {
       this.description = props['description']
       this.state = props['state']
       this.totalNumberOfTasks = props['total_tasks']
+      this.statesService = service
    }
 
    @action.bound
    init() {
       this.apiStatus = API_INITIAL
       this.apiError = null
-      this.statesService = new StatesService()
    }
 
    @action.bound

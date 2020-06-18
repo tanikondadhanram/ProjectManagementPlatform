@@ -9,6 +9,7 @@ import { Provider } from 'mobx-react'
 
 describe('ListOfProjects Test Cases', () => {
    it('Should Test Projects Are Appearing', () => {
+      // const cdmMock = jest.spyOn(ListOfProjects, 'render')
       const { getByText } = render(
          <Provider
             projectManagementPlatformStore={projectManagementPlatformStore}
@@ -17,6 +18,6 @@ describe('ListOfProjects Test Cases', () => {
          </Provider>
       )
 
-      expect(2).toBe(2)
+      // console.log(ListOfProjects)
    })
 })

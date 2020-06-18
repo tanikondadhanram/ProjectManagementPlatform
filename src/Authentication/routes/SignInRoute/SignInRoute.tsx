@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { observable } from 'mobx'
+import { observable, action } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { toast } from 'react-toastify'
 
@@ -15,15 +15,23 @@ import stringConstants from '../../constants/stringConstants/stringConstants.jso
 class SignInRoute extends Component<any, any> {
    @observable username: string | null
    @observable password: string | null
-   @observable usernameEmptyMessage: string | null
-   @observable passwordEmptyMessage: string | null
+   @observable usernameErrorMessage: string | null
+   @observable passwordErrorMessage: string | null
+   usernameRef!: any
+   passwordRef!: any
 
    constructor(props) {
       super(props)
       this.username = null
       this.password = null
-      this.usernameEmptyMessage = null
-      this.passwordEmptyMessage = null
+      this.usernameErrorMessage = null
+      this.passwordErrorMessage = null
+      this.usernameRef = React.createRef()
+      this.passwordRef = React.createRef()
+   }
+
+   componentDidMount() {
+      this.usernameRef.current.focus()
    }
 
    setUser() {
@@ -38,45 +46,61 @@ class SignInRoute extends Component<any, any> {
       )
    }
 
-   onSignInSucess = () => {
+   @action.bound
+   onSignInSucess() {
       this.username = null
       this.password = null
-      this.usernameEmptyMessage = null
-      this.passwordEmptyMessage = null
+      this.usernameErrorMessage = null
+      this.passwordErrorMessage = null
       const { history } = this.props
       history.replace(PROJECTS_PATH)
    }
 
-   onSignInFailure = () => {
+   @action.bound
+   onSignInFailure() {
       let { apiError } = this.props.authStore
-      apiError = JSON.parse(apiError)
 
-      if (apiError.status === null) {
+      const errorObject = JSON.parse(apiError)
+      if (errorObject.status === null) {
          toast.error(getUserDisplayableErrorMessage(apiError))
+      }
+      if (errorObject.status === 401) {
+         this.passwordErrorMessage = errorObject.data.response
+      }
+      if (errorObject.status === 404) {
+         this.usernameErrorMessage = errorObject.data.response
       }
    }
 
-   onChangeUsername = (event: { target: { value: string } }) => {
+   @action.bound
+   onChangeUsername(event: { target: { value: string } }) {
       this.username = event.target.value
-      this.usernameEmptyMessage = null
+      this.usernameErrorMessage = null
    }
 
-   onChangePassword = (event: { target: { value: string } }) => {
+   @action.bound
+   onChangePassword(event: { target: { value: string } }) {
       this.password = event.target.value
-      this.passwordEmptyMessage = null
+      this.passwordErrorMessage = null
    }
 
-   onUserSubmit = (event: { preventDefault: () => void }) => {
+   @action.bound
+   onUserSubmit(event: { preventDefault: () => void }) {
       event.preventDefault()
-      if (this.username && this.password) {
+
+      const isUsernameFeildEmpty = this.usernameRef.current.value === ''
+      const isPasswordFeildEmpty = this.passwordRef.current.value === ''
+
+      if (!isUsernameFeildEmpty && !isPasswordFeildEmpty) {
          this.setUser()
       } else {
-         if (!Boolean(this.username)) {
-            this.usernameEmptyMessage = stringConstants['enterUsername']
-         }
-         if (!Boolean(this.password)) {
-            this.passwordEmptyMessage = stringConstants['enterPassword']
-         }
+         this.usernameErrorMessage = isUsernameFeildEmpty
+            ? stringConstants['enterUsername']
+            : null
+
+         this.passwordErrorMessage = isPasswordFeildEmpty
+            ? stringConstants['enterPassword']
+            : null
       }
    }
 
@@ -84,19 +108,21 @@ class SignInRoute extends Component<any, any> {
       const signInFormProps = {
          username: this.username,
          password: this.password,
+         usernameRef: this.usernameRef,
+         passwordRef: this.passwordRef,
          onChangeUsername: this.onChangeUsername,
          onChangePassword: this.onChangePassword,
          onUserSubmit: this.onUserSubmit,
          apiStatus: this.props.authStore.apiStatus,
          apiError: this.props.authStore.apiError,
-         usernameEmptyMessage: this.usernameEmptyMessage,
-         passwordEmptyMessage: this.passwordEmptyMessage
+         usernameErrorMessage: this.usernameErrorMessage,
+         passwordErrorMessage: this.passwordErrorMessage,
+         isValidUsername: !Boolean(this.usernameErrorMessage),
+         isValidPassword: !Boolean(this.passwordErrorMessage)
       }
 
       return <SignInForm {...signInFormProps} />
    }
 }
 
-withRouter(SignInRoute)
-
-export { SignInRoute }
+export default withRouter(SignInRoute)

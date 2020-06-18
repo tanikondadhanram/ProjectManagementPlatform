@@ -76,17 +76,22 @@ class CheckListStore {
       this.postApiResponse = response
    }
 
-   postCheckList = (requestObject, onSuccess, onFailure) => {
+   postCheckList = (
+      requestObject,
+      onSuccess = () => null,
+      onFailure = () => null
+   ) => {
       const checkListPromise = this.checkListService.postCheckListAPI(
          requestObject
       )
+
       return bindPromiseWithOnSuccess(checkListPromise)
-         .to(this.setGetCheckListAPIStatus, response => {
-            this.setGetCheckListAPIResponse(response)
+         .to(this.setGetCheckListPostAPIStatus, response => {
+            this.setGetCheckListPostAPIResponse(response)
             onSuccess()
          })
          .catch(error => {
-            this.setGetCheckListAPIError(error)
+            this.setGetCheckListPostAPIError(error)
             onFailure()
          })
    }

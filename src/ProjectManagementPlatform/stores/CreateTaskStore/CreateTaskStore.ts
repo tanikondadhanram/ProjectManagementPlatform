@@ -42,8 +42,8 @@ class CreateTaskStore {
    @action.bound
    postCreatedTask(
       requsetObject,
-      onTaskCreatedSuccessfully,
-      onTaskCreatedFailure
+      onTaskCreatedSuccessfully = () => null,
+      onTaskCreatedFailure = () => null
    ) {
       const workFlowPromise = this.CreateTaskService.CreateTaskAPI(
          requsetObject

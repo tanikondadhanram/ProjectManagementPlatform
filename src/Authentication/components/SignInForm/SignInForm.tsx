@@ -14,62 +14,27 @@ import {
 } from './styledComponents'
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
-import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 class SignInForm extends Component<any, any> {
    render() {
       const {
          username,
          password,
+         usernameRef,
+         passwordRef,
          onChangeUsername,
          onChangePassword,
          onUserSubmit,
          apiStatus,
-         apiError,
-         usernameEmptyMessage,
-         passwordEmptyMessage
+         usernameErrorMessage,
+         passwordErrorMessage,
+         isValidUsername,
+         isValidPassword
       } = this.props
-
-      let isValidUser = true
-      let isValidPass = true
-
-      if (Boolean(apiError)) {
-         const error = JSON.parse(apiError)
-         if (error.status === 404) {
-            isValidUser = false
-         }
-         if (error.status === 401) {
-            isValidPass = false
-         }
-      }
-
-      const isValidUsername = usernameEmptyMessage
-         ? false
-         : isValidUser
-         ? true
-         : false
-
-      const usernameErrorMessage = usernameEmptyMessage
-         ? usernameEmptyMessage
-         : apiError
-         ? getUserDisplayableErrorMessage(apiError)
-         : ''
-
-      const isValidPassword = passwordEmptyMessage
-         ? false
-         : isValidPass
-         ? true
-         : false
-
-      const passwordErrorMessage = passwordEmptyMessage
-         ? passwordEmptyMessage
-         : apiError
-         ? getUserDisplayableErrorMessage(apiError)
-         : ''
 
       return (
          <SignInFormContainer>
-            <FormContainer>
+            <FormContainer onSubmit={onUserSubmit}>
                <IbHubsLogo
                   src='https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/9837b0f6-9165-49b3-995e-c6ac4ed19c55.svg'
                   alt='IbHubs-Logo'
@@ -80,6 +45,7 @@ class SignInForm extends Component<any, any> {
                <FormTag>
                   <InputField
                      type='text'
+                     reference={usernameRef}
                      onChange={onChangeUsername}
                      value={username}
                      placeholder='username'
@@ -89,6 +55,7 @@ class SignInForm extends Component<any, any> {
                   />
                   <InputField
                      type='password'
+                     reference={passwordRef}
                      onChange={onChangePassword}
                      value={password}
                      placeholder='password'
@@ -100,7 +67,6 @@ class SignInForm extends Component<any, any> {
                      className='mt-2'
                      type='submit'
                      value='Sign In'
-                     onClick={onUserSubmit}
                      apiStatus={apiStatus}
                   />
                </FormTag>

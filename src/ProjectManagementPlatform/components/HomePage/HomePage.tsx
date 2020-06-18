@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { observer, inject } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { ToastContainer } from 'react-toastify'
 
 import stringConstants from '../../strings/stringConstants.json'
@@ -12,7 +12,6 @@ import { CreateProjectForm } from '../CreateProjectForm'
 
 import { ProjectManagementAppContainer } from './styledComponents'
 
-@inject('projectManagementPlatformStore')
 @observer
 class HomePage extends Component<any, any> {
    render() {

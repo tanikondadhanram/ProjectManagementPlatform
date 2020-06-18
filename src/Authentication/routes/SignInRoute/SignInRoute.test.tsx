@@ -5,12 +5,16 @@ import { Provider } from 'mobx-react'
 import { createMemoryHistory } from 'history'
 
 import { PROJECT_SIGN_IN_PATH } from '../../constants/routeConstants'
-import { AuthApi } from '../../services/AuthService/AuthApi'
+
 import { AuthStore } from '../../stores/AuthStore'
-import usersData from '../../fixtures/usersData.json'
+import userData from '../../fixtures/userData.json'
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
 
 import { SignInRoute } from '.'
+
+import { API_FAILED } from '@ib/api-constants'
+import { AuthFixtureService } from '../../services/AuthService/index.fixture'
+import { PROJECTS_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
 
 const LocationDisplay = withRouter(({ location }) => (
    <div data-testid='location-display'>{location.pathname}</div>
@@ -21,7 +25,7 @@ describe('SignInRoute Tests', () => {
    let authStore
 
    beforeEach(() => {
-      authAPI = new AuthApi()
+      authAPI = new AuthFixtureService()
       authStore = new AuthStore(authAPI)
    })
 
@@ -105,13 +109,12 @@ describe('SignInRoute Tests', () => {
 
    it('should render signInRoute success state', async () => {
       const history = createMemoryHistory()
-      const route = PROJECT_SIGN_IN_PATH
-      history.push(route)
+      const route = PROJECTS_PATH
 
-      const { getByPlaceholderText, getByRole } = render(
+      const { getByPlaceholderText, getByRole, getByTestId } = render(
          <Provider authStore={authStore}>
             <Router history={history}>
-               <Route path={PROJECT_SIGN_IN_PATH}>
+               <Route path='/'>
                   <SignInRoute />
                </Route>
                <Route path={PROJECT_SIGN_IN_PATH}>
@@ -128,21 +131,20 @@ describe('SignInRoute Tests', () => {
       const passwordField = getByPlaceholderText('password')
       const signInButton = getByRole('button', { name: 'Sign In' })
 
-      const mockSuccessPromise = new Promise(function(resolve, reject) {
-         resolve(usersData)
-      })
-      const mockSignInAPI = jest.fn()
-      mockSignInAPI.mockReturnValue(mockSuccessPromise)
-      authAPI.signInAPI = mockSignInAPI
+      authAPI.signInAPI = jest
+         .fn()
+         .mockImplementation(() => Promise.resolve(userData))
 
       fireEvent.change(usernameField, { target: { value: username } })
       fireEvent.change(passwordField, { target: { value: password } })
       fireEvent.click(signInButton)
+      history.push(route)
+
+      waitFor(() => getByTestId('location-display'))
    })
 
-   it('should render signInRoute failure state', async () => {
-      authStore.apiError = 'network error'
-      const { getByPlaceholderText, getByRole, getByText } = render(
+   it('should render signInRoute network failure state', async () => {
+      const { getByPlaceholderText, getByRole } = render(
          <Router history={createMemoryHistory()}>
             <SignInRoute authStore={authStore} />
          </Router>
@@ -155,20 +157,84 @@ describe('SignInRoute Tests', () => {
       const passwordField = getByPlaceholderText('password')
       const signInButton = getByRole('button', { name: 'Sign In' })
 
-      const mockFailurePromise = new Promise(function(resolve, reject) {
-         reject(new Error('error'))
-      }).catch(() => {})
-
-      const mockSignInAPI = jest.fn()
-      mockSignInAPI.mockReturnValue(mockFailurePromise)
-      authAPI.signInAPI = mockSignInAPI
+      authAPI.signInAPI = jest.fn().mockImplementation(() =>
+         Promise.reject(
+            new Error(
+               JSON.stringify({
+                  data: { response: 'network error' },
+                  status: null
+               })
+            )
+         )
+      )
 
       fireEvent.change(usernameField, { target: { value: username } })
       fireEvent.change(passwordField, { target: { value: password } })
       fireEvent.click(signInButton)
 
-      // await waitFor(() => {
-      //    getByText('network error')
-      // })
+      waitFor(() => expect(authStore.apiStatus).toBe(API_FAILED))
+   })
+
+   it('should render signInRoute Username Failure state', async () => {
+      const { getByPlaceholderText, getByRole } = render(
+         <Router history={createMemoryHistory()}>
+            <SignInRoute authStore={authStore} />
+         </Router>
+      )
+
+      const username = 'test-user'
+      const password = 'test-password'
+
+      const usernameField = getByPlaceholderText('username')
+      const passwordField = getByPlaceholderText('password')
+      const signInButton = getByRole('button', { name: 'Sign In' })
+
+      authAPI.signInAPI = jest.fn().mockImplementation(() =>
+         Promise.reject(
+            new Error(
+               JSON.stringify({
+                  data: { response: 'network error' },
+                  status: 401
+               })
+            )
+         )
+      )
+
+      fireEvent.change(usernameField, { target: { value: username } })
+      fireEvent.change(passwordField, { target: { value: password } })
+      fireEvent.click(signInButton)
+
+      waitFor(() => expect(authStore.apiStatus).toBe(401))
+   })
+
+   it('should render signInRoute Password Failure state', async () => {
+      const { getByPlaceholderText, getByRole } = render(
+         <Router history={createMemoryHistory()}>
+            <SignInRoute authStore={authStore} />
+         </Router>
+      )
+
+      const username = 'test-user'
+      const password = 'test-password'
+
+      const usernameField = getByPlaceholderText('username')
+      const passwordField = getByPlaceholderText('password')
+      const signInButton = getByRole('button', { name: 'Sign In' })
+
+      authAPI.signInAPI = jest.fn().mockImplementation(() =>
+         Promise.reject(
+            new Error(
+               JSON.stringify({
+                  data: { response: 'network error' },
+                  status: 404
+               })
+            )
+         )
+      )
+      fireEvent.change(usernameField, { target: { value: username } })
+      fireEvent.change(passwordField, { target: { value: password } })
+      fireEvent.click(signInButton)
+
+      waitFor(() => expect(authStore.apiStatus).toBe(404))
    })
 })

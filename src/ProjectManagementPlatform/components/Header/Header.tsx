@@ -20,7 +20,7 @@ import {
 import stringConstants from '../../strings/stringConstants.json'
 
 import { PROJECT_SIGN_IN_PATH } from '../../../Authentication/constants/routeConstants'
-import { onLogOut } from '../../utils/logOutUtil'
+
 import { action, observable } from 'mobx'
 import { observer } from 'mobx-react'
 
@@ -36,7 +36,7 @@ class Header extends Component<any, any> {
    onSignOut = () => {
       const { history } = this.props
       history.replace(PROJECT_SIGN_IN_PATH)
-      onLogOut()
+
       this.toggleModal()
       toast.success('successfully logged out')
    }

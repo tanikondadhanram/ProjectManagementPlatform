@@ -1,0 +1,18 @@
+{
+    "task_id": 0,
+    "from_state": {
+        "state_id": 0,
+        "name": "string"
+    },
+    "to_state": {
+        "state_id": 0,
+        "name": "string"
+    },
+    "check_list": [
+        {
+            "checklist_id": 0,
+            "name": "string",
+            "is_required": true
+        }
+    ]
+}
