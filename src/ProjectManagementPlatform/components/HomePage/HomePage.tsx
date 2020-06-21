@@ -55,7 +55,7 @@ class HomePage extends Component<any, any> {
          listOfProjects.length === 0 || maxPages === 0 ? false : true
 
       return (
-         <ProjectManagementAppContainer>
+         <>
             <Header />
             <TitleAndModalSection {...createProjectProps} />
             <ListOfProjects />
@@ -71,7 +71,7 @@ class HomePage extends Component<any, any> {
                draggable
                pauseOnHover
             />
-         </ProjectManagementAppContainer>
+         </>
       )
    }
 }

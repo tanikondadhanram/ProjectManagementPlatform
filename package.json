@@ -102,22 +102,28 @@
       "jest-environment-jsdom-sixteen": "1.0.3",
       "lint-staged": "10.2.6",
       "react-app-rewired": "2.1.5",
+      "react-select-event": "4.1.4",
       "tailwindcss": "^1.2.0"
    },
    "jest": {
       "collectCoverageFrom": [
          "src/Authentication/**/*.{ts,tsx,js,jsx}",
          "src/ProjectManagementPlatform/**/*.{ts,tsx,js,jsx}",
-         "!src/ProjectManagementPlatform/components/**/*.{ts,tsx,js,jsx}",
+         "src/Common/**/*.{ts,tsx,js,jsx}",
          "!src/Authentication/routes/index.tsx",
          "!src/Authentication/services/**/*.{ts,tsx,js,jsx}",
          "!src/Authentication/stores/index.ts",
+         "!src/ProjectManagementPlatform/components/**/*.{ts,tsx,js,jsx}",
          "!src/ProjectManagementPlatform/services/**/*.{ts,tsx,js,jsx}",
          "!src/ProjectManagementPlatform/constants/**/*.{ts,tsx,js,jsx}",
          "!src/ProjectManagementPlatform/stores/index.ts",
          "!src/ProjectManagementPlatform/routes/index.tsx",
-         "!src/ProjectManagementPlatform/stores/models/CheckListModel/index.ts",
-         "!src/Common/**/*.{ts,tsx,js,jsx}",
+         "!src/Common/components/**/*.{ts,tsx,js,jsx}",
+         "!src/Common/StyleGuide/**/*.{ts,tsx,js,jsx}",
+         "!src/Common/services/**/*.{ts,tsx,js,jsx}",
+         "!src/Common/constants/**/*.{ts,tsx,js,jsx}",
+         "!src/Common/stores/index.ts",
+         "!src/Common/routes/index.ts",
          "!src/*.{ts,tsx,js,jsx}"
       ]
    }

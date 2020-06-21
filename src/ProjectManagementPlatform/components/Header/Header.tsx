@@ -23,6 +23,7 @@ import { PROJECT_SIGN_IN_PATH } from '../../../Authentication/constants/routeCon
 
 import { action, observable } from 'mobx'
 import { observer } from 'mobx-react'
+import { clearUserSession } from '../../../Common/utils/StorageUtils'
 
 @observer
 class Header extends Component<any, any> {
@@ -36,7 +37,7 @@ class Header extends Component<any, any> {
    onSignOut = () => {
       const { history } = this.props
       history.replace(PROJECT_SIGN_IN_PATH)
-
+      clearUserSession()
       this.toggleModal()
       toast.success('successfully logged out')
    }

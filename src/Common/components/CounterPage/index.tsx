@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
 
-import stores from '../../stores'
+import { stores } from '../../stores'
 const counterStore = stores.counterStore
 
 type Props = {

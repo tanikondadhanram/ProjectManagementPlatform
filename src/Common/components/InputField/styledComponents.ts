@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import tw from 'tailwind.macro'
 import { colors } from '../../themes/colors'
+import { css } from '@emotion/core'
 
 export const InputFieldContainer = styled.div`
    ${tw`flex flex-col mb-2 h-24 w-full `}

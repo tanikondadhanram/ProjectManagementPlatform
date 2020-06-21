@@ -2,32 +2,11 @@ import React from 'react'
 import { Provider } from 'mobx-react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 
+import { routes } from '../Common/routes'
+
+import { stores } from '../Common/stores'
+
 import './App.css'
-import { authStore } from '../Authentication/stores/index'
-import { authRoutes } from '../Authentication/routes'
-import { projectManagementRoutes } from '../ProjectManagementPlatform/routes'
-import {
-   projectManagementPlatformStore,
-   workFlowStore,
-   projectPostStore,
-   tasksStore,
-   createTaskStore,
-   statesStore,
-   checkListStore
-} from '../ProjectManagementPlatform/stores'
-
-const routes = [authRoutes, projectManagementRoutes]
-
-const stores = {
-   authStore,
-   projectManagementPlatformStore,
-   workFlowStore,
-   projectPostStore,
-   tasksStore,
-   createTaskStore,
-   statesStore,
-   checkListStore
-}
 
 const App = () => {
    return (
@@ -38,7 +17,5 @@ const App = () => {
       </Provider>
    )
 }
-
-const obj: any = { name: 'rk' }
 
 export default App

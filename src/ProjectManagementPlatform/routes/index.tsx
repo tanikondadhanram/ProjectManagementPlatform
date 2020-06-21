@@ -1,13 +1,15 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+
 import {
    PROJECTS_PATH,
    SPECIFIC_PROJECT_PATH
 } from '../constants/routeConstants'
 
 import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
-import { ProjectTasks } from '../components/ProjectTasks'
+
 import { PmpProjectsRoute } from './PmpProjectsRoute'
+import { ProjectRoute } from './ProjectRoute'
 
 export const projectManagementRoutes = [
    <ProtectedRoute
@@ -20,7 +22,7 @@ export const projectManagementRoutes = [
       key={SPECIFIC_PROJECT_PATH}
       exact
       path={SPECIFIC_PROJECT_PATH}
-      component={ProjectTasks}
+      component={ProjectRoute}
    />,
    <ProtectedRoute
       key={'/'}

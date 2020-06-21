@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { inject, observer } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { ToastContainer } from 'react-toastify'
 
 import stringConstants from '../../strings/stringConstants.json'
@@ -8,9 +8,7 @@ import { Header } from '../Header'
 import { TitleAndModalSection } from '../TitleAndModalSection'
 import { CreateTaskForm } from '../CreateTaskForm'
 import { ListOfTasks } from '../ListOfTasks'
-import { Pagination } from '../Pagination'
 
-@inject('tasksStore')
 @observer
 class ProjectTasks extends Component<any, any> {
    render() {

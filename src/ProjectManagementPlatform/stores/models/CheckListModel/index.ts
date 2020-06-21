@@ -8,9 +8,10 @@ class CheckListModel {
 
    constructor(props) {
       this.name = props.name
-      this.isChecked = false
+      this.isChecked = true
       this.isRequired = props.is_required
       this.id = props.checklist_id
+      this.toggleIsChecked()
    }
 
    @action.bound

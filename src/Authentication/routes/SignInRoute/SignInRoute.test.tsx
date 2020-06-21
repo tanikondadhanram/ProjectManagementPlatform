@@ -15,6 +15,7 @@ import { SignInRoute } from '.'
 import { API_FAILED } from '@ib/api-constants'
 import { AuthFixtureService } from '../../services/AuthService/index.fixture'
 import { PROJECTS_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
+import { act } from 'react-dom/test-utils'
 
 const LocationDisplay = withRouter(({ location }) => (
    <div data-testid='location-display'>{location.pathname}</div>
@@ -117,7 +118,7 @@ describe('SignInRoute Tests', () => {
                <Route path='/'>
                   <SignInRoute />
                </Route>
-               <Route path={PROJECT_SIGN_IN_PATH}>
+               <Route path={PROJECTS_PATH}>
                   <LocationDisplay />
                </Route>
             </Router>
@@ -140,7 +141,7 @@ describe('SignInRoute Tests', () => {
       fireEvent.click(signInButton)
       history.push(route)
 
-      waitFor(() => getByTestId('location-display'))
+      await waitFor(() => getByTestId('location-display'))
    })
 
    it('should render signInRoute network failure state', async () => {
@@ -172,7 +173,9 @@ describe('SignInRoute Tests', () => {
       fireEvent.change(passwordField, { target: { value: password } })
       fireEvent.click(signInButton)
 
-      waitFor(() => expect(authStore.apiStatus).toBe(API_FAILED))
+      await act(async () =>
+         waitFor(() => expect(authStore.apiStatus).toBe(API_FAILED))
+      )
    })
 
    it('should render signInRoute Username Failure state', async () => {
@@ -204,7 +207,9 @@ describe('SignInRoute Tests', () => {
       fireEvent.change(passwordField, { target: { value: password } })
       fireEvent.click(signInButton)
 
-      waitFor(() => expect(authStore.apiStatus).toBe(401))
+      await act(async () =>
+         waitFor(() => expect(JSON.parse(authStore.apiError).status).toBe(401))
+      )
    })
 
    it('should render signInRoute Password Failure state', async () => {
@@ -235,6 +240,8 @@ describe('SignInRoute Tests', () => {
       fireEvent.change(passwordField, { target: { value: password } })
       fireEvent.click(signInButton)
 
-      waitFor(() => expect(authStore.apiStatus).toBe(404))
+      await act(async () =>
+         waitFor(() => expect(JSON.parse(authStore.apiError).status).toBe(404))
+      )
    })
 })

@@ -48,7 +48,9 @@ class TasksStore {
 
    @action.bound
    setGetListOfTasksAPIResponse(response: any) {
-      this.listOfTasks = response.tasks.map(eachTask => new TaskModel(eachTask))
+      this.listOfTasks = response.tasks.map(
+         eachTask => new TaskModel(eachTask, this.listOfTasksService)
+      )
    }
 
    @action.bound
