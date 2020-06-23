@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { jsx, css } from '@emotion/core'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -16,7 +15,22 @@ import {
 
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
 
-class SignInForm extends Component<any, any> {
+type SignInFormProps = {
+   username: string | null
+   password: string | null
+   usernameRef: React.RefObject<HTMLInputElement> | null
+   passwordRef: React.RefObject<HTMLInputElement> | null
+   onChangeUsername: (event: { target: { value: string } }) => void
+   onChangePassword: (event: { target: { value: string } }) => void
+   onUserSubmit: (event: { preventDefault: () => void }) => void
+   apiStatus: number
+   usernameErrorMessage: string | null
+   passwordErrorMessage: string | null
+   isValidUsername: boolean
+   isValidPassword: boolean
+}
+
+class SignInForm extends Component<SignInFormProps> {
    render() {
       const {
          username,

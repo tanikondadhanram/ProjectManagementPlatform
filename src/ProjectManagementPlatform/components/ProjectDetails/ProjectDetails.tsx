@@ -25,7 +25,7 @@ class ProjectDetails extends Component<any, any> {
    render() {
       ids++
       const { projectDetails } = this.props
-      const { id } = projectDetails
+      // const { id } = projectDetails
       const title = projectDetails.title
       const createdBy = projectDetails.createdBy
       const createdAt = projectDetails.createdAt

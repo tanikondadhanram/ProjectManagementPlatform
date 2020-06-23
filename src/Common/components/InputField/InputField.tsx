@@ -10,7 +10,18 @@ import {
 } from './styledComponents'
 import { colors } from '../../themes/colors'
 
-class InputField extends Component<any, any> {
+type InputFieldProps = {
+   type: string
+   isValidInput: boolean
+   errorMessage: string | null
+   value: string | null
+   labelText?: string
+   placeholder?: string
+   reference?: React.RefObject<HTMLInputElement> | null
+   onChange: (event: { target: { value: string } }) => void
+}
+
+class InputField extends Component<InputFieldProps> {
    isError: boolean = false
    render() {
       let {

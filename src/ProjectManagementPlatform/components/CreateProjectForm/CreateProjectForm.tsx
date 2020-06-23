@@ -14,11 +14,9 @@ import {
 } from './styledComponents'
 
 import stringConstants from '../../strings/stringConstants.json'
-import { toJS, entries, observable } from 'mobx'
+
 import { API_FETCHING } from '@ib/api-constants'
 import { Button } from '../../../Common/components/Button'
-import { isNumber } from 'util'
-import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
 @inject('workFlowStore', 'projectPostStore', 'projectManagementPlatformStore')
 @observer
@@ -98,7 +96,7 @@ class CreateProjectForm extends Component<any, any> {
          projectPostStore
       } = this.props
       const { getProjects } = projectManagementPlatformStore
-      const { apiResponse, apiError } = projectPostStore
+      const { apiResponse } = projectPostStore
       getProjects()
       toggleModal()
       toast.success(apiResponse.success_message)
@@ -128,8 +126,8 @@ class CreateProjectForm extends Component<any, any> {
          onChangeWorkflowType,
          projectType,
          onChangeProjectType,
-         onChangeAssignedTo,
-         assignedTo,
+         // onChangeAssignedTo,
+         // assignedTo,
          apiStatus: projectPostApiStatus
       } = projectPostStore
 
@@ -156,10 +154,10 @@ class CreateProjectForm extends Component<any, any> {
          onChangeProjectType
       }
 
-      const developerProps = {
-         onChangeAssignedTo,
-         assignedTo
-      }
+      // const developerProps = {
+      //    onChangeAssignedTo,
+      //    assignedTo
+      // }
 
       return (
          <CreateProjectContainer>
@@ -302,24 +300,24 @@ const GetProjectTypes = props => {
    )
 }
 
-const GetDevelopers = props => {
-   const { onChangeAssignedTo, assignedTo } = props
+// const GetDevelopers = props => {
+//    const { onChangeAssignedTo, assignedTo } = props
 
-   return (
-      <div>
-         <Label>developer</Label>
-         <InputField
-            type='text'
-            value={assignedTo ? assignedTo : ''}
-            onChange={onChangeAssignedTo}
-            isError={assignedTo === ''}
-            className='mb-10'
-         />
-         {assignedTo === '' ? (
-            <ErrorMessage>{stringConstants['fieldRequired']}</ErrorMessage>
-         ) : null}
-      </div>
-   )
-}
+//    return (
+//       <div>
+//          <Label>developer</Label>
+//          <InputField
+//             type='text'
+//             value={assignedTo ? assignedTo : ''}
+//             onChange={onChangeAssignedTo}
+//             isError={assignedTo === ''}
+//             className='mb-10'
+//          />
+//          {assignedTo === '' ? (
+//             <ErrorMessage>{stringConstants['fieldRequired']}</ErrorMessage>
+//          ) : null}
+//       </div>
+//    )
+// }
 
 export default CreateProjectForm

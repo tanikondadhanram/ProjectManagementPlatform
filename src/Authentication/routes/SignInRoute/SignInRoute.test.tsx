@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, fireEvent, waitFor } from '@testing-library/react'
 import { Router, Route, withRouter } from 'react-router-dom'
-import { Provider } from 'mobx-react'
 import { createMemoryHistory } from 'history'
 
 import { PROJECT_SIGN_IN_PATH } from '../../constants/routeConstants'
@@ -113,16 +112,14 @@ describe('SignInRoute Tests', () => {
       const route = PROJECTS_PATH
 
       const { getByPlaceholderText, getByRole, getByTestId } = render(
-         <Provider authStore={authStore}>
-            <Router history={history}>
-               <Route path='/'>
-                  <SignInRoute />
-               </Route>
-               <Route path={PROJECTS_PATH}>
-                  <LocationDisplay />
-               </Route>
-            </Router>
-         </Provider>
+         <Router history={history}>
+            <Route path='/'>
+               <SignInRoute authStore={authStore} />
+            </Route>
+            <Route path={PROJECTS_PATH}>
+               <LocationDisplay />
+            </Route>
+         </Router>
       )
 
       const username = 'test-user'

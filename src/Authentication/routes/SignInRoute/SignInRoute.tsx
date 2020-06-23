@@ -1,26 +1,44 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
 import { observable, action } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { toast } from 'react-toastify'
+import { History } from 'history'
 
 import { SignInForm } from '../../components/SignInForm'
 import { PROJECTS_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
 import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
 
+import { AuthStore } from '../../stores/AuthStore'
 import stringConstants from '../../constants/stringConstants/stringConstants.json'
+
+type SignInRoutePropsTypes = {
+   authStore: AuthStore
+   history: History
+}
 
 @inject('authStore')
 @observer
-class SignInRoute extends Component<any, any> {
+class SignInRoute extends Component<
+   SignInRoutePropsTypes & RouteComponentProps
+> {
    @observable username: string | null
    @observable password: string | null
    @observable usernameErrorMessage: string | null
    @observable passwordErrorMessage: string | null
-   usernameRef!: any
-   passwordRef!: any
+   usernameRef!: React.RefObject<HTMLInputElement> | null
+   passwordRef!: React.RefObject<HTMLInputElement> | null
 
-   constructor(props) {
+   constructor(
+      props: Readonly<
+         SignInRoutePropsTypes &
+            RouteComponentProps<
+               {},
+               import('react-router').StaticContext,
+               History.PoorMansUnknown
+            >
+      >
+   ) {
       super(props)
       this.username = null
       this.password = null
@@ -31,15 +49,15 @@ class SignInRoute extends Component<any, any> {
    }
 
    componentDidMount() {
-      this.usernameRef.current.focus()
+      this.usernameRef?.current?.focus()
    }
 
    setUser() {
       const { userSignIn } = this.props.authStore
       userSignIn(
          {
-            username: this.username,
-            password: this.password
+            username: this.username ? this.username : '',
+            password: this.password ? this.password : ''
          },
          this.onSignInSucess,
          this.onSignInFailure
@@ -59,16 +77,18 @@ class SignInRoute extends Component<any, any> {
    @action.bound
    onSignInFailure() {
       let { apiError } = this.props.authStore
+      if (apiError) {
+         const errorObject = JSON.parse(`${apiError}`)
 
-      const errorObject = JSON.parse(apiError)
-      if (errorObject.status === null) {
-         toast.error(getUserDisplayableErrorMessage(apiError))
-      }
-      if (errorObject.status === 401) {
-         this.passwordErrorMessage = errorObject.data.response
-      }
-      if (errorObject.status === 404) {
-         this.usernameErrorMessage = errorObject.data.response
+         if (errorObject.status === null) {
+            toast.error(getUserDisplayableErrorMessage(apiError))
+         }
+         if (errorObject.status === 401) {
+            this.passwordErrorMessage = errorObject.data.response
+         }
+         if (errorObject.status === 404) {
+            this.usernameErrorMessage = errorObject.data.response
+         }
       }
    }
 
@@ -88,8 +108,8 @@ class SignInRoute extends Component<any, any> {
    onUserSubmit(event: { preventDefault: () => void }) {
       event.preventDefault()
 
-      const isUsernameFeildEmpty = this.usernameRef.current.value === ''
-      const isPasswordFeildEmpty = this.passwordRef.current.value === ''
+      const isUsernameFeildEmpty = this.usernameRef?.current?.value === ''
+      const isPasswordFeildEmpty = this.passwordRef?.current?.value === ''
 
       if (!isUsernameFeildEmpty && !isPasswordFeildEmpty) {
          this.setUser()

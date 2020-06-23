@@ -6,8 +6,6 @@ import { routes } from '../Common/routes'
 
 import { stores } from '../Common/stores'
 
-import './App.css'
-
 const App = () => {
    return (
       <Provider {...stores}>

@@ -10,8 +10,6 @@ import { Pagination } from '../Pagination'
 import { TitleAndModalSection } from '../TitleAndModalSection'
 import { CreateProjectForm } from '../CreateProjectForm'
 
-import { ProjectManagementAppContainer } from './styledComponents'
-
 @observer
 class HomePage extends Component<any, any> {
    render() {

@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 
 import stringConstants from '../../strings/stringConstants.json'
 
-import { IB_HUBS_LOGO_PATH } from '../../constants/ImagesPaths'
-
 import { StateComponent } from '../StateComponent'
 
 import {
@@ -19,7 +17,7 @@ let ids = 0
 class TaskDetails extends Component<any, any> {
    render() {
       const { taskDetails } = this.props
-      const { title, taskId, description, createdBy, issueType } = taskDetails
+      const { title, description, issueType } = taskDetails
       const { assignedTo } = taskDetails
       ++ids
       return (

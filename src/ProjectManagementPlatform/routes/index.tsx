@@ -6,7 +6,7 @@ import {
    SPECIFIC_PROJECT_PATH
 } from '../constants/routeConstants'
 
-import { ProtectedRoute } from '../../Common/utils/ProtectedRoute'
+import { ProtectedRoute } from '../../Common/components/ProtectedRoute/ProtectedRoute'
 
 import { PmpProjectsRoute } from './PmpProjectsRoute'
 import { ProjectRoute } from './ProjectRoute'

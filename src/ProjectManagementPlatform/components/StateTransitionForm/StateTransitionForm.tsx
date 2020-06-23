@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 
-import stringConstants from '../../strings/stringConstants.json'
-
 import {
    Container,
    FeildContainer,
@@ -51,7 +49,7 @@ class StateTransitionForm extends Component<any, any> {
    updateState = async event => {
       event.preventDefault()
       const {
-         toggleModal,
+         // toggleModal,
          toStateId,
          checkListStore,
          taskDetails,
@@ -123,11 +121,10 @@ class StateTransitionForm extends Component<any, any> {
    })
 
    render() {
-      const { toggleModal, taskDetails, checkListStore } = this.props
+      const { checkListStore } = this.props
 
-      const { checkList, apiStatus, apiError, getCheckList } = checkListStore
-
-      const { state } = taskDetails
+      const { apiStatus, apiError } = checkListStore
+      // const { state } = taskDetails
 
       const loadingWrapperProps = {
          apiStatus,

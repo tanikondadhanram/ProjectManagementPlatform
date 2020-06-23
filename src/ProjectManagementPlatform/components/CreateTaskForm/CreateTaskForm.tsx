@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
+import { RouteComponentProps } from 'react-router-dom'
 import Select from 'react-select'
 
 import { Button } from '../../../Common/components/Button'
@@ -21,7 +22,7 @@ import { withRouter } from 'react-router-dom'
 
 @inject('createTaskStore', 'tasksStore')
 @observer
-class CreateTaskForm extends Component<any, any> {
+class CreateTaskForm extends Component<any & RouteComponentProps> {
    @observable issueType: string | null = null
    @observable title: string | null = null
    @observable description: string | null = null

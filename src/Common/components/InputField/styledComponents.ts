@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import tw from 'tailwind.macro'
 import { colors } from '../../themes/colors'
-import { css } from '@emotion/core'
 
 export const InputFieldContainer = styled.div`
    ${tw`flex flex-col mb-2 h-24 w-full `}
@@ -12,7 +11,7 @@ export const InputFeildTag = styled.input`
    border-radius: 2px;
    border: solid 1px
       ${(props: any) =>
-         props.isValidInput ? `${colors['steel']}` : `${colors['neon-red']}`};
+      props.isValidInput ? `${colors['steel']}` : `${colors['neon-red']}`};
    background-color: ${(props: any) =>
       props.isValidInput ? `${colors['white']}` : `${colors['neon-red-5']}`};
    color: ${colors['dark-blue-grey']};

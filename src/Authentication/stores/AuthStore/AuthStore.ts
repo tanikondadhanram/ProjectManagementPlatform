@@ -1,43 +1,50 @@
 import { observable, action } from 'mobx'
-import { API_INITIAL } from '@ib/api-constants'
+
+import { API_INITIAL, APIStatus } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 import { setAccessToken } from '../../../Common/utils/StorageUtils'
 
-class AuthStore {
-   @observable apiStatus!: number
-   @observable apiError!: string | null
-   @observable apiResponse: any
-   authService: any
+import { AuthService } from '../../services/AuthService/index.api'
 
-   constructor(authAPI: any) {
+import { SignInAPIResponse, SignInAPIRequestObject } from "../types"
+
+
+
+class AuthStore {
+   @observable apiStatus!: APIStatus
+   @observable apiError!: Error | null
+   @observable apiResponse!: SignInAPIResponse
+   authService: AuthService
+
+   constructor(authAPI: AuthService) {
       this.authService = authAPI
       this.init()
    }
 
    @action.bound
-   init() {
+   init(): void {
       this.apiStatus = API_INITIAL
       this.apiError = null
    }
 
    @action.bound
-   clearStore() {
+   clearStore(): void {
       this.init()
    }
 
    @action.bound
-   setUserSignInAPIStatus(status: number) {
+   setUserSignInAPIStatus(status: APIStatus): void {
       this.apiStatus = status
    }
 
    @action.bound
-   setUserSignInAPIError(error: any) {
+   setUserSignInAPIError(error: Error): void {
       this.apiError = error
    }
 
    @action.bound
-   setUserSignInAPIResponse(response: any) {
+   setUserSignInAPIResponse(response: SignInAPIResponse): void {
       setAccessToken(response['access_token'])
       this.apiResponse = response
 
@@ -48,7 +55,11 @@ class AuthStore {
    }
 
    @action.bound
-   async userSignIn(userDetails, onSignInSuccess, onSignInFailure) {
+   async userSignIn(
+      userDetails: SignInAPIRequestObject,
+      onSignInSuccess: Function,
+      onSignInFailure: Function
+   ): Promise<any> {
       const userSignInAPIPromise = this.authService.signInAPI(userDetails)
 
       return bindPromiseWithOnSuccess(userSignInAPIPromise)
