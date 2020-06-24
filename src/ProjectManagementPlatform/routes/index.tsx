@@ -25,9 +25,9 @@ export const projectManagementRoutes = [
       component={ProjectRoute}
    />,
    <ProtectedRoute
-      key={'/'}
+      key='/'
       exact
-      path={'/'}
+      path='/'
       component={() => <Redirect to={{ pathname: PROJECTS_PATH }} />}
    />
 ]

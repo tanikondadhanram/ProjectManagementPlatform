@@ -5,6 +5,7 @@ import { PROJECT_SIGN_IN_PATH } from '../../../Authentication/constants/routeCon
 
 export const ProtectedRoute = (props: any) => {
    const isUserLoggedIn = Boolean(getAccessToken())
+   alert(props.path)
    return isUserLoggedIn ? (
       <Route {...props} />
    ) : (

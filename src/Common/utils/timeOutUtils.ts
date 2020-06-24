@@ -3,6 +3,7 @@ export const resolveWithTimeout = (response) => {
     if (isTestingEnv) {
         return new Promise((resolve) => resolve(response))
     }
+
     else {
         return new Promise(resolve => setTimeout(() => resolve(response), 2000))
     }
