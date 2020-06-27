@@ -59,7 +59,7 @@ class ListOfTasks extends Component<any, any> {
    }
 
    render() {
-      const { apiStatus, apiError, getListOfTasks, listOfTasks } = this.props
+      const { apiStatus, apiError, listOfTasks } = this.props
       const renderSuccessUI =
          listOfTasks.length === 0 ? NoDataView : this.renderSuccessUI
       const loadingWrapperProps = {
