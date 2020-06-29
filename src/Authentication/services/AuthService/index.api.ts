@@ -1,6 +1,6 @@
 import { create } from 'apisauce'
 
-import { BASE_URL } from '../../../Common/constants/UrlConstants'
+import envConstants from "../../../Common/constants/EnvironmentConstants"
 import { networkCallWithApisauce } from '../../../Common/utils/APIUtils'
 import { apiMethods } from '../../../Common/constants/APIConstants'
 
@@ -15,7 +15,7 @@ class AuthService implements TodoService {
 
    constructor() {
       this.api = create({
-         baseURL: BASE_URL
+         baseURL: envConstants.BASE_URL
       })
    }
 
