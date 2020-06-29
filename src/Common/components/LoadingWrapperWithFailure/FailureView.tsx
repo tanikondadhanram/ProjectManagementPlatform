@@ -13,11 +13,7 @@ interface FailureViewProps {
 }
 
 @observer
-<<<<<<< HEAD:src/Common/components/LoadingWrapperWithFailure/FailureView.tsx
-class FailureView extends React.Component<any> {
-=======
 class FailureView extends React.Component<FailureViewProps> {
->>>>>>> a2bfdb1... typescript:src/Common/components/LoadingWrapperWithFailure/FailureView.js
    render() {
       const { onRetryClick, errorMessage } = this.props
 

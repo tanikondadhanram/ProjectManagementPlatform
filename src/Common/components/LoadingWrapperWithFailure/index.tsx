@@ -21,13 +21,9 @@ interface LoadingWrapperWithFailureProps {
 }
 
 @observer
-<<<<<<< HEAD:src/Common/components/LoadingWrapperWithFailure/index.tsx
-class LoadingWrapperWithFailure extends React.Component<any> {
-=======
 class LoadingWrapperWithFailure extends React.Component<
-   LoadingWrapperWithFailureProps
+LoadingWrapperWithFailureProps
 > {
->>>>>>> a2bfdb1... typescript:src/Common/components/LoadingWrapperWithFailure/index.js
    render() {
       const {
          apiStatus,
