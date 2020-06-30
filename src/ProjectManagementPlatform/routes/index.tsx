@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import {
@@ -8,21 +8,21 @@ import {
 
 import { ProtectedRoute } from '../../Common/components/ProtectedRoute/ProtectedRoute'
 
-import { PmpProjectsRoute } from './PmpProjectsRoute'
-import { ProjectRoute } from './ProjectRoute'
+const ProjectsRoute = lazy(() => import('./PmpProjectsRoute/PmpProjectsRoute'))
+const SpecificProjectRoute = lazy(() => import('./ProjectRoute/ProjectRoute'))
 
 export const projectManagementRoutes = [
    <ProtectedRoute
       key={PROJECTS_PATH}
       exact
       path={PROJECTS_PATH}
-      component={PmpProjectsRoute}
+      component={ProjectsRoute}
    />,
    <ProtectedRoute
       key={SPECIFIC_PROJECT_PATH}
       exact
       path={SPECIFIC_PROJECT_PATH}
-      component={ProjectRoute}
+      component={SpecificProjectRoute}
    />,
    <ProtectedRoute
       key='/'

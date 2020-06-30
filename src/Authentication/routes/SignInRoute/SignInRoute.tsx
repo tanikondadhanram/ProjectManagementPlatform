@@ -1,146 +1,57 @@
 import React, { Component } from 'react'
 import { withRouter, RouteComponentProps } from 'react-router-dom'
-import { observable, action } from 'mobx'
+import { action } from 'mobx'
 import { inject, observer } from 'mobx-react'
 import { toast } from 'react-toastify'
 import { History } from 'history'
 
 import { SignInForm } from '../../components/SignInForm'
+import { SignInAPIRequestObject } from '../../stores/types'
+import { AuthStore } from '../../stores/AuthStore'
+
 import { PROJECTS_PATH } from '../../../ProjectManagementPlatform/constants/routeConstants'
 import { getUserDisplayableErrorMessage } from '../../../Common/utils/APIUtils'
-
-import { AuthStore } from '../../stores/AuthStore'
-import stringConstants from '../../constants/stringConstants/stringConstants.json'
-
-type SignInRoutePropsTypes = {
-   authStore: AuthStore
+interface SignInRoutePropsTypes extends RouteComponentProps {
    history: History
 }
-
+interface InjectedProps extends SignInRoutePropsTypes {
+   authStore: AuthStore
+}
 @inject('authStore')
 @observer
-class SignInRoute extends Component<
-   SignInRoutePropsTypes & RouteComponentProps
-> {
-   @observable username: string | null
-   @observable password: string | null
-   @observable usernameErrorMessage: string | null
-   @observable passwordErrorMessage: string | null
-   usernameRef!: React.RefObject<HTMLInputElement> | null
-   passwordRef!: React.RefObject<HTMLInputElement> | null
+class SignInRoute extends Component<SignInRoutePropsTypes> {
+   getInjectedProps = () => this.props as InjectedProps
 
-   constructor(
-      props: Readonly<
-         SignInRoutePropsTypes &
-            RouteComponentProps<
-               {},
-               import('react-router').StaticContext,
-               History.PoorMansUnknown
-            >
-      >
-   ) {
-      super(props)
-      this.username = null
-      this.password = null
-      this.usernameErrorMessage = null
-      this.passwordErrorMessage = null
-      this.usernameRef = React.createRef()
-      this.passwordRef = React.createRef()
-   }
-
-   componentDidMount() {
-      this.usernameRef?.current?.focus()
-   }
-
-   setUser() {
-      const { userSignIn } = this.props.authStore
+   setUser = (userDetails: SignInAPIRequestObject) => {
+      const { userSignIn } = this.getInjectedProps().authStore
       userSignIn(
          {
-            username: this.username ? this.username : '',
-            password: this.password ? this.password : ''
+            username: userDetails.username,
+            password: userDetails.password
          },
-         this.onSignInSucess,
+         this.onSignInSuccess,
          this.onSignInFailure
       )
    }
 
    @action.bound
-   onSignInSucess() {
-      this.username = null
-      this.password = null
-      this.usernameErrorMessage = null
-      this.passwordErrorMessage = null
+   onSignInSuccess() {
       const { history } = this.props
       history.replace(PROJECTS_PATH)
    }
 
    @action.bound
-   onSignInFailure() {
-      let { apiError } = this.props.authStore
-      if (apiError) {
-         const errorObject = JSON.parse(`${apiError}`)
-
-         if (errorObject.status === null) {
-            toast.error(getUserDisplayableErrorMessage(apiError))
-         }
-         if (errorObject.status === 401) {
-            this.passwordErrorMessage = errorObject.data.response
-         }
-         if (errorObject.status === 404) {
-            this.usernameErrorMessage = errorObject.data.response
-         }
-      }
-   }
-
-   @action.bound
-   onChangeUsername(event: { target: { value: string } }) {
-      this.username = event.target.value
-      this.usernameErrorMessage = null
-   }
-
-   @action.bound
-   onChangePassword(event: { target: { value: string } }) {
-      this.password = event.target.value
-      this.passwordErrorMessage = null
-   }
-
-   @action.bound
-   onUserSubmit(event: { preventDefault: () => void }) {
-      event.preventDefault()
-
-      const isUsernameFeildEmpty = this.usernameRef?.current?.value === ''
-      const isPasswordFeildEmpty = this.passwordRef?.current?.value === ''
-
-      if (!isUsernameFeildEmpty && !isPasswordFeildEmpty) {
-         this.setUser()
-      } else {
-         this.usernameErrorMessage = isUsernameFeildEmpty
-            ? stringConstants['enterUsername']
-            : null
-
-         this.passwordErrorMessage = isPasswordFeildEmpty
-            ? stringConstants['enterPassword']
-            : null
-      }
+   onSignInFailure(error: Error | null) {
+      toast.error(getUserDisplayableErrorMessage(error))
    }
 
    render() {
+      const { authStore } = this.getInjectedProps()
+      const { signInApiStatus } = authStore
       const signInFormProps = {
-         username: this.username,
-         password: this.password,
-         usernameRef: this.usernameRef,
-         passwordRef: this.passwordRef,
-         onChangeUsername: this.onChangeUsername,
-         onChangePassword: this.onChangePassword,
-         onUserSubmit: this.onUserSubmit,
-         apiStatus: this.props.authStore.apiStatus,
-         apiError: this.props.authStore.apiError,
-         usernameErrorMessage: this.usernameErrorMessage,
-         passwordErrorMessage: this.passwordErrorMessage,
-         isValidUsername: !Boolean(this.usernameErrorMessage),
-         isValidPassword: !Boolean(this.passwordErrorMessage)
+         setUser: this.setUser,
+         signInApiStatus: signInApiStatus
       }
-
       return <SignInForm {...signInFormProps} />
    }
 }

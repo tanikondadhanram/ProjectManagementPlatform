@@ -9,7 +9,7 @@ import {
    FormHeading,
    FormTag
 } from './styledComponents'
-import { Button } from '../../../Common/components/Button'
+import { ButtonWithLoader } from '../../../Common/components/ButtonWithLoader'
 import { inject, observer } from 'mobx-react'
 import LoadingWrapperWithFailure from '../../../Common/components/LoadingWrapperWithFailure'
 
@@ -110,12 +110,12 @@ class StateTransitionForm extends Component<any, any> {
                />
             </FeildContainer>
             {checkList ? this.getCheckListOptions() : null}
-            <Button
+            {/* <Button
                type='submit'
                className='mt-24'
                apiStatus={postApiStatus}
                value='update'
-            />
+            /> */}
          </FormTag>
       )
    })

@@ -16,7 +16,7 @@ import {
 import stringConstants from '../../strings/stringConstants.json'
 
 import { API_FETCHING } from '@ib/api-constants'
-import { Button } from '../../../Common/components/Button'
+import { ButtonWithLoader } from '../../../Common/components/ButtonWithLoader'
 
 @inject('workFlowStore', 'projectPostStore', 'projectManagementPlatformStore')
 @observer
@@ -168,7 +168,7 @@ class CreateProjectForm extends Component<any, any> {
             <GetProjectWorkFlowTypes {...workFlowSectionProps} />
             <GetProjectTypes {...projectTypeSectionProps} />
             {/* <GetDevelopers {...developerProps} /> */}
-            <Button
+            <ButtonWithLoader
                className='w-1/2'
                apiStatus={projectPostApiStatus}
                onClick={this.onCreateProjectButtonClick}

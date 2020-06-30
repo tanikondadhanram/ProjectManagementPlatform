@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-import InputField from './InputField'
+import InputField from './CommonInput'
 
 describe('Test Cases For Common Component Input Field', () => {
    it('Should Test Input Field Rendered', () => {

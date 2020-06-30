@@ -5,16 +5,14 @@ import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 import { setAccessToken } from '../../../Common/utils/StorageUtils'
 
-import { AuthService } from '../../services/AuthService/index.api'
+import { AuthService } from '../../services/AuthService'
 
-import { SignInAPIResponse, SignInAPIRequestObject } from "../types"
-
-
+import { SignInAPIResponse, SignInAPIRequestObject } from '../types'
 
 class AuthStore {
-   @observable apiStatus!: APIStatus
-   @observable apiError!: Error | null
-   @observable apiResponse!: SignInAPIResponse
+   @observable signInApiStatus!: APIStatus
+   @observable signInApiError!: Error | null
+   @observable signInApiResponse!: SignInAPIResponse | null
    authService: AuthService
 
    constructor(authAPI: AuthService) {
@@ -24,8 +22,8 @@ class AuthStore {
 
    @action.bound
    init(): void {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.signInApiStatus = API_INITIAL
+      this.signInApiError = null
    }
 
    @action.bound
@@ -35,23 +33,25 @@ class AuthStore {
 
    @action.bound
    setUserSignInAPIStatus(status: APIStatus): void {
-      this.apiStatus = status
+      this.signInApiStatus = status
    }
 
    @action.bound
    setUserSignInAPIError(error: Error): void {
-      this.apiError = error
+      this.signInApiError = error
    }
 
    @action.bound
-   setUserSignInAPIResponse(response: SignInAPIResponse): void {
-      setAccessToken(response['access_token'])
-      this.apiResponse = response
+   setUserSignInAPIResponse(response: SignInAPIResponse | null): void {
+      if (response) {
+         setAccessToken(response['access_token'])
+         this.signInApiResponse = response
 
-      window.localStorage.setItem(
-         'userDetails',
-         JSON.stringify(JSON.stringify(response))
-      )
+         window.localStorage.setItem(
+            'userDetails',
+            JSON.stringify(JSON.stringify(response))
+         )
+      }
    }
 
    @action.bound

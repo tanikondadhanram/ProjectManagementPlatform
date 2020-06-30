@@ -6,12 +6,12 @@ export const InputFieldContainer = styled.div`
    ${tw`flex flex-col mb-2 h-24 w-full `}
 `
 
-export const InputFeildTag = styled.input`
+export const InputFieldTag = styled.input`
    ${tw`outline-none my-2 p-3 w-full h-12 border-2 text-base`};
    border-radius: 2px;
    border: solid 1px
       ${(props: any) =>
-      props.isValidInput ? `${colors['steel']}` : `${colors['neon-red']}`};
+         props.isValidInput ? `${colors['steel']}` : `${colors['neon-red']}`};
    background-color: ${(props: any) =>
       props.isValidInput ? `${colors['white']}` : `${colors['neon-red-5']}`};
    color: ${colors['dark-blue-grey']};
@@ -23,7 +23,7 @@ export const InputFeildTag = styled.input`
    letter-spacing: normal;
 `
 
-export const LabelForInputFeild = styled.label`
+export const LabelForInputField = styled.label`
    ${tw` w-full text-sm`};
    width: 63px;
    height: 16px;

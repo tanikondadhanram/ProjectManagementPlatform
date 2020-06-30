@@ -1,9 +1,9 @@
 import { SignInAPIResponse, SignInAPIRequestObject } from '../../stores/types'
 
-interface TodoService {
+interface AuthService {
    signInAPI: (
       requestObject: SignInAPIRequestObject
    ) => Promise<SignInAPIResponse>
 }
 
-export default TodoService
+export type { AuthService }
