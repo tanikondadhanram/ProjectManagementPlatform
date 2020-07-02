@@ -1,10 +1,10 @@
 import { observable, action } from 'mobx'
-import { API_INITIAL } from '@ib/api-constants'
+import { API_INITIAL, APIStatus } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 class PaginationStore {
-   @observable apiStatus!: number
-   @observable apiError!: string | null
+   @observable apiStatus!: APIStatus
+   @observable apiError!: Error | null
    @observable apiResponse!: any
    @observable offset: number
    limit: number
@@ -33,7 +33,7 @@ class PaginationStore {
    }
 
    @action.bound
-   setGetPaginationStoreApiError(error: string) {
+   setGetPaginationStoreApiError(error: Error) {
       this.apiError = error
    }
 

@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import { jsx, css } from '@emotion/core'
+import { action } from 'mobx'
+
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { InputField } from '../../../Common/components/InputField'
-import { Button } from '../../../Common/components/Button'
+import { APIStatus } from '@ib/api-constants'
+
+import { CommonInput } from '../../../Common/components/CommonInput'
+import { ButtonWithLoader } from '../../../Common/components/ButtonWithLoader'
+
+import stringConstants from '../../constants/stringConstants/stringConstants.json'
+import { SignInAPIRequestObject } from '../../stores/types'
+import { validateUsername } from '../../utils/validationUtils'
 
 import {
    SignInFormHeading,
@@ -14,65 +21,70 @@ import {
    SignInFormContainer
 } from './styledComponents'
 
-import stringConstants from '../../constants/stringConstants/stringConstants.json'
+interface SignInFormProps {
+   setUser: (usrDetails: SignInAPIRequestObject) => void
+   signInApiStatus: APIStatus
+}
 
-class SignInForm extends Component<any, any> {
+class SignInForm extends Component<SignInFormProps> {
+   usernameRef: React.RefObject<HTMLInputElement> = React.createRef()
+   passwordRef: React.RefObject<HTMLInputElement> = React.createRef()
+
+   componentDidMount() {
+      this.usernameRef.current?.focus()
+   }
+
+   @action.bound
+   onUserSubmit(event: { preventDefault: () => void }) {
+      event.preventDefault()
+      const { setUser } = this.props
+      const userDetails = {
+         username: String(this.usernameRef.current?.value),
+         password: String(this.passwordRef.current?.value)
+      }
+      setUser(userDetails)
+   }
+
    render() {
-      const {
-         username,
-         password,
-         usernameRef,
-         passwordRef,
-         onChangeUsername,
-         onChangePassword,
-         onUserSubmit,
-         apiStatus,
-         usernameErrorMessage,
-         passwordErrorMessage,
-         isValidUsername,
-         isValidPassword
-      } = this.props
+      const { signInApiStatus } = this.props
 
       return (
          <SignInFormContainer>
-            <FormContainer onSubmit={onUserSubmit}>
+            <FormContainer>
                <IbHubsLogo
                   src='https://cdn.zeplin.io/5d0afc9102b7fa56760995cc/assets/9837b0f6-9165-49b3-995e-c6ac4ed19c55.svg'
                   alt='IbHubs-Logo'
                />
-               <SignInFormHeading css={{ border: '1px solid cornflowerblue' }}>
+               <SignInFormHeading>
                   {stringConstants['Hi there , please sign up']}
                </SignInFormHeading>
-
-               <FormTag>
-                  <InputField
+               <FormTag onSubmit={this.onUserSubmit}>
+                  <CommonInput
                      type='text'
-                     reference={usernameRef}
-                     onChange={onChangeUsername}
-                     value={username}
+                     reference={this.usernameRef}
                      placeholder='username'
-                     errorMessage={usernameErrorMessage}
                      labelText='username'
-                     isValidInput={isValidUsername}
+                     isMandatoryField={true}
+                     validateUserInput={validateUsername}
+                     // pattern=''
+                     // title=''
                   />
-                  <InputField
+                  <CommonInput
                      type='password'
-                     reference={passwordRef}
-                     onChange={onChangePassword}
-                     value={password}
+                     reference={this.passwordRef}
                      placeholder='password'
-                     errorMessage={passwordErrorMessage}
                      labelText='password'
-                     isValidInput={isValidPassword}
+                     isMandatoryField={true}
+                     validateUserInput={validateUsername}
+                     pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'
+                     title='Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters'
                   />
-                  <Button
+                  <ButtonWithLoader
                      className='mt-2'
-                     type='submit'
                      value='Sign In'
-                     apiStatus={apiStatus}
+                     apiStatus={signInApiStatus}
                   />
                </FormTag>
-
                <ToastContainer
                   position='bottom-center'
                   autoClose={3000}

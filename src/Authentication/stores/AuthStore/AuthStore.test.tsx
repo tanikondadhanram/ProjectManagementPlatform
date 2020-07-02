@@ -68,6 +68,7 @@ describe('AuthStore Tests', () => {
    it('should test userSignInAPI failure state', async () => {
       const onSuccess = jest.fn()
       const onFailure = jest.fn()
+
       const requestObject = {
          username: 'test-user',
          password: 'test-password'
@@ -75,10 +76,10 @@ describe('AuthStore Tests', () => {
 
       jest
          .spyOn(authAPI, 'signInAPI')
-         .mockImplementation(() => Promise.reject('error'))
+         .mockImplementation(() => Promise.reject(new Error('error')))
 
-      authStore = new AuthStore(authAPI)
       await authStore.userSignIn(requestObject, onSuccess, onFailure)
+
       expect(authStore.apiStatus).toBe(API_FAILED)
       expect(onFailure).toBeCalled()
    })

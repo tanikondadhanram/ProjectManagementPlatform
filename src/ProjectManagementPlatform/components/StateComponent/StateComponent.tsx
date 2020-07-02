@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { observable, action, toJS } from 'mobx'
+import { observable, action } from 'mobx'
 import { API_FETCHING } from '@ib/api-constants'
 import { observer } from 'mobx-react'
 import Select from 'react-select'

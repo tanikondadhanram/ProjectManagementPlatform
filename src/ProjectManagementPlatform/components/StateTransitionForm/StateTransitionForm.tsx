@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Select from 'react-select'
 
-import stringConstants from '../../strings/stringConstants.json'
-
 import {
    Container,
    FeildContainer,
@@ -11,7 +9,7 @@ import {
    FormHeading,
    FormTag
 } from './styledComponents'
-import { Button } from '../../../Common/components/Button'
+import { ButtonWithLoader } from '../../../Common/components/ButtonWithLoader'
 import { inject, observer } from 'mobx-react'
 import LoadingWrapperWithFailure from '../../../Common/components/LoadingWrapperWithFailure'
 
@@ -51,7 +49,7 @@ class StateTransitionForm extends Component<any, any> {
    updateState = async event => {
       event.preventDefault()
       const {
-         toggleModal,
+         // toggleModal,
          toStateId,
          checkListStore,
          taskDetails,
@@ -112,22 +110,21 @@ class StateTransitionForm extends Component<any, any> {
                />
             </FeildContainer>
             {checkList ? this.getCheckListOptions() : null}
-            <Button
+            {/* <Button
                type='submit'
                className='mt-24'
                apiStatus={postApiStatus}
                value='update'
-            />
+            /> */}
          </FormTag>
       )
    })
 
    render() {
-      const { toggleModal, taskDetails, checkListStore } = this.props
+      const { checkListStore } = this.props
 
-      const { checkList, apiStatus, apiError, getCheckList } = checkListStore
-
-      const { state } = taskDetails
+      const { apiStatus, apiError } = checkListStore
+      // const { state } = taskDetails
 
       const loadingWrapperProps = {
          apiStatus,

@@ -1,8 +1,11 @@
+import { resolveWithTimeout } from '../../../Common/utils/timeOutUtils'
+
 import userData from '../../fixtures/userData.json'
 
-class AuthFixtureService {
-   signInAPI = () =>
-      new Promise(resolve => setTimeout(() => resolve(userData), 2000))
+import { AuthService } from '.'
+
+class AuthFixtureService implements AuthService {
+   signInAPI = (): Promise<any> => resolveWithTimeout(userData)
 }
 
 export { AuthFixtureService }

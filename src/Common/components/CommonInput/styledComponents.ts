@@ -1,13 +1,12 @@
 import styled from '@emotion/styled'
 import tw from 'tailwind.macro'
 import { colors } from '../../themes/colors'
-import { css } from '@emotion/core'
 
 export const InputFieldContainer = styled.div`
    ${tw`flex flex-col mb-2 h-24 w-full `}
 `
 
-export const InputFeildTag = styled.input`
+export const InputFieldTag = styled.input`
    ${tw`outline-none my-2 p-3 w-full h-12 border-2 text-base`};
    border-radius: 2px;
    border: solid 1px
@@ -24,7 +23,7 @@ export const InputFeildTag = styled.input`
    letter-spacing: normal;
 `
 
-export const LabelForInputFeild = styled.label`
+export const LabelForInputField = styled.label`
    ${tw` w-full text-sm`};
    width: 63px;
    height: 16px;

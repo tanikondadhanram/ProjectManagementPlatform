@@ -1,54 +1,65 @@
 import { observable, action } from 'mobx'
-import { API_INITIAL } from '@ib/api-constants'
+
+import { API_INITIAL, APIStatus } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 import { setAccessToken } from '../../../Common/utils/StorageUtils'
 
-class AuthStore {
-   @observable apiStatus!: number
-   @observable apiError!: string | null
-   @observable apiResponse: any
-   authService: any
+import { AuthService } from '../../services/AuthService'
 
-   constructor(authAPI: any) {
+import { SignInAPIResponse, SignInAPIRequestObject } from '../types'
+
+class AuthStore {
+   @observable signInApiStatus!: APIStatus
+   @observable signInApiError!: Error | null
+   @observable signInApiResponse!: SignInAPIResponse | null
+   authService: AuthService
+
+   constructor(authAPI: AuthService) {
       this.authService = authAPI
       this.init()
    }
 
    @action.bound
-   init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+   init(): void {
+      this.signInApiStatus = API_INITIAL
+      this.signInApiError = null
    }
 
    @action.bound
-   clearStore() {
+   clearStore(): void {
       this.init()
    }
 
    @action.bound
-   setUserSignInAPIStatus(status: number) {
-      this.apiStatus = status
+   setUserSignInAPIStatus(status: APIStatus): void {
+      this.signInApiStatus = status
    }
 
    @action.bound
-   setUserSignInAPIError(error: any) {
-      this.apiError = error
+   setUserSignInAPIError(error: Error): void {
+      this.signInApiError = error
    }
 
    @action.bound
-   setUserSignInAPIResponse(response: any) {
-      setAccessToken(response['access_token'])
-      this.apiResponse = response
+   setUserSignInAPIResponse(response: SignInAPIResponse | null): void {
+      if (response) {
+         setAccessToken(response['access_token'])
+         this.signInApiResponse = response
 
-      window.localStorage.setItem(
-         'userDetails',
-         JSON.stringify(JSON.stringify(response))
-      )
+         window.localStorage.setItem(
+            'userDetails',
+            JSON.stringify(JSON.stringify(response))
+         )
+      }
    }
 
    @action.bound
-   async userSignIn(userDetails, onSignInSuccess, onSignInFailure) {
+   async userSignIn(
+      userDetails: SignInAPIRequestObject,
+      onSignInSuccess: Function,
+      onSignInFailure: Function
+   ): Promise<any> {
       const userSignInAPIPromise = this.authService.signInAPI(userDetails)
 
       return bindPromiseWithOnSuccess(userSignInAPIPromise)

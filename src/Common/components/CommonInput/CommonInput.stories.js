@@ -1,5 +1,5 @@
 import React from 'react'
-import InputField from './InputField'
+import InputField from './CommonInput'
 import { withKnobs, text } from '@storybook/addon-knobs'
 
 export default {
