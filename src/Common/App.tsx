@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import { Provider } from 'mobx-react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
-import { I18nextProvider, useTranslation } from 'react-i18next'
+import { I18nextProvider } from 'react-i18next'
 
 import { routes } from '../Common/routes'
 

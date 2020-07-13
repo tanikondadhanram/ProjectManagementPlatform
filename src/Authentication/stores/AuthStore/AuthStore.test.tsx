@@ -28,8 +28,8 @@ describe('AuthStore Tests', () => {
    })
 
    it('should test initialising auth store', () => {
-      expect(authStore.apiStatus).toBe(API_INITIAL)
-      expect(authStore.apiError).toBe(null)
+      expect(authStore.signInApiStatus).toBe(API_INITIAL)
+      expect(authStore.signInApiError).toBe(null)
    })
 
    it('should test userSignInAPI data fetching state', () => {
@@ -42,7 +42,7 @@ describe('AuthStore Tests', () => {
       }
 
       authStore.userSignIn(requestObject, onSuccess, onFailure)
-      expect(authStore.apiStatus).toBe(API_FETCHING)
+      expect(authStore.signInApiStatus).toBe(API_FETCHING)
    })
 
    it('should test userSignInAPI success state', async () => {
@@ -60,7 +60,7 @@ describe('AuthStore Tests', () => {
       authAPI.signInAPI = mockSignInAPI
 
       await authStore.userSignIn(requestObject, onSuccess, onFailure)
-      expect(authStore.apiStatus).toBe(API_SUCCESS)
+      expect(authStore.signInApiStatus).toBe(API_SUCCESS)
       expect(mockSetCookie).toBeCalled()
       expect(onSuccess).toBeCalled()
    })
@@ -80,13 +80,13 @@ describe('AuthStore Tests', () => {
 
       await authStore.userSignIn(requestObject, onSuccess, onFailure)
 
-      expect(authStore.apiStatus).toBe(API_FAILED)
+      expect(authStore.signInApiStatus).toBe(API_FAILED)
       expect(onFailure).toBeCalled()
    })
 
    it('Should Test Store Is Cleared', () => {
       authStore.clearStore()
-      expect(authStore.apiStatus).toBe(API_INITIAL)
-      expect(authStore.apiError).toBe(null)
+      expect(authStore.signInApiStatus).toBe(API_INITIAL)
+      expect(authStore.signInApiError).toBe(null)
    })
 })
