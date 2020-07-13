@@ -3,9 +3,9 @@ import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import { API_INITIAL } from '@ib/api-constants'
 
 class WorkFlowStore {
-   @observable apiStatus!: number
-   @observable apiError!: null | string
-    workFlowTypes!: any
+   @observable workFlowStoreApiStatus!: number
+   @observable workFlowStoreApiError!: null | string
+   workFlowTypes!: any
    workFlowService
 
    constructor(service) {
@@ -15,8 +15,8 @@ class WorkFlowStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.workFlowStoreApiStatus = API_INITIAL
+      this.workFlowStoreApiError = null
    }
 
    @action.bound
@@ -25,13 +25,13 @@ class WorkFlowStore {
    }
 
    @action.bound
-   setGetWorkFlowAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetWorkFlowStoreApiStatus(status: number) {
+      this.workFlowStoreApiStatus = status
    }
 
    @action.bound
-   setGetWorkFlowAPIError(error: string) {
-      this.apiError = error
+   setGetWorkFlowStoreApiError(error: string) {
+      this.workFlowStoreApiError = error
    }
 
    @action.bound
@@ -43,11 +43,11 @@ class WorkFlowStore {
    getWorkFlowTypes() {
       const workFlowPromise = this.workFlowService.getWorkFlowAPI()
       return bindPromiseWithOnSuccess(workFlowPromise)
-         .to(this.setGetWorkFlowAPIStatus, response => {
+         .to(this.setGetWorkFlowStoreApiStatus, response => {
             this.setGetWorkFlowAPIResponse(response)
          })
          .catch(error => {
-            this.setGetWorkFlowAPIError(error)
+            this.setGetWorkFlowStoreApiError(error)
          })
    }
 }

@@ -1,12 +1,14 @@
 import { observable, action, computed } from 'mobx'
+
 import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
+
 import ProjectModel from '../models/ProjectModel'
 
 class ProjectManagementPlatformStore {
-   @observable apiStatus!: number
-   @observable apiError!: string | null
-   @observable listOfProjects!: any
+   @observable pmpStoreApiStatus!: number
+   @observable pmpStoreApiError!: string | null
+   @observable listOfProjects!: Array<ProjectModel>
    @observable offset!: number
    @observable limit!: number
    @observable totalProjectsLength!: number
@@ -19,8 +21,8 @@ class ProjectManagementPlatformStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.pmpStoreApiStatus = API_INITIAL
+      this.pmpStoreApiError = null
       this.listOfProjects = []
       this.offset = 0
       this.limit = 10
@@ -39,13 +41,13 @@ class ProjectManagementPlatformStore {
    }
 
    @action.bound
-   setGetProjectsAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetProjectspmpStoreApiStatus(status: number) {
+      this.pmpStoreApiStatus = status
    }
 
    @action.bound
-   setGetProjectsAPIError(error: string) {
-      this.apiError = error
+   setGetProjectssetGetProjectspmpStoreApiError(error: string) {
+      this.pmpStoreApiError = error
    }
 
    @action.bound
@@ -65,11 +67,11 @@ class ProjectManagementPlatformStore {
 
       const projectsPromise = this.projectsService.getProjectsAPI(requestObject)
       return bindPromiseWithOnSuccess(projectsPromise)
-         .to(this.setGetProjectsAPIStatus, response => {
+         .to(this.setGetProjectspmpStoreApiStatus, response => {
             this.setGetProjectsAPIResponse(response)
          })
          .catch(error => {
-            this.setGetProjectsAPIError(error)
+            this.setGetProjectssetGetProjectspmpStoreApiError(error)
          })
    }
 

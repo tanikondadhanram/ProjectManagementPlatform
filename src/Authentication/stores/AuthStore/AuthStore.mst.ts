@@ -1,6 +1,7 @@
 import { types } from 'mobx-state-tree'
 
 import { setAccessToken } from '../../../Common/utils/StorageUtils'
+import { API_INITIAL } from '@ib/api-constants'
 
 const SignInResponseModel = types.model({
    access_token: types.string,
@@ -18,6 +19,13 @@ const AuthMstModel = types
       signInApiResponse: types.maybeNull(SignInResponseModel)
    })
    .actions(self => ({
+      init() {
+         self.signInApiStatus = API_INITIAL
+         self.signInApiError = null
+      },
+      clearStore() {
+         this.init()
+      },
       setUserSignInAPIStatus(status) {
          self.signInApiStatus = status
       },

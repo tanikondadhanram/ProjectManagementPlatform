@@ -1,3 +1,6 @@
+import { types } from 'mobx-state-tree'
+
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import {
    API_INITIAL,
    API_FETCHING,
@@ -5,52 +8,78 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import ProjectsFixturesAPI from '../../services/ProjectsService/index.fixtures'
+import ProjectsAPI from '../../services/ProjectsService/index.mst'
 
 import listOfProjects from '../../fixtures/ListOfProjects.json'
 
-import { ProjectManagementPlatformStore } from '.'
+import ProjectManagementPlatformStore from './pmpStore.mst'
+import { type } from 'os'
 
 describe('ProjectManagementPlatformStore tests', () => {
-   let projectsApi
    let projectsStore
 
    beforeEach(() => {
-      projectsApi = new ProjectsFixturesAPI()
-      projectsStore = new ProjectManagementPlatformStore(projectsApi)
+      const ProjectManagementPlatformStoreWithService = types
+         .compose(ProjectManagementPlatformStore, ProjectsAPI)
+         .actions(self => ({
+            getProjects() {
+               const requestObject = {
+                  limit: self.limit,
+                  offset: self.offset
+               }
+
+               const projectsPromise = self.getProjectsAPI(requestObject)
+               return bindPromiseWithOnSuccess(projectsPromise)
+                  .to(self.setGetPmpStoreApiStatus, response => {
+                     self.setGetProjectsAPIResponse(response)
+                  })
+                  .catch(error => {
+                     self.setGetPmpStoreApiError(error)
+                  })
+            }
+         }))
+      projectsStore = ProjectManagementPlatformStoreWithService.create({
+         pmpStoreApiStatus: API_INITIAL,
+         pmpStoreApiError: null,
+
+         listOfProjects: [],
+         offset: 0,
+         limit: 10,
+         totalProjectsLength: 0
+      })
    })
 
    it('Should Test Store Is Initialised', () => {
-      expect(projectsStore.apiStatus).toBe(API_INITIAL)
-      expect(projectsStore.apiError).toBe(null)
+      expect(projectsStore.pmpStoreApiStatus).toBe(API_INITIAL)
+      expect(projectsStore.pmpStoreApiError).toBe(null)
    })
 
-   it('Should Test Store apiStatus Is Fetching', () => {
+   it('Should Test Store pmpStoreApiStatus Is Fetching', () => {
       projectsStore.getProjects()
-      expect(projectsStore.apiStatus).toBe(API_FETCHING)
+      expect(projectsStore.pmpStoreApiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store apiStatus Is Success', async () => {
+   it('Should Test Store pmpStoreApiStatus Is Success', async () => {
       const mockSuccessPromise = Promise.resolve({
          total_projects: listOfProjects.length,
          projects: listOfProjects
       })
       const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
 
-      projectsApi.getProjectsAPI = mockSignInAPI
+      projectsStore.getProjectsAPI = mockSignInAPI
 
       await projectsStore.getProjects()
-      expect(projectsStore.apiStatus).toBe(API_SUCCESS)
+      expect(projectsStore.pmpStoreApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store pmpStoreApiStatus Is Failed', async () => {
       const mockSuccessPromise = Promise.reject('error')
       const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
 
-      projectsApi.getProjectsAPI = mockSignInAPI
+      projectsStore.getProjectsAPI = mockSignInAPI
 
       await projectsStore.getProjects()
-      expect(projectsStore.apiStatus).toBe(API_FAILED)
+      expect(projectsStore.pmpStoreApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test NavigateToClickedPage Fn', () => {
@@ -60,7 +89,7 @@ describe('ProjectManagementPlatformStore tests', () => {
 
    it('Should Test Store Is Cleared', () => {
       projectsStore.clearStore()
-      expect(projectsStore.apiStatus).toBe(API_INITIAL)
-      expect(projectsStore.apiError).toBe(null)
+      expect(projectsStore.pmpStoreApiStatus).toBe(API_INITIAL)
+      expect(projectsStore.pmpStoreApiError).toBe(null)
    })
 })

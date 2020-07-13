@@ -3,9 +3,9 @@ import { API_INITIAL } from '@ib/api-constants'
 import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 class ProjectPostStore {
-   @observable apiStatus!: number
-   @observable apiError!: null | string
-   apiResponse!: any
+   @observable projectPostStoreApiStatus!: number
+   @observable projectPostStoreApiError!: null | string
+   projectPostStoreApiResponse!: any
    projectPostService
 
    constructor(service) {
@@ -15,8 +15,8 @@ class ProjectPostStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.projectPostStoreApiStatus = API_INITIAL
+      this.projectPostStoreApiError = null
    }
 
    @action.bound
@@ -25,18 +25,18 @@ class ProjectPostStore {
    }
 
    @action.bound
-   setGetWorkFlowAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetProjectPostStoreApiStatus(status: number) {
+      this.projectPostStoreApiStatus = status
    }
 
    @action.bound
-   setGetWorkFlowAPIError(error: string) {
-      this.apiError = error
+   setGetProjectPostStoreApiError(error: string) {
+      this.projectPostStoreApiError = error
    }
 
    @action.bound
-   setGetWorkFlowAPIResponse(response: any) {
-      this.apiResponse = response
+   setGetProjectPostStoreApiResponse(response: any) {
+      this.projectPostStoreApiResponse = response
    }
 
    @action.bound
@@ -49,12 +49,12 @@ class ProjectPostStore {
          requsetObject
       )
       return bindPromiseWithOnSuccess(projectPostPromise)
-         .to(this.setGetWorkFlowAPIStatus, response => {
-            this.setGetWorkFlowAPIResponse(response)
+         .to(this.setGetProjectPostStoreApiStatus, response => {
+            this.setGetProjectPostStoreApiResponse(response)
             onPostSuccess()
          })
          .catch(error => {
-            this.setGetWorkFlowAPIError(error)
+            this.setGetProjectPostStoreApiError(error)
             onPostFailure()
          })
    }

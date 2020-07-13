@@ -4,8 +4,8 @@ import { API_INITIAL } from '@ib/api-constants'
 import TaskModel from '../models/TaskModel'
 
 class TasksStore {
-   @observable apiStatus!: number
-   @observable apiError!: null | string
+   @observable taskStoreApiStatus!: number
+   @observable taskStoreApiError!: null | string
    @observable listOfTasks!: any
    @observable offset!: number
    limit!: number
@@ -18,8 +18,8 @@ class TasksStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.taskStoreApiStatus = API_INITIAL
+      this.taskStoreApiError = null
       this.offset = 0
       this.limit = 10
       this.listOfTasks = []
@@ -37,17 +37,17 @@ class TasksStore {
    }
 
    @action.bound
-   setGetListOfTasksAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetTaskStoreApiStatus(status: number) {
+      this.taskStoreApiStatus = status
    }
 
    @action.bound
-   setGetListOfTasksAPIError(error: string) {
-      this.apiError = error
+   setGetTaskStoreApiError(error: string) {
+      this.taskStoreApiError = error
    }
 
    @action.bound
-   setGetListOfTasksAPIResponse(response: any) {
+   setGetTaskStoreAPIResponse(response: any) {
       this.listOfTasks = response.tasks.map(
          eachTask => new TaskModel(eachTask, this.listOfTasksService)
       )
@@ -64,8 +64,8 @@ class TasksStore {
          requestObject
       )
       return bindPromiseWithOnSuccess(listOfTasksPromise)
-         .to(this.setGetListOfTasksAPIStatus, this.setGetListOfTasksAPIResponse)
-         .catch(this.setGetListOfTasksAPIError)
+         .to(this.setGetTaskStoreApiStatus, this.setGetTaskStoreAPIResponse)
+         .catch(this.setGetTaskStoreApiError)
    }
 
    // @computed
