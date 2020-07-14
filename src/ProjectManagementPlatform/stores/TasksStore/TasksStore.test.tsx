@@ -5,17 +5,26 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import TasksStore from './TasksStore'
+import ListOfTasksService from '../../services/ListOfTasksService/index.mst'
 
-import ListOfTasksFixtureService from '../../services/ListOfTasksService/index.fixture'
+import TasksStoreModel from './TasksStore.mst'
 
 describe('TasksStore Tests', () => {
-   let tasksApi
+   let listOfTasksService
    let tasksStore
 
    beforeEach(() => {
-      tasksApi = new ListOfTasksFixtureService()
-      tasksStore = new TasksStore(tasksApi)
+      listOfTasksService = ListOfTasksService.create()
+      tasksStore = TasksStoreModel.create(
+         {
+            taskStoreApiStatus: 0,
+            taskStoreApiError: null,
+            listOfTasks: null,
+            offset: 0,
+            limit: 10
+         },
+         { listOfTasksService }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -41,7 +50,7 @@ describe('TasksStore Tests', () => {
          new Promise((resolve, reject) => reject('Failed'))
       )
 
-      tasksApi.getListOfTasksAPI = mockApi
+      listOfTasksService.getListOfTasksAPI = mockApi
 
       await tasksStore.getListOfTasks()
 

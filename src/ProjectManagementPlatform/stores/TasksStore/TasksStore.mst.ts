@@ -1,5 +1,6 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 const UserModel = types.model({
    username: types.string,
@@ -21,7 +22,7 @@ const TaskStoreModel = types
    .model({
       taskStoreApiStatus: types.number,
       taskStoreApiError: types.maybeNull(types.string),
-      listOfTasks: types.maybeNull(TaskModel),
+      listOfTasks: types.maybeNull(types.array(TaskModel)),
       offset: types.number,
       limit: types.number
    })
@@ -65,6 +66,19 @@ const TaskStoreModel = types
                total_tasks: 20
             })
          )
+      },
+      getListOfTasks(projectId) {
+         const requestObject = {
+            limit: self.limit,
+            offset: self.offset,
+            projectId
+         }
+         const listOfTasksPromise = getEnv(
+            self
+         ).listOfTasksService.getListOfTasksAPI(requestObject)
+         return bindPromiseWithOnSuccess(listOfTasksPromise)
+            .to(this.setGetTaskStoreApiStatus, this.setGetTaskStoreAPIResponse)
+            .catch(this.setGetTaskStoreApiError)
       }
    }))
 

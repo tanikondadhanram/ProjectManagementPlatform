@@ -5,17 +5,24 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import StatesFixtureService from '../../services/GetStatesService/index.fixture'
+import StatesService from '../../services/GetStatesService/index.mst'
 
-import StatesStore from './StatesStore'
+import StatesStoreModel from './statesStore.mst'
 
 describe('StatesStore Tests', () => {
    let statesService
    let statesStore
 
    beforeEach(() => {
-      statesService = new StatesFixtureService()
-      statesStore = new StatesStore(statesService)
+      statesService = StatesService.create()
+      statesStore = StatesStoreModel.create(
+         {
+            statesStoreApiStatus: API_INITIAL,
+            statesStoreApiError: null,
+            statesStoreApiResponse: null
+         },
+         { statesService }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {

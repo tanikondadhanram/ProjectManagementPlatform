@@ -1,5 +1,7 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
+
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 const ProjectPostModel = types.model({
    response: types.string
@@ -27,6 +29,24 @@ const ProjectPostStore = types
       },
       setGetProjectPostStoreApiResponse(response) {
          self.projectPostStoreApiResponse = response
+      },
+      projectPostCall(
+         requestObject,
+         onPostSuccess = () => null,
+         onPostFailure = () => null
+      ) {
+         const projectPostPromise = getEnv(
+            self
+         ).projectPostService.postProjectAPI(requestObject)
+         return bindPromiseWithOnSuccess(projectPostPromise)
+            .to(this.setGetProjectPostStoreApiStatus, response => {
+               this.setGetProjectPostStoreApiResponse(response)
+               onPostSuccess()
+            })
+            .catch(error => {
+               this.setGetProjectPostStoreApiError(error)
+               onPostFailure()
+            })
       }
    }))
 

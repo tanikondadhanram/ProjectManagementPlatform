@@ -8,39 +8,21 @@ import {
 import ProjectPostService from '../../services/ProjectPostService/index.mst'
 
 import ProjectPostStore from './ProjectPostStore.mst'
-import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
-import { types } from 'mobx-state-tree'
 
 describe('ProjectPostStore Tests', () => {
+   let projectPostService
    let projectPostStore
 
    beforeEach(() => {
-      const ProjectPostStoreWithService = types
-         .compose(ProjectPostService, ProjectPostStore)
-         .actions(self => ({
-            projectPostCall(
-               requestObject,
-               onPostSuccess = () => null,
-               onPostFailure = () => null
-            ) {
-               const projectPostPromise = self.postProjectAPI(requestObject)
-               return bindPromiseWithOnSuccess(projectPostPromise)
-                  .to(self.setGetProjectPostStoreApiStatus, response => {
-                     self.setGetProjectPostStoreApiResponse(response)
-                     onPostSuccess()
-                  })
-                  .catch(error => {
-                     self.setGetProjectPostStoreApiError(error)
-                     onPostFailure()
-                  })
-            }
-         }))
-
-      projectPostStore = ProjectPostStoreWithService.create({
-         projectPostStoreApiStatus: 0,
-         projectPostStoreApiError: null,
-         projectPostStoreApiResponse: null
-      })
+      projectPostService = ProjectPostService.create()
+      projectPostStore = ProjectPostStore.create(
+         {
+            projectPostStoreApiStatus: 0,
+            projectPostStoreApiError: null,
+            projectPostStoreApiResponse: null
+         },
+         { projectPostService }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -65,7 +47,7 @@ describe('ProjectPostStore Tests', () => {
          new Promise((resolve, reject) => reject('Failed'))
       )
 
-      projectPostStore.postProjectAPI = mockApi
+      projectPostService.postProjectAPI = mockApi
 
       await projectPostStore.projectPostCall()
 

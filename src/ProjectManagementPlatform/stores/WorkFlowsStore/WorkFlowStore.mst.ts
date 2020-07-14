@@ -1,4 +1,6 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
+
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 const WorkFlowModel = types.model({
    todo: types.string,
@@ -28,6 +30,16 @@ const WorkFlowStoreModel = types
       },
       setGetWorkFlowAPIResponse(response) {
          self.workFlowTypes = response
+      },
+      getWorkFlowTypes() {
+         const workFlowPromise = getEnv(self).workFlowService.getWorkFlowAPI({})
+         return bindPromiseWithOnSuccess(workFlowPromise)
+            .to(this.setGetWorkFlowStoreApiStatus, response => {
+               this.setGetWorkFlowAPIResponse(response)
+            })
+            .catch(error => {
+               this.setGetWorkFlowStoreApiError(error)
+            })
       }
    }))
 

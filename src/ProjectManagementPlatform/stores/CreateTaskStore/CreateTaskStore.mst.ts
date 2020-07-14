@@ -1,5 +1,7 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
+
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 const CreateTaskStoreModel = types
    .model({
@@ -23,6 +25,24 @@ const CreateTaskStoreModel = types
       },
       setGetCreateTaskCreateTaskAPiResponse(response: any) {
          self.createTaskApiResponse = response
+      },
+      postCreatedTask(
+         requsetObject,
+         onTaskCreatedSuccessfully = () => null,
+         onTaskCreatedFailure = () => null
+      ) {
+         const workFlowPromise = getEnv(self).createTaskService.CreateTaskAPI(
+            requsetObject
+         )
+         return bindPromiseWithOnSuccess(workFlowPromise)
+            .to(this.setGetCreateTaskCreateTaskApiStatus, response => {
+               this.setGetCreateTaskCreateTaskAPiResponse(response)
+               onTaskCreatedSuccessfully()
+            })
+            .catch(error => {
+               this.setGetCreateTaskCreateTaskAPiError(error)
+               onTaskCreatedFailure()
+            })
       }
    }))
 

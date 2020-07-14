@@ -1,12 +1,18 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
 
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
+
+const StateModel = types.model({
+   state_id: types.number,
+   name: types.string
+})
 
 const StatesStoreModel = types
    .model({
       statesStoreApiStatus: types.number,
       statesStoreApiError: types.maybeNull(types.string),
-      statesStoreApiResponse: types.maybeNull(types.string)
+      statesStoreApiResponse: types.maybeNull(types.array(StateModel))
    })
    .actions(self => ({
       init() {
@@ -24,6 +30,16 @@ const StatesStoreModel = types
       },
       setGetStatesAPIResponse(response: any) {
          self.statesStoreApiResponse = response.states
+      },
+      getStates(requestObject) {
+         const statesPromise = getEnv(self).statesService.getStatesAPI()
+         return bindPromiseWithOnSuccess(statesPromise)
+            .to(this.setGetStatesStoreApiStatus, response => {
+               this.setGetStatesAPIResponse(response)
+            })
+            .catch(error => {
+               this.setGetStatesStoreApiError(error)
+            })
       }
    }))
 

@@ -5,17 +5,24 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import { CreateTaskStore } from '.'
+import CreateTaskService from '../../services/CreateTaskService/index.mst'
 
-import CreateTaskFixtureService from '../../services/CreateTaskService/index.fixture'
+import CreateTaskStoreModel from './CreateTaskStore.mst'
 
 describe('WorkFlowStore Tests', () => {
-   let createTaskApi
+   let createTaskService
    let createTaskStore
 
    beforeEach(() => {
-      createTaskApi = new CreateTaskFixtureService()
-      createTaskStore = new CreateTaskStore(createTaskApi)
+      createTaskService = CreateTaskService.create()
+      createTaskStore = CreateTaskStoreModel.create(
+         {
+            createTaskApiStatus: API_INITIAL,
+            createTaskApiError: null,
+            createTaskApiResponse: null
+         },
+         { createTaskService }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -40,7 +47,7 @@ describe('WorkFlowStore Tests', () => {
          new Promise((resolve, reject) => reject('Failed'))
       )
 
-      createTaskApi.CreateTaskAPI = mockApi
+      createTaskService.CreateTaskAPI = mockApi
 
       await createTaskStore.postCreatedTask()
 

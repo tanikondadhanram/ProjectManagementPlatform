@@ -6,36 +6,26 @@ import {
    API_SUCCESS,
    API_FAILED
 } from '@ib/api-constants'
-import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 import WorkFlowService from '../../services/WorkFlowService/index.mst'
 
 import WorkFlowStoreModel from './WorkFlowStore.mst'
 
 describe('WorkFlowStore Tests', () => {
+   let workFlowService
    let workFlowStore
 
    beforeEach(() => {
-      const WorkFlowStoreWithService = types
-         .compose(WorkFlowStoreModel, WorkFlowService)
-         .actions(self => ({
-            getWorkFlowTypes() {
-               const workFlowPromise = self.getWorkFlowAPI({})
-               return bindPromiseWithOnSuccess(workFlowPromise)
-                  .to(self.setGetWorkFlowStoreApiStatus, response => {
-                     self.setGetWorkFlowAPIResponse(response)
-                  })
-                  .catch(error => {
-                     self.setGetWorkFlowStoreApiError(error)
-                  })
-            }
-         }))
+      workFlowService = WorkFlowService.create()
 
-      workFlowStore = WorkFlowStoreWithService.create({
-         workFlowStoreApiStatus: 0,
-         workFlowStoreApiError: null,
-         workFlowTypes: null
-      })
+      workFlowStore = WorkFlowStoreModel.create(
+         {
+            workFlowStoreApiStatus: 0,
+            workFlowStoreApiError: null,
+            workFlowTypes: null
+         },
+         { workFlowService }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -58,11 +48,11 @@ describe('WorkFlowStore Tests', () => {
 
       mockApi.mockReturnValue(Promise.reject(new Error('Failed')))
 
-      workFlowStore.getWorkFlowStore = mockApi
+      workFlowService.getWorkFlowAPI = mockApi
 
       await workFlowStore.getWorkFlowTypes()
 
-      expect(workFlowStore.workFlowStoreApiStatus + 200).toBe(API_FAILED)
+      expect(workFlowStore.workFlowStoreApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test Store Is Cleared', () => {

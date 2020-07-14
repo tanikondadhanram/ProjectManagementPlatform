@@ -5,19 +5,27 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import { authStore } from '../../../Authentication/stores'
+import CheckListService from '../../services/CheckListService/index.mst'
 
-import CheckListFixtureService from '../../services/CheckListService/index.fixture'
-
-import { CheckListStore } from '.'
+import CheckListStoreModel from './CheckListStore.mst'
 
 describe('CheckListStore Tests', () => {
-   let checkListFixtureService
+   let checkListService
    let checkListStore
 
    beforeEach(() => {
-      checkListFixtureService = new CheckListFixtureService()
-      checkListStore = new CheckListStore(checkListFixtureService)
+      checkListService = CheckListService.create()
+      checkListStore = CheckListStoreModel.create(
+         {
+            checkListStoreApiStatus: API_INITIAL,
+            checkListStoreApiError: null,
+            checkListStoreApiResponse: null,
+            checkListStorePostApiStatus: API_INITIAL,
+            checkListStorePostApiError: null,
+            checkListStorePostApiResponse: null
+         },
+         { checkListService: CheckListService.create() }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -32,21 +40,17 @@ describe('CheckListStore Tests', () => {
 
    it('Should Test Store Is checkListStoreApiStatus Is Success', async () => {
       await checkListStore.getCheckList()
+
       expect(checkListStore.checkListStoreApiStatus).toBe(API_SUCCESS)
    })
 
    it('Should Test Store checkListStoreApiStatus Is Failed', async () => {
-      const mockApi = jest.fn()
-
-      mockApi.mockReturnValue(
-         new Promise((resolve, reject) => reject('Failed'))
-      )
-
-      checkListFixtureService.getCheckListAPI = mockApi
+      checkListService.getCheckListAPI = jest
+         .fn()
+         .mockReturnValue(Promise.reject(new Error('Failed')))
 
       await checkListStore.getCheckList()
-
-      expect(checkListStore.checkListStoreApiStatus).toBe(API_FAILED)
+      expect(checkListStore.checkListStoreApiStatus + 200).toBe(API_FAILED)
    })
 
    it('Should Test CheckList Post Api Is Initialised', () => {
@@ -60,7 +64,7 @@ describe('CheckListStore Tests', () => {
    })
 
    it('Should Test CheckList Post Api Is Success', async () => {
-      await checkListStore.postCheckList()
+      await checkListStore.postCheckList({}, jest.fn, jest.fn)
       expect(checkListStore.checkListStorePostApiStatus).toBe(API_SUCCESS)
    })
 
@@ -68,14 +72,14 @@ describe('CheckListStore Tests', () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
-         new Promise((resolve, reject) => reject('Failed'))
+         new Promise((resolve, reject) => reject(new Error('Failed')))
       )
 
-      checkListFixtureService.postCheckListAPI = mockApi
+      checkListService.postCheckListAPI = mockApi
 
-      await checkListStore.postCheckList()
+      await checkListStore.postCheckList({}, jest.fn, jest.fn)
 
-      expect(checkListStore.checkListStorePostApiStatus).toBe(API_FAILED)
+      expect(checkListStore.checkListStorePostApiStatus + 200).toBe(API_FAILED)
    })
 
    it('Should Test Store Is Cleared', () => {

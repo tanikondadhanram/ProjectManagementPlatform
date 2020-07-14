@@ -8,45 +8,33 @@ import {
    API_FAILED
 } from '@ib/api-constants'
 
-import ProjectsAPI from '../../services/ProjectsService/index.mst'
+import ProjectsService from '../../services/ProjectsService/index.mst'
 
 import listOfProjects from '../../fixtures/ListOfProjects.json'
 
 import ProjectManagementPlatformStore from './pmpStore.mst'
-import { type } from 'os'
 
 describe('ProjectManagementPlatformStore tests', () => {
+   let projectsService
    let projectsStore
 
    beforeEach(() => {
-      const ProjectManagementPlatformStoreWithService = types
-         .compose(ProjectManagementPlatformStore, ProjectsAPI)
-         .actions(self => ({
-            getProjects() {
-               const requestObject = {
-                  limit: self.limit,
-                  offset: self.offset
-               }
+      projectsService = ProjectsService.create()
 
-               const projectsPromise = self.getProjectsAPI(requestObject)
-               return bindPromiseWithOnSuccess(projectsPromise)
-                  .to(self.setGetPmpStoreApiStatus, response => {
-                     self.setGetProjectsAPIResponse(response)
-                  })
-                  .catch(error => {
-                     self.setGetPmpStoreApiError(error)
-                  })
-            }
-         }))
-      projectsStore = ProjectManagementPlatformStoreWithService.create({
-         pmpStoreApiStatus: API_INITIAL,
-         pmpStoreApiError: null,
+      projectsStore = ProjectManagementPlatformStore.create(
+         {
+            pmpStoreApiStatus: API_INITIAL,
+            pmpStoreApiError: null,
 
-         listOfProjects: [],
-         offset: 0,
-         limit: 10,
-         totalProjectsLength: 0
-      })
+            listOfProjects: [],
+            offset: 0,
+            limit: 10,
+            totalProjectsLength: 0
+         },
+         {
+            projectsService
+         }
+      )
    })
 
    it('Should Test Store Is Initialised', () => {
@@ -66,7 +54,7 @@ describe('ProjectManagementPlatformStore tests', () => {
       })
       const mockSignInAPI = jest.fn().mockReturnValue(mockSuccessPromise)
 
-      projectsStore.getProjectsAPI = mockSignInAPI
+      projectsService.getProjectsAPI = mockSignInAPI
 
       await projectsStore.getProjects()
       expect(projectsStore.pmpStoreApiStatus).toBe(API_SUCCESS)

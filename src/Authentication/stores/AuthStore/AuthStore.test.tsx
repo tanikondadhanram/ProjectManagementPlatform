@@ -9,8 +9,7 @@ import {
    API_INITIAL
 } from '@ib/api-constants'
 
-import { AuthMstFixtureService } from '../../services/AuthService/index.fixture.mst'
-
+import AuthMstFixtureService from '../../services/AuthService/index.fixture.mst'
 import usersData from '../../fixtures/userData.json'
 
 import AuthMstModel from './AuthStore.mst'
@@ -23,31 +22,20 @@ Cookie.remove = mockRemoveCookie
 
 describe('AuthStore Tests', () => {
    let authStore
+   let authService
 
    beforeEach(() => {
-      const AuthStoreWithService = types
-         .compose(AuthMstFixtureService, AuthMstModel)
-         .actions(self => ({
-            userSignIn(userDetails, onSignInSuccess, onSignInFailure) {
-               const userSignInAPIPromise = self.signInAPI(userDetails)
-
-               return bindPromiseWithOnSuccess(userSignInAPIPromise)
-                  .to(self.setUserSignInAPIStatus, response => {
-                     self.setUserSignInAPIResponse(response)
-                     onSignInSuccess()
-                  })
-                  .catch(error => {
-                     self.setUserSignInAPIError(error)
-                     onSignInFailure()
-                  })
-            }
-         }))
-
-      authStore = AuthStoreWithService.create({
-         signInApiStatus: API_INITIAL,
-         signInApiError: null,
-         signInApiResponse: null
-      })
+      authService = AuthMstFixtureService.create()
+      authStore = AuthMstModel.create(
+         {
+            signInApiStatus: API_INITIAL,
+            signInApiError: null,
+            signInApiResponse: null
+         },
+         {
+            authService
+         }
+      )
    })
 
    it('should test initialising auth store', () => {
@@ -80,7 +68,7 @@ describe('AuthStore Tests', () => {
       const mockSuccessPromise = Promise.resolve(usersData)
       const mockSignInAPI = jest.fn()
       mockSignInAPI.mockReturnValue(mockSuccessPromise)
-      authStore.signInAPI = mockSignInAPI
+      authService.signInAPI = mockSignInAPI
 
       await authStore.userSignIn(requestObject, onSuccess, onFailure)
       expect(authStore.signInApiStatus).toBe(API_SUCCESS)
@@ -97,8 +85,8 @@ describe('AuthStore Tests', () => {
          password: 'test-password'
       }
 
-      jest
-         .spyOn(authStore, 'signInAPI')
+      authService.signInAPI = jest
+         .fn()
          .mockImplementation(() => Promise.reject(new Error('error')))
 
       await authStore.userSignIn(requestObject, onSuccess, onFailure)

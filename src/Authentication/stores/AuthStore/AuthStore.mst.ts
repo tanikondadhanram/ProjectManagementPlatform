@@ -1,7 +1,9 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
+
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
+import { API_INITIAL } from '@ib/api-constants'
 
 import { setAccessToken } from '../../../Common/utils/StorageUtils'
-import { API_INITIAL } from '@ib/api-constants'
 
 const SignInResponseModel = types.model({
    access_token: types.string,
@@ -42,6 +44,21 @@ const AuthMstModel = types
                JSON.stringify(JSON.stringify(response))
             )
          }
+      },
+      userSignIn(userDetails, onSignInSuccess, onSignInFailure) {
+         const userSignInAPIPromise = getEnv(self).authService.signInAPI(
+            userDetails
+         )
+
+         return bindPromiseWithOnSuccess(userSignInAPIPromise)
+            .to(this.setUserSignInAPIStatus, response => {
+               this.setUserSignInAPIResponse(response)
+               onSignInSuccess()
+            })
+            .catch(error => {
+               this.setUserSignInAPIError(error)
+               onSignInFailure()
+            })
       }
    }))
 

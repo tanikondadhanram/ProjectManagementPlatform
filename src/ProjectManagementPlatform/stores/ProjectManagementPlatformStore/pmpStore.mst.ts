@@ -1,5 +1,7 @@
-import { types } from 'mobx-state-tree'
+import { types, getEnv } from 'mobx-state-tree'
+
 import { API_INITIAL } from '@ib/api-constants'
+import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 
 const DeveloperModel = types.model({
    name: types.string
@@ -60,6 +62,23 @@ const PmpStore = types
                developers: projectDetails.developers
             })
          )
+      },
+      getProjects() {
+         const requestObject = {
+            limit: self.limit,
+            offset: self.offset
+         }
+
+         const projectsPromise = getEnv(self).projectsService.getProjectsAPI(
+            requestObject
+         )
+         return bindPromiseWithOnSuccess(projectsPromise)
+            .to(this.setGetPmpStoreApiStatus, response => {
+               this.setGetProjectsAPIResponse(response)
+            })
+            .catch(error => {
+               this.setGetPmpStoreApiError(error)
+            })
       },
       navigateToClickedPage(paginationObject) {
          const pageNumber = paginationObject.selected

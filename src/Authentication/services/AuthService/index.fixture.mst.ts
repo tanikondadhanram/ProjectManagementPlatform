@@ -10,4 +10,4 @@ const AuthMstFixtureService = types.model().actions(self => ({
    }
 }))
 
-export { AuthMstFixtureService }
+export default AuthMstFixtureService
