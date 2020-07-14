@@ -79,8 +79,8 @@ class ListOfProjects extends Component<any, any> {
       const { projectManagementPlatformStore } = this.props
 
       const {
-         apiStatus,
-         apiError,
+         pmpStoreApiStatus,
+         pmpStoreApiError,
          getProjects,
          listOfProjects
       } = projectManagementPlatformStore
@@ -89,8 +89,8 @@ class ListOfProjects extends Component<any, any> {
          listOfProjects.length === 0 ? NoDataView : this.renderListOfProjects
 
       const props = {
-         apiStatus,
-         apiError,
+         apiStatus: pmpStoreApiStatus,
+         apiError: pmpStoreApiError,
          onRetryClick: getProjects,
          renderSuccessUI
       }

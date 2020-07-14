@@ -27,7 +27,7 @@ const projectManagementPlatformStore = ProjectManagementPlatformStore.create(
       totalProjectsLength: 0
    },
    {
-      ProjectsService: ProjectsAPI.create()
+      projectsService: ProjectsAPI.create()
    }
 )
 

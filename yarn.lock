@@ -10086,6 +10086,11 @@ mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+mobx-devtools-mst@0.9.22:
+  version "0.9.22"
+  resolved "https://registry.yarnpkg.com/mobx-devtools-mst/-/mobx-devtools-mst-0.9.22.tgz#51c7695064d78d31a9c416e7bc58c90a185575cc"
+  integrity sha512-Yi0zoZjy/HcpIYQSttJfzjP8sWvSDxwtemGB99wSvKCSITvWk0CRCeT149Ynhud6sJ9XUgZMdsSAd/kIuZ8vOQ==
+
 mobx-logger@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/mobx-logger/-/mobx-logger-0.7.1.tgz#6be44c726e14433463f5fa566f24f1768e2a9355"

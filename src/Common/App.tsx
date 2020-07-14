@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { Provider } from 'mobx-react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
+import makeInspectable from 'mobx-devtools-mst'
 
 import { routes } from '../Common/routes'
 
@@ -23,4 +24,4 @@ const App = () => {
    )
 }
 
-export default App
+export default makeInspectable(App)
