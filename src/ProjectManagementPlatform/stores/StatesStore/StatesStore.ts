@@ -3,9 +3,9 @@ import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import { API_INITIAL } from '@ib/api-constants'
 
 class StatesStore {
-   @observable apiStatus!: number
-   @observable apiError!: null | string
-   states!: any
+   @observable statesStoreApiStatus!: number
+   @observable statesStoreApiError!: null | string
+   statesStoreApiResponse!: any
    statesService
 
    constructor(service) {
@@ -15,8 +15,8 @@ class StatesStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.statesStoreApiStatus = API_INITIAL
+      this.statesStoreApiError = null
    }
 
    @action.bound
@@ -25,29 +25,29 @@ class StatesStore {
    }
 
    @action.bound
-   setGetStatesAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetStatesStoreApiStatus(status: number) {
+      this.statesStoreApiStatus = status
    }
 
    @action.bound
-   setGetStatesAPIError(error: any) {
-      this.apiError = error
+   setGetStatesStoreApiError(error: any) {
+      this.statesStoreApiError = error
    }
 
    @action.bound
    setGetStatesAPIResponse(response: any) {
-      this.states = response.states
+      this.statesStoreApiResponse = response.states
    }
 
    @action.bound
    getStates(requestObject) {
       const statesPromise = this.statesService.getStatesAPI(requestObject)
       return bindPromiseWithOnSuccess(statesPromise)
-         .to(this.setGetStatesAPIStatus, response => {
+         .to(this.setGetStatesStoreApiStatus, response => {
             this.setGetStatesAPIResponse(response)
          })
          .catch(error => {
-            this.setGetStatesAPIError(error)
+            this.setGetStatesStoreApiError(error)
          })
    }
 }

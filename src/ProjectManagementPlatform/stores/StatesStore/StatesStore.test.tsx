@@ -19,21 +19,21 @@ describe('StatesStore Tests', () => {
    })
 
    it('Should Test Store Is Initialised', () => {
-      expect(statesStore.apiStatus).toBe(API_INITIAL)
-      expect(statesStore.apiError).toBe(null)
+      expect(statesStore.statesStoreApiStatus).toBe(API_INITIAL)
+      expect(statesStore.statesStoreApiError).toBe(null)
    })
 
-   it('Should Test Store Is apiStatus Is Fetching', () => {
+   it('Should Test Store Is statesStoreApiStatus Is Fetching', () => {
       statesStore.getStates()
-      expect(statesStore.apiStatus).toBe(API_FETCHING)
+      expect(statesStore.statesStoreApiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store Is apiStatus Is Success', async () => {
+   it('Should Test Store Is statesStoreApiStatus Is Success', async () => {
       await statesStore.getStates()
-      expect(statesStore.apiStatus).toBe(API_SUCCESS)
+      expect(statesStore.statesStoreApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store statesStoreApiStatus Is Failed', async () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
@@ -44,12 +44,12 @@ describe('StatesStore Tests', () => {
 
       await statesStore.getStates()
 
-      expect(statesStore.apiStatus).toBe(API_FAILED)
+      expect(statesStore.statesStoreApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test Store Is Cleared', () => {
       statesStore.clearStore()
-      expect(statesStore.apiStatus).toBe(API_INITIAL)
-      expect(statesStore.apiError).toBe(null)
+      expect(statesStore.statesStoreApiStatus).toBe(API_INITIAL)
+      expect(statesStore.statesStoreApiError).toBe(null)
    })
 })

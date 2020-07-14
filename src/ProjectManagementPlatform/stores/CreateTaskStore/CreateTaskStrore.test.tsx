@@ -19,21 +19,21 @@ describe('WorkFlowStore Tests', () => {
    })
 
    it('Should Test Store Is Initialised', () => {
-      expect(createTaskStore.apiStatus).toBe(API_INITIAL)
-      expect(createTaskStore.apiError).toBe(null)
+      expect(createTaskStore.createTaskApiStatus).toBe(API_INITIAL)
+      expect(createTaskStore.createTaskApiError).toBe(null)
    })
 
-   it('Should Test Store Is apiStatus Is Fetching', () => {
+   it('Should Test Store Is createTaskApiStatus Is Fetching', () => {
       createTaskStore.postCreatedTask()
-      expect(createTaskStore.apiStatus).toBe(API_FETCHING)
+      expect(createTaskStore.createTaskApiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store Is apiStatus Is Success', async () => {
+   it('Should Test Store Is createTaskApiStatus Is Success', async () => {
       await createTaskStore.postCreatedTask()
-      expect(createTaskStore.apiStatus).toBe(API_SUCCESS)
+      expect(createTaskStore.createTaskApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store createTaskApiStatus Is Failed', async () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
@@ -44,12 +44,12 @@ describe('WorkFlowStore Tests', () => {
 
       await createTaskStore.postCreatedTask()
 
-      expect(createTaskStore.apiStatus).toBe(API_FAILED)
+      expect(createTaskStore.createTaskApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test Store Is Cleared', () => {
       createTaskStore.clearStore()
-      expect(createTaskStore.apiStatus).toBe(API_INITIAL)
-      expect(createTaskStore.apiError).toBe(null)
+      expect(createTaskStore.createTaskApiStatus).toBe(API_INITIAL)
+      expect(createTaskStore.createTaskApiError).toBe(null)
    })
 })

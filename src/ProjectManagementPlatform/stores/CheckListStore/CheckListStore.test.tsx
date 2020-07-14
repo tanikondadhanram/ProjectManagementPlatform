@@ -21,21 +21,21 @@ describe('CheckListStore Tests', () => {
    })
 
    it('Should Test Store Is Initialised', () => {
-      expect(checkListStore.apiStatus).toBe(API_INITIAL)
-      expect(checkListStore.apiError).toBe(null)
+      expect(checkListStore.checkListStoreApiStatus).toBe(API_INITIAL)
+      expect(checkListStore.checkListStoreApiError).toBe(null)
    })
 
-   it('Should Test Store Is apiStatus Is Fetching', () => {
+   it('Should Test Store Is checkListStoreApiStatus Is Fetching', () => {
       checkListStore.getCheckList()
-      expect(checkListStore.apiStatus).toBe(API_FETCHING)
+      expect(checkListStore.checkListStoreApiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store Is apiStatus Is Success', async () => {
+   it('Should Test Store Is checkListStoreApiStatus Is Success', async () => {
       await checkListStore.getCheckList()
-      expect(checkListStore.apiStatus).toBe(API_SUCCESS)
+      expect(checkListStore.checkListStoreApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store checkListStoreApiStatus Is Failed', async () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
@@ -46,25 +46,25 @@ describe('CheckListStore Tests', () => {
 
       await checkListStore.getCheckList()
 
-      expect(checkListStore.apiStatus).toBe(API_FAILED)
+      expect(checkListStore.checkListStoreApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test CheckList Post Api Is Initialised', () => {
-      expect(checkListStore.postApiStatus).toBe(API_INITIAL)
-      expect(checkListStore.postApiError).toBe(null)
+      expect(checkListStore.checkListStorePostApiStatus).toBe(API_INITIAL)
+      expect(checkListStore.checkListStorePostApiError).toBe(null)
    })
 
    it('Should Test CheckList Post Api Is Fetching', () => {
       checkListStore.postCheckList()
-      expect(checkListStore.postApiStatus).toBe(API_FETCHING)
+      expect(checkListStore.checkListStorePostApiStatus).toBe(API_FETCHING)
    })
 
    it('Should Test CheckList Post Api Is Success', async () => {
       await checkListStore.postCheckList()
-      expect(checkListStore.postApiStatus).toBe(API_SUCCESS)
+      expect(checkListStore.checkListStorePostApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store checkListStoreApiStatus Is Failed', async () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
@@ -75,12 +75,12 @@ describe('CheckListStore Tests', () => {
 
       await checkListStore.postCheckList()
 
-      expect(checkListStore.postApiStatus).toBe(API_FAILED)
+      expect(checkListStore.checkListStorePostApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test Store Is Cleared', () => {
       checkListStore.clearStore()
-      expect(checkListStore.apiStatus).toBe(API_INITIAL)
-      expect(checkListStore.apiError).toBe(null)
+      expect(checkListStore.checkListStoreApiStatus).toBe(API_INITIAL)
+      expect(checkListStore.checkListStoreApiError).toBe(null)
    })
 })

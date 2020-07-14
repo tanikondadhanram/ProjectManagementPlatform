@@ -3,9 +3,9 @@ import { bindPromiseWithOnSuccess } from '@ib/mobx-promise'
 import { API_INITIAL } from '@ib/api-constants'
 
 class CreateTaskStore {
-   @observable apiStatus!: number
-   @observable apiError!: null | string
-   @observable apiResponse!: string
+   @observable createTaskApiStatus!: number
+   @observable createTaskApiError!: null | string
+   @observable createTaskApiResponse!: string
    CreateTaskService
 
    constructor(service) {
@@ -15,8 +15,8 @@ class CreateTaskStore {
 
    @action.bound
    init() {
-      this.apiStatus = API_INITIAL
-      this.apiError = null
+      this.createTaskApiStatus = API_INITIAL
+      this.createTaskApiError = null
    }
 
    @action.bound
@@ -25,18 +25,18 @@ class CreateTaskStore {
    }
 
    @action.bound
-   setGetCreateTaskAPIStatus(status: number) {
-      this.apiStatus = status
+   setGetCreateTaskCreateTaskApiStatus(status: number) {
+      this.createTaskApiStatus = status
    }
 
    @action.bound
-   setGetCreateTaskAPIError(error: string) {
-      this.apiError = error
+   setGetCreateTaskCreateTaskAPiError(error: string) {
+      this.createTaskApiError = error
    }
 
    @action.bound
-   setGetCreateTaskAPIResponse(response: any) {
-      this.apiResponse = response
+   setGetCreateTaskCreateTaskAPiResponse(response: any) {
+      this.createTaskApiResponse = response
    }
 
    @action.bound
@@ -49,12 +49,12 @@ class CreateTaskStore {
          requsetObject
       )
       return bindPromiseWithOnSuccess(workFlowPromise)
-         .to(this.setGetCreateTaskAPIStatus, response => {
-            this.setGetCreateTaskAPIResponse(response)
+         .to(this.setGetCreateTaskCreateTaskApiStatus, response => {
+            this.setGetCreateTaskCreateTaskAPiResponse(response)
             onTaskCreatedSuccessfully()
          })
          .catch(error => {
-            this.setGetCreateTaskAPIError(error)
+            this.setGetCreateTaskCreateTaskAPiError(error)
             onTaskCreatedFailure()
          })
    }

@@ -19,22 +19,22 @@ describe('TasksStore Tests', () => {
    })
 
    it('Should Test Store Is Initialised', () => {
-      expect(tasksStore.apiStatus).toBe(API_INITIAL)
-      expect(tasksStore.apiError).toBe(null)
+      expect(tasksStore.taskStoreApiStatus).toBe(API_INITIAL)
+      expect(tasksStore.taskStoreApiError).toBe(null)
    })
 
-   it('Should Test Store Is apiStatus Is Fetching', () => {
+   it('Should Test Store Is taskStoreApiStatus Is Fetching', () => {
       tasksStore.getListOfTasks()
-      expect(tasksStore.apiStatus).toBe(API_FETCHING)
+      expect(tasksStore.taskStoreApiStatus).toBe(API_FETCHING)
    })
 
-   it('Should Test Store Is apiStatus Is Success', async () => {
+   it('Should Test Store Is taskStoreApiStatus Is Success', async () => {
       await tasksStore.getListOfTasks()
 
-      expect(tasksStore.apiStatus).toBe(API_SUCCESS)
+      expect(tasksStore.taskStoreApiStatus).toBe(API_SUCCESS)
    })
 
-   it('Should Test Store apiStatus Is Failed', async () => {
+   it('Should Test Store taskStoreApiStatus Is Failed', async () => {
       const mockApi = jest.fn()
 
       mockApi.mockReturnValue(
@@ -45,7 +45,7 @@ describe('TasksStore Tests', () => {
 
       await tasksStore.getListOfTasks()
 
-      expect(tasksStore.apiStatus).toBe(API_FAILED)
+      expect(tasksStore.taskStoreApiStatus).toBe(API_FAILED)
    })
 
    it('Should Test NavigateToClickedPage Fn', () => {
@@ -55,7 +55,7 @@ describe('TasksStore Tests', () => {
 
    it('Should Test Store Is Cleared', () => {
       tasksStore.clearStore()
-      expect(tasksStore.apiStatus).toBe(API_INITIAL)
-      expect(tasksStore.apiError).toBe(null)
+      expect(tasksStore.taskStoreApiStatus).toBe(API_INITIAL)
+      expect(tasksStore.taskStoreApiError).toBe(null)
    })
 })
